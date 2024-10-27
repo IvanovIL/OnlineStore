@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using OnlineStore.AppServices.Attributes.Repositories;
 using OnlineStore.MVC.Models;
 using System.Diagnostics;
 
@@ -7,14 +8,17 @@ namespace OnlineStore.MVC.Controllers
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
-
-		public HomeController(ILogger<HomeController> logger)
+		private readonly IAttributeRepository _attributeRepository;
+		public HomeController(ILogger<HomeController> logger, 
+			IAttributeRepository attributeRepository)
 		{
 			_logger = logger;
+			_attributeRepository = attributeRepository;
 		}
-
-		public IActionResult Index()
+	
+		public async Task <IActionResult> Index()
 		{
+			var attribute = await _attributeRepository.GetAsync(1);
 			return View();
 		}
 

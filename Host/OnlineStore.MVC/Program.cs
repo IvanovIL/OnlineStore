@@ -1,3 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using OnlineStore.AppServices.Attributes.Repositories;
+using OnlineStore.DataAccess.Attributes.Repositories;
+
 namespace OnlineStore.MVC
 {
 	public class Program
@@ -8,6 +13,16 @@ namespace OnlineStore.MVC
 
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
+
+
+			builder.Services.AddDbContext<DbContext>(options =>
+			{
+				var connectionStrings = builder.Configuration.GetConnectionString("DefaultConnection");
+				options.UseSqlServer(connectionStrings);
+			}
+			);
+
+			builder.Services.AddTransient<IAttributeRepository, AttributeRepository>();
 
 			var app = builder.Build();
 

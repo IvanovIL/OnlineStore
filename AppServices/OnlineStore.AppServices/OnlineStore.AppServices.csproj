@@ -7,12 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
+    <Folder Include="Attributes\Models\" />
+    <Folder Include="Attributes\Services\" />
     <Folder Include="Orders\Models\" />
-    <Folder Include="Orders\Repositories\" />
     <Folder Include="Orders\Services\" />
     <Folder Include="Orders\userCases\" />
     <Folder Include="Users\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\OnlineStore.Domain\OnlineStore.Domain.csproj" />
   </ItemGroup>
 
 </Project>
