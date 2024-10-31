@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\AppServices\OnlineStore.AppServices\OnlineStore.AppServices.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\OnlineStore.ComponentRegistar\OnlineStore.ComponentRegistar.csproj" />
     <ProjectReference Include="..\..\Infrastructure\OnlineStore.DataAccess\OnlineStore.DataAccess.csproj" />
     <ProjectReference Include="..\..\Infrastructure\OnlineStore.Infrastructure\OnlineStore.Infrastructure.csproj" />
   </ItemGroup>

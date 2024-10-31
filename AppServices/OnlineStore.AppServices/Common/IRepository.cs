@@ -13,7 +13,7 @@ namespace OnlineStore.AppServices.Common
 
 		Task<T> GetAsync(int id);
 		/// <summary>
-		/// 
+		/// Добавляет сущность
 		/// </summary>
 		void Add(int id);
 		Task AddAsync(T entity);

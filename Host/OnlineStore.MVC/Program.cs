@@ -1,7 +1,12 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using OnlineStore.AppServices.Attributes.Repositories;
+using OnlineStore.AppServices.Attributes.Services;
+using OnlineStore.ComponentRegistar;
 using OnlineStore.DataAccess.Attributes.Repositories;
+using OnlineStore.Infrastructure.Mappings;
+
+
 
 namespace OnlineStore.MVC
 {
@@ -14,15 +19,24 @@ namespace OnlineStore.MVC
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
 
+			OnlineStoreRegistar.AddComponents(builder.Services, builder.Configuration);
 
-			builder.Services.AddDbContext<DbContext>(options =>
-			{
-				var connectionStrings = builder.Configuration.GetConnectionString("DefaultConnection");
-				options.UseSqlServer(connectionStrings);
-			}
-			);
+			//builder.Services.AddDbContext<DbContext>(options =>
+			//{
+			//	var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+			//	options.UseSqlServer(connectionString);
+			//}
+			//);
 
-			builder.Services.AddTransient<IAttributeRepository, AttributeRepository>();
+			//builder.Services.AddTransient<IAttributeRepository, AttributeRepository>();
+			//builder.Services.AddScoped<IProductAttributeService, ProductAttributeService>();
+			//var mapperConfig = new MapperConfiguration(mc =>
+			//{
+			//	mc.AddProfile(new ProductAttributeMappingProfile());
+			//}
+			//);
+			//IMapper mapper = mapperConfig.CreateMapper();
+			//builder.Services.AddSingleton(mapper);
 
 			var app = builder.Build();
 

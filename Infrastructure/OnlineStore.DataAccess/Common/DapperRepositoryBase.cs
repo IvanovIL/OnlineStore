@@ -1,15 +1,14 @@
 ﻿using Dapper;
+using Dapper.Contrib.Extensions;
 using OnlineStore.AppServices.Common;
-
-
 
 namespace OnlineStore.DataAccess.Common
 {
 	public class DapperRepositoryBase<T> : IRepository<T> where T : class
 	{
-		private readonly DbContext _context;
+		private readonly OnlineStoreDbContext _context;
 
-		protected DapperRepositoryBase(DbContext context)
+		protected DapperRepositoryBase(OnlineStoreDbContext context)
 		{
 			_context = context;
 		}
@@ -21,7 +20,7 @@ namespace OnlineStore.DataAccess.Common
 
 		public async Task AddAsync(T entity)
 		{
-			await _context.connection.ExecuteAsync("");
+			await _context.connection.ExecuteAsync($"INSERT INTO {typeof(T).Name}s (Name) VALUES (@Name)",entity);
 		}
 
 		public T Get(int id)
@@ -31,8 +30,8 @@ namespace OnlineStore.DataAccess.Common
 
 		public async Task<T> GetAsync(int id)
 		{
-			var query = $"SELECT * FROM {typeof(T).Name}s where Id = @Id";
-			var result = await _context.connection.QueryFirstAsync<T>(query, new { Id = id });
+
+			var result = await _context.connection.GetAsync<T>(id);
 			return result;
 		}
 

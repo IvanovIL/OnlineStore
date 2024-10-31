@@ -1,16 +1,17 @@
-﻿using Microsoft.Extensions.Configuration;
-using OnlineStore.AppServices.Attributes.Repositories;
+﻿using OnlineStore.AppServices.Attributes.Repositories;
 using OnlineStore.DataAccess.Common;
+using OnlineStore.Domain.Entities;
 
 namespace OnlineStore.DataAccess.Attributes.Repositories
 {
 	/// <summary>
 	/// Репозиторий по работе с атрибутами
 	/// </summary>
-	public sealed class AttributeRepository : DapperRepositoryBase<Attribute>, IAttributeRepository
+	public sealed class AttributeRepository : DapperRepositoryBase<ProductAttribute>, IAttributeRepository
 	{
-		public AttributeRepository(DbContext context) : base(context)
+		public AttributeRepository(OnlineStoreDbContext context) : base(context)
 		{
+
 		}
 	}
 }

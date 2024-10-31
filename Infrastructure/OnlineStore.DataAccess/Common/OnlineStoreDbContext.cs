@@ -1,15 +1,15 @@
 ﻿using Microsoft.Data.SqlClient;
 
-
 namespace OnlineStore.DataAccess.Common
 {
 	/// <summary>
 	/// Контекст для работы с БД
 	/// </summary>
-	public class DbContext : IDisposable
+	public class OnlineStoreDbContext : IDisposable
 	{
 		private readonly SqlConnection _connection;
-        public DbContext(string connectionString)
+
+		public OnlineStoreDbContext(string connectionString)
         {
             _connection = new SqlConnection(connectionString);
         }
@@ -18,7 +18,7 @@ namespace OnlineStore.DataAccess.Common
 		
         public void Dispose()
 		{
-			throw new NotImplementedException();
+			_connection.Dispose();
 		}
 	}
 }

@@ -1,11 +1,10 @@
 ﻿
-
 namespace OnlineStore.Domain.Entities
 {
 	/// <summary>
 	/// Атрибут категории
 	/// </summary>
-	public sealed class Attribute
+	public sealed class ProductAttribute
 	{
 		/// <summary>
 		/// Идентификатор 
