@@ -4,6 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineStore.AppServices.Attributes.Repositories;
 using OnlineStore.AppServices.Attributes.Services;
+using OnlineStore.AppServices.Common.CacheService;
+using OnlineStore.AppServices.Common.CacheServices;
+using OnlineStore.AppServices.Common.Redis;
 using OnlineStore.DataAccess.Attributes.Repositories;
 using OnlineStore.DataAccess.Common;
 using OnlineStore.Infrastructure.Mappings;
@@ -37,6 +40,8 @@ namespace OnlineStore.ComponentRegistar
 		private static void RegisterServices(IServiceCollection Services)
 		{
 			Services.AddScoped<IProductAttributeService, ProductAttributeService>();
+			Services.AddSingleton<IRedisCache, RedisCache>();
+			Services.AddSingleton<ICacheService, RedisCacheService>();
 		}
 
 		private static void RegisterMapper(IServiceCollection Services, IConfiguration Configuration)

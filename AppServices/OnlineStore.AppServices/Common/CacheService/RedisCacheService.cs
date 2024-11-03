@@ -16,15 +16,28 @@ namespace OnlineStore.AppServices.Common.CacheService
 		}
 
 		/// <inheritdoc/>
-		public Task<T> GetOrSetAsync<T>(string key, TimeSpan lifeTime, Func<Task<T>> func, CancellationToken cancellation)
+		public async Task<T> GetOrSetAsync<T>(string key, TimeSpan lifeTime, Func<Task<T>> func, CancellationToken cancellation)
 		{
-			throw new NotImplementedException();
+			var cacheItem =await  _redisCacheService.GetAsync<T>(key, cancellation);
+
+			if (cacheItem != null)
+			{
+				return cacheItem;
+			}
+
+			var Item = await func();
+
+			if (Item != null)
+			{
+				await _redisCacheService.SetAsync(key, Item, lifeTime, cancellation);
+			}
+			return Item;
 		}
 
 		/// <inheritdoc/>
-		public Task RemoveAsync(string key, CancellationToken cancellation)
+		public async Task RemoveAsync(string key, CancellationToken cancellation)
 		{
-			throw new NotImplementedException();
+			await _redisCacheService.RemoveAsync(key,cancellation);
 		}
 	}
 }

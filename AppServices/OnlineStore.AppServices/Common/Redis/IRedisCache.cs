@@ -11,7 +11,8 @@ namespace OnlineStore.AppServices.Common.Redis
 		/// Получает данные из Redis по ключу
 		/// </summary>
 		/// <param name="key"Ключ></param>
-		Task<T> GetAsync<T>(string key);
+		/// <param name="cancellation">Токен отмены операции</param>
+		Task<T> GetAsync<T>(string key, CancellationToken cancellation);
 
 		/// <summary>
 		/// Записывает данные в Redis по указаному ключу
@@ -19,6 +20,15 @@ namespace OnlineStore.AppServices.Common.Redis
 		/// <param name="key">Ключ</param>
 		/// <param name="value">Данные</param>
 		/// <param name="lifeTime">Время жизни значения в кэше</param>
-		Task SetAsync<T>(string key, T value, TimeSpan lifeTime);
+		/// <param name="cancellation">Токен отмены операции</param>
+		Task SetAsync<T>(string key, T value, TimeSpan lifeTime, CancellationToken cancellation);
+
+		/// <summary>
+		/// Удаляет значение их кэша
+		/// </summary>
+		/// <param name="key">Ключ</param>
+		/// <param name="cancellation">Токен отмены операции</param>
+		Task RemoveAsync(string key, CancellationToken cancellation);
+
 	}
 }

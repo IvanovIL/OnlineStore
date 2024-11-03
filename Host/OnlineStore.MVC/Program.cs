@@ -1,11 +1,6 @@
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using OnlineStore.AppServices.Attributes.Repositories;
-using OnlineStore.AppServices.Attributes.Services;
+using Microsoft.Extensions.Configuration;
 using OnlineStore.ComponentRegistar;
-using OnlineStore.DataAccess.Attributes.Repositories;
-using OnlineStore.Infrastructure.Mappings;
-
+using StackExchange.Redis;
 
 
 namespace OnlineStore.MVC
@@ -21,22 +16,17 @@ namespace OnlineStore.MVC
 
 			OnlineStoreRegistar.AddComponents(builder.Services, builder.Configuration);
 
-			//builder.Services.AddDbContext<DbContext>(options =>
-			//{
-			//	var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-			//	options.UseSqlServer(connectionString);
-			//}
-			//);
+			builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+			{
+				var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);
+				return ConnectionMultiplexer.Connect(configuration);
+			});
 
-			//builder.Services.AddTransient<IAttributeRepository, AttributeRepository>();
-			//builder.Services.AddScoped<IProductAttributeService, ProductAttributeService>();
-			//var mapperConfig = new MapperConfiguration(mc =>
-			//{
-			//	mc.AddProfile(new ProductAttributeMappingProfile());
-			//}
-			//);
-			//IMapper mapper = mapperConfig.CreateMapper();
-			//builder.Services.AddSingleton(mapper);
+			builder.Services.AddSingleton<IDatabase>(sp =>
+			{
+				var ConnectionMultiplexer = sp.GetRequiredService<IConnectionMultiplexer>();
+				return ConnectionMultiplexer.GetDatabase();
+			});
 
 			var app = builder.Build();
 

@@ -12,5 +12,6 @@ namespace OnlineStore.AppServices.Attributes.Services
 		/// </summary>
 		/// <param name="id">Индентификаторо</param>
 		Task<ProductAttributeDto> GetAsync(int id);
+
 	}
 }
