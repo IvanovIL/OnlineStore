@@ -1,7 +1,4 @@
-using Microsoft.Extensions.Configuration;
 using OnlineStore.ComponentRegistar;
-using StackExchange.Redis;
-
 
 namespace OnlineStore.MVC
 {
@@ -15,18 +12,6 @@ namespace OnlineStore.MVC
 			builder.Services.AddControllersWithViews();
 
 			OnlineStoreRegistar.AddComponents(builder.Services, builder.Configuration);
-
-			builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
-			{
-				var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);
-				return ConnectionMultiplexer.Connect(configuration);
-			});
-
-			builder.Services.AddSingleton<IDatabase>(sp =>
-			{
-				var ConnectionMultiplexer = sp.GetRequiredService<IConnectionMultiplexer>();
-				return ConnectionMultiplexer.GetDatabase();
-			});
 
 			var app = builder.Build();
 

@@ -1,43 +1,38 @@
 ﻿using StackExchange.Redis;
+using StackExchange.Redis.Extensions.Core.Abstractions;
 
 namespace OnlineStore.AppServices.Common.Redis
 {
+	/// <summary>
+	/// Сервис по работе с рэдис
+	/// </summary>
 	public sealed class RedisCache : IRedisCache
 	{
-		private readonly IDatabase _redisDb;
+		private readonly IRedisDatabase _redisDb;
 
-		public RedisCache( IDatabase redisDb)
+		public RedisCache(IRedisDatabase redisDb)
 		{
 			_redisDb = redisDb;
 		}
 
 		/// <inheritdoc/>
-		public async Task<string> GetAsync(string key)
+		public  Task<T> GetAsync<T>(string key , CancellationToken cancellation)
 		{
-			var entity = await _redisDb.StringGetAsync(key);
-			return entity;
+			return  _redisDb.GetAsync<T>($"Attributes:{key}");
 		}
-		
+
 		/// <inheritdoc/>
-		public async Task SetStringAsync<T>(string key, RedisValue value)
+		public async Task RemoveAsync(string key, CancellationToken cancellation)
 		{
-			await _redisDb.SetAddAsync(key, value);
-			await _redisDb.StringSetAsync(key, value);
+			await _redisDb.RemoveAsync(key);
 		}
 
-		Task<T> IRedisCache.GetAsync<T>(string key, CancellationToken cancellation)
+		/// <inheritdoc/>
+		public  Task SetAsync<T>(string key, T value , TimeSpan lifeTime, CancellationToken cancellation)
 		{
-			throw new NotImplementedException();
+			return _redisDb.AddAsync($"Attributes:{key}", value , lifeTime);
 		}
 
-		Task IRedisCache.RemoveAsync(string key, CancellationToken cancellation)
-		{
-			throw new NotImplementedException();
-		}
-
-		Task IRedisCache.SetAsync<T>(string key, T value, TimeSpan lifeTime, CancellationToken cancellation)
-		{
-			throw new NotImplementedException();
-		}
+		
 	}
 }

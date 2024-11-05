@@ -10,6 +10,9 @@ using OnlineStore.AppServices.Common.Redis;
 using OnlineStore.DataAccess.Attributes.Repositories;
 using OnlineStore.DataAccess.Common;
 using OnlineStore.Infrastructure.Mappings;
+using StackExchange.Redis.Extensions.Core.Configuration;
+using StackExchange.Redis.Extensions.Newtonsoft;
+
 
 namespace OnlineStore.ComponentRegistar
 {
@@ -21,7 +24,7 @@ namespace OnlineStore.ComponentRegistar
 		public static void AddComponents(IServiceCollection Services, IConfiguration Configuration)
 		{
 			RegisterRepositories(Services,Configuration);
-			RegisterServices(Services);
+			RegisterServices(Services, Configuration);
 			RegisterMapper(Services,Configuration);
 			
 		}
@@ -37,11 +40,20 @@ namespace OnlineStore.ComponentRegistar
 			Services.AddTransient<IAttributeRepository, AttributeRepository>();
 		}
 
-		private static void RegisterServices(IServiceCollection Services)
+		private static void RegisterServices(IServiceCollection Services,IConfiguration Configuration)
 		{
+			var redisConfiguration = Configuration
+				.GetSection("Redis")
+				.Get<RedisConfiguration>();
+
+			Services.AddStackExchangeRedisExtensions<NewtonsoftSerializer>(redisConfiguration);
+
 			Services.AddScoped<IProductAttributeService, ProductAttributeService>();
+			Services.Decorate<IProductAttributeService, CachedProductAttributeService>();
+
 			Services.AddSingleton<IRedisCache, RedisCache>();
 			Services.AddSingleton<ICacheService, RedisCacheService>();
+
 		}
 
 		private static void RegisterMapper(IServiceCollection Services, IConfiguration Configuration)

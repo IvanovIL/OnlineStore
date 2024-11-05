@@ -8,14 +8,14 @@ namespace OnlineStore.AppServices.Common.Redis
 	public interface  IRedisCache
 	{
 		/// <summary>
-		/// Получает данные из Redis по ключу
+		/// Получает данные из рэдис по ключу
 		/// </summary>
 		/// <param name="key"Ключ></param>
 		/// <param name="cancellation">Токен отмены операции</param>
 		Task<T> GetAsync<T>(string key, CancellationToken cancellation);
 
 		/// <summary>
-		/// Записывает данные в Redis по указаному ключу
+		/// Записывает данные в рэдис по указаному ключу
 		/// </summary>
 		/// <param name="key">Ключ</param>
 		/// <param name="value">Данные</param>

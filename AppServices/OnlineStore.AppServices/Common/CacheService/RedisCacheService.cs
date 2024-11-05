@@ -4,7 +4,7 @@ using OnlineStore.AppServices.Common.Redis;
 namespace OnlineStore.AppServices.Common.CacheService
 {
 	/// <summary>
-	/// Сервис кэширования в редис
+	/// Сервис кэширования в рэдис
 	/// </summary>
 	public sealed class RedisCacheService : ICacheService
 	{
