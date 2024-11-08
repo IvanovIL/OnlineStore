@@ -17,8 +17,7 @@ namespace OnlineStore.DataAccess.Configuration
 			builder.Property(t => t.Name).
 				HasColumnName("Name").IsRequired(true);
 
-			builder.Property(t => t.Description).
-				HasColumnName("Description");
+
 		}
 	}
 }

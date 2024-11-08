@@ -19,17 +19,17 @@ namespace OnlineStore.DataAccess.Common
            
         }
 
-		//protected override void OnModelCreating(ModelBuilder modelBuilder)
-		//{
-		//	base.OnModelCreating(modelBuilder);
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			base.OnModelCreating(modelBuilder);
 
-		//	modelBuilder.Entity<ProductAttribute>(entity =>
-		//	{
-		//		entity.ToTable("Attributes");
-		//		entity.HasKey(e => e.Id);
-		//	}
-		//	);
-		//}
+			modelBuilder.Entity<ProductAttribute>(entity =>
+			{
+				entity.ToTable("Attributes");
+				entity.HasKey(e => e.Id);
+			}
+			);
+		}
 		DbSet<ProductAttribute> attributes { get;set; }
 
 	}

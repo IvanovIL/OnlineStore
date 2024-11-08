@@ -1,15 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace OnlineStore.Domain.Entities
 {
 	/// <summary>
 	/// Товар
 	/// </summary>
-	public class Product
+	public sealed class Product
 	{
+		/// <summary>
+		/// Идентификатор продукта
+		/// </summary>
+		public int Id { get; set; }
+
+		/// <summary>
+		/// Наименование
+		/// </summary>
+		public string Name { get; set; } = default!;
+
+		/// <summary>
+		/// Описание продукта
+		/// </summary>
+		public string Description { get; set; } = default!;
+
+		/// <summary>
+		/// Цена продукта
+		/// </summary>
+		public decimal Price { get; set; }
+
+		/// <summary>
+		/// Ссылка на изображение товара
+		/// </summary>
+		public string? ImageUrl { get; set; }
+
+		/// <summary>
+		/// Количество товара
+		/// </summary>
+		public int stockQuantity { get; set; }
+
+		/// <summary>
+		/// Идентификатор категории
+		/// </summary>
+		public int CategoryId { get; set; }
+
+		/// <summary>
+		/// Категория
+		/// </summary>
+		public Category? Category { get; set; } 
 	}
 }
