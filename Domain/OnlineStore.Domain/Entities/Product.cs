@@ -1,5 +1,7 @@
 ﻿
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace OnlineStore.Domain.Entities
 {
 	/// <summary>
@@ -25,6 +27,7 @@ namespace OnlineStore.Domain.Entities
 		/// <summary>
 		/// Цена продукта
 		/// </summary>
+		 [Column(TypeName = "decimal(18, 2)")]
 		public decimal Price { get; set; }
 
 		/// <summary>

@@ -29,8 +29,22 @@ namespace OnlineStore.DataAccess.Common
 				entity.HasKey(e => e.Id);
 			}
 			);
+			modelBuilder.Entity<Category>(entity =>
+			{
+				entity.ToTable("Category");
+				entity.HasKey(e => e.Id);
+			}
+			);
+			modelBuilder.Entity<Product>(entity =>
+			{
+				entity.ToTable("Product");
+				entity.HasKey(e => e.Id);
+			}
+			);
 		}
 		DbSet<ProductAttribute> attributes { get;set; }
+		DbSet<Category> categories { get;set; }
 
+		DbSet<Product>	products { get;set; }
 	}
 }
