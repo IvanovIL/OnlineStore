@@ -2,6 +2,8 @@
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace OnlineStore.DataAccess.Migrations
 {
     /// <inheritdoc />
@@ -14,13 +16,13 @@ namespace OnlineStore.DataAccess.Migrations
                 name: "Attributes",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Attributes", x => x.id);
+                    table.PrimaryKey("PK_Attributes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,6 +66,16 @@ namespace OnlineStore.DataAccess.Migrations
                         principalTable: "Category",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Category",
+                columns: new[] { "Id", "Name", "ParentCategoryId" },
+                values: new object[,]
+                {
+                    { 1, "Книги", null },
+                    { 2, "Одежда", null },
+                    { 3, "Электроника", null }
                 });
 
             migrationBuilder.CreateIndex(

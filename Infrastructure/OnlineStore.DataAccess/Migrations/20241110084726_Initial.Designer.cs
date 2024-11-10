@@ -11,8 +11,8 @@ using OnlineStore.DataAccess.Common;
 
 namespace OnlineStore.DataAccess.Migrations
 {
-    [DbContext(typeof(OnlineStoreDbContext))]
-    [Migration("20241109094218_Initial")]
+    [DbContext(typeof(MutableOnlineStoreDbContext))]
+    [Migration("20241110084726_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -29,13 +29,15 @@ namespace OnlineStore.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Name");
 
                     b.Property<int?>("ParentCategoryId")
                         .HasColumnType("int");
@@ -45,13 +47,31 @@ namespace OnlineStore.DataAccess.Migrations
                     b.HasIndex("ParentCategoryId");
 
                     b.ToTable("Category", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Книги"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Одежда"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Электроника"
+                        });
                 });
 
             modelBuilder.Entity("OnlineStore.Domain.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
@@ -67,10 +87,12 @@ namespace OnlineStore.DataAccess.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Name");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18, 2)")
+                        .HasColumnName("Price");
 
                     b.Property<int>("stockQuantity")
                         .HasColumnType("int");
@@ -87,7 +109,7 @@ namespace OnlineStore.DataAccess.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("Id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 

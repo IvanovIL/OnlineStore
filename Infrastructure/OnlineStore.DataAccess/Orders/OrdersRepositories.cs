@@ -6,7 +6,12 @@ namespace OnlineStore.DataAccess.Orders
 {
 	public sealed class OrdersRepositories : EfRepositoryBase<Order>, IOrderRepository
 	{
-		public OrdersRepositories(OnlineStoreDbContext context) : base(context)
+		/// <summary>
+		/// Репозитории по работе с заказами
+		/// </summary>
+		public OrdersRepositories(MutableOnlineStoreDbContext dbContext, 
+			ReadOnlyOnlineStoreDbContext readOnlydbContext) :
+			base(dbContext, readOnlydbContext)
 		{
 
 		}

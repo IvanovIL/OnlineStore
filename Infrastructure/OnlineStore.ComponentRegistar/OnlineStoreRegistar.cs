@@ -6,9 +6,13 @@ using OnlineStore.AppServices.Attributes.Repositories;
 using OnlineStore.AppServices.Attributes.Services;
 using OnlineStore.AppServices.Common.CacheService;
 using OnlineStore.AppServices.Common.CacheServices;
+using OnlineStore.AppServices.Common.Models;
 using OnlineStore.AppServices.Common.Redis;
+using OnlineStore.AppServices.Products.Repositories;
+using OnlineStore.AppServices.Products.Services;
 using OnlineStore.DataAccess.Attributes.Repositories;
 using OnlineStore.DataAccess.Common;
+using OnlineStore.DataAccess.Products.Repositories;
 using OnlineStore.Infrastructure.Mappings;
 using StackExchange.Redis.Extensions.Core.Configuration;
 using StackExchange.Redis.Extensions.Newtonsoft;
@@ -31,13 +35,14 @@ namespace OnlineStore.ComponentRegistar
 
 		private static void RegisterRepositories(IServiceCollection Services, IConfiguration Configuration)
 		{
-			Services.AddDbContext<OnlineStoreDbContext>(options =>
+			Services.AddDbContext<MutableOnlineStoreDbContext>(options =>
 			{
 				var connectionString = Configuration.GetConnectionString("DefaultConnection");
 				options.UseSqlServer(connectionString);
 			});
 
 			Services.AddTransient<IAttributeRepository, AttributeRepository>();
+			Services.AddScoped<IProductRepository,ProductRepository>();
 		}
 
 		private static void RegisterServices(IServiceCollection Services,IConfiguration Configuration)
@@ -51,8 +56,18 @@ namespace OnlineStore.ComponentRegistar
 			Services.AddScoped<IProductAttributeService, ProductAttributeService>();
 			Services.Decorate<IProductAttributeService, CachedProductAttributeService>();
 
+			Services.AddScoped<IProductsService,ProductsService>();
+
 			Services.AddSingleton<IRedisCache, RedisCache>();
 			Services.AddSingleton<ICacheService, RedisCacheService>();
+
+			Services.Configure<DecoratorSetting>(Configuration.GetSection("DecoratorSetting"));
+			var decorationSetting = Configuration.GetSection("DecoratorSetting").Get<DecoratorSetting>();
+
+			if (decorationSetting?.EnableDecorator == true)
+			{
+				Services.Decorate<IProductAttributeService, CachedProductAttributeService>();
+			}
 
 		}
 

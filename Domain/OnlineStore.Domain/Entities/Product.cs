@@ -31,7 +31,7 @@ namespace OnlineStore.Domain.Entities
 		public decimal Price { get; set; }
 
 		/// <summary>
-		/// Ссылка на изображение товара
+		/// Ссылка на главное изображение товара
 		/// </summary>
 		public string? ImageUrl { get; set; }
 
@@ -48,6 +48,11 @@ namespace OnlineStore.Domain.Entities
 		/// <summary>
 		/// Категория
 		/// </summary>
-		public Category? Category { get; set; } 
+		public  Category? Category { get; set; }
+
+		/// <summary>
+		/// Изображение товара
+		/// </summary>
+		public ICollection<ProductImage> Images { get; set; } = [];
 	}
 }

@@ -9,7 +9,7 @@ namespace OnlineStore.DataAccess.Attributes.Repositories
 	/// </summary>
 	public sealed class AttributeRepository : EfRepositoryBase<ProductAttribute>, IAttributeRepository
 	{
-		public AttributeRepository(OnlineStoreDbContext context) : base(context)
+		public AttributeRepository(MutableOnlineStoreDbContext context) : base(context)
 		{
 
 		}

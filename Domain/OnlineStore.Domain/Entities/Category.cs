@@ -19,12 +19,12 @@ namespace OnlineStore.Domain.Entities
 		/// <summary>
 		/// Идентификатор родительской категории
 		/// </summary>
-		public int? ParentCategoryId { get; set; }
+		public  int? ParentCategoryId { get; set; }
 
 		/// <summary>
 		/// Родительская категория
 		/// </summary>
-		public Category? ParentCategory { get; set; }
+		public  Category? ParentCategory { get; set; }
 
 	}
 }

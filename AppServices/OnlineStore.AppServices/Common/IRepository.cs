@@ -1,4 +1,7 @@
 ﻿
+using OnlineStore.AppServices.Products.Models;
+using OnlineStore.Domain.Entities;
+
 namespace OnlineStore.AppServices.Common
 {
 	/// <summary>
@@ -17,5 +20,11 @@ namespace OnlineStore.AppServices.Common
 		/// </summary>
 		void Add(int id);
 		Task AddAsync(T entity);
+
+		/// <summary>
+		/// Получает все записи 
+		/// </summary>
+		Task <List<T>> GetAllAsync();
+		Task<Product> GetProductsAsync(GetProductsRequest request);
 	}
 }

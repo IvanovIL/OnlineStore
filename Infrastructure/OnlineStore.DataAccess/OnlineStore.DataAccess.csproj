@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\AppServices\OnlineStore.AppServices\OnlineStore.AppServices.csproj" />
     <ProjectReference Include="..\..\Domain\OnlineStore.Domain\OnlineStore.Domain.csproj" />
+    <ProjectReference Include="..\OnlineStore.Infrastructure\OnlineStore.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
