@@ -9,9 +9,9 @@ namespace OnlineStore.DataAccess.Orders
 		/// <summary>
 		/// Репозитории по работе с заказами
 		/// </summary>
-		public OrdersRepositories(MutableOnlineStoreDbContext dbContext, 
+		public OrdersRepositories(MutableOnlineStoreDbContext mutabledbContext, 
 			ReadOnlyOnlineStoreDbContext readOnlydbContext) :
-			base(dbContext, readOnlydbContext)
+			base(mutabledbContext, readOnlydbContext)
 		{
 
 		}

@@ -10,10 +10,10 @@ namespace OnlineStore.DataAccess.Common
 		public readonly MutableOnlineStoreDbContext _mutableDbContext;
 		public readonly ReadOnlyOnlineStoreDbContext _readOnlydbContext;
 
-		public EfRepositoryBase(MutableOnlineStoreDbContext dbContext,
+		public EfRepositoryBase(MutableOnlineStoreDbContext mutabledbContext,
 			ReadOnlyOnlineStoreDbContext readOnlydbContext)
 		{
-			_mutableDbContext = dbContext;
+			_mutableDbContext = mutabledbContext;
 			_readOnlydbContext = readOnlydbContext;
 		}
 

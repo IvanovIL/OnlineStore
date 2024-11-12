@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,7 @@ using OnlineStore.AppServices.Products.Services;
 using OnlineStore.DataAccess.Attributes.Repositories;
 using OnlineStore.DataAccess.Common;
 using OnlineStore.DataAccess.Products.Repositories;
+using OnlineStore.Domain.Entities;
 using OnlineStore.Infrastructure.Mappings;
 using StackExchange.Redis.Extensions.Core.Configuration;
 using StackExchange.Redis.Extensions.Newtonsoft;
@@ -27,6 +29,9 @@ namespace OnlineStore.ComponentRegistar
 	{
 		public static void AddComponents(IServiceCollection Services, IConfiguration Configuration)
 		{
+			Services.AddIdentity<ApplicationUser,ApplicationRole>()
+				.AddEntityFrameworkStores<MutableOnlineStoreDbContext>()
+				.AddDefaultTokenProviders();
 			RegisterRepositories(Services,Configuration);
 			RegisterServices(Services, Configuration);
 			RegisterMapper(Services,Configuration);
@@ -36,6 +41,11 @@ namespace OnlineStore.ComponentRegistar
 		private static void RegisterRepositories(IServiceCollection Services, IConfiguration Configuration)
 		{
 			Services.AddDbContext<MutableOnlineStoreDbContext>(options =>
+			{
+				var connectionString = Configuration.GetConnectionString("DefaultConnection");
+				options.UseSqlServer(connectionString);
+			});
+			Services.AddDbContext<ReadOnlyOnlineStoreDbContext>(options =>
 			{
 				var connectionString = Configuration.GetConnectionString("DefaultConnection");
 				options.UseSqlServer(connectionString);

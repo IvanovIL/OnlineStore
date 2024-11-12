@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using OnlineStore.Domain.Entities;
 
 namespace OnlineStore.DataAccess.Common
@@ -6,9 +7,9 @@ namespace OnlineStore.DataAccess.Common
 	/// <summary>
 	/// Контекст для работы с БД
 	/// </summary>
-	public class MutableOnlineStoreDbContext : DbContext
+	public class MutableOnlineStoreDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
 	{
-		public MutableOnlineStoreDbContext()
+		public MutableOnlineStoreDbContext() : base()
 		{
 
 		}
@@ -33,10 +34,5 @@ namespace OnlineStore.DataAccess.Common
 			base.OnConfiguring(optionsBuilder);
 
 		}
-		DbSet<ProductAttribute> attributes { get; set; }
-
-		DbSet<Category> categories { get; set; }
-
-		DbSet<Product> products { get; set; }
 	}
 }

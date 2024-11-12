@@ -12,9 +12,9 @@ namespace OnlineStore.DataAccess.Products.Repositories
 	/// </summary>
 	public sealed class ProductRepository : EfRepositoryBase<Product>, IProductRepository
 	{
-		public ProductRepository(MutableOnlineStoreDbContext dbContext,
+		public ProductRepository(MutableOnlineStoreDbContext mutabledbContext,
 			ReadOnlyOnlineStoreDbContext readOnlydbContext) 
-			: base(dbContext, readOnlydbContext)
+			: base(mutabledbContext, readOnlydbContext)
 		{
 
 		} 
@@ -47,16 +47,16 @@ namespace OnlineStore.DataAccess.Products.Repositories
 		}
 
 		/// <inheritdoc/>
-		//public async override Task<Product> GetAsync(int id)
-		//{
+		public async override Task<Product> GetAsync(int id)
+		{
 
-		//	var entity =  await _readOnlydbContext.FindAsync<Product>(id);
+			var entity = await _readOnlydbContext.FindAsync<Product>(id);
 
-		//	await _readOnlydbContext.Entry(entity)
-		//		.Reference(x => x.Category)
-		//		.LoadAsync();
+			await _readOnlydbContext.Entry(entity)
+				.Reference(x => x.Category)
+				.LoadAsync();
 
-		//	return entity;
-		//}
+			return entity;
+		}
 	}
 }
