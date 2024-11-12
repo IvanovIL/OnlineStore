@@ -10,18 +10,43 @@ namespace OnlineStore.DataAccess.Configuration
 		{
 
 			builder.ToTable("Product");
-			builder.HasKey(e => e.Id);
+			builder.HasKey(t => t.Id);
 
-			builder.Property(t => t.Id).
-				HasColumnName("Id");
+			builder.Property(t => t.Name)
+				.HasMaxLength(1000)
+				.IsRequired(true);
 
-			builder.Property(t => t.Name).
-				HasColumnName("Name").IsRequired(true);
+			builder.Property(t => t.Description)
+				.IsRequired(true);
 
-			builder.Property(t => t.Price).
-				HasColumnName("Price").IsRequired(true);
+			builder.Property(t => t.Price)
+				.HasPrecision(14, 4)
+				.IsRequired(true);
 
-			
+			builder.HasOne(t => t.Category)
+				.WithMany()
+				.HasForeignKey(t => t.CategoryId)
+				.IsRequired(false);
+
+			builder.Property(t => t.ImageUrl)
+				.IsRequired(false);
+
+			builder.Property(t => t.stockQuantity)
+				.IsRequired(true);
+
+			builder.Property(t => t.createdAt)
+				.IsRequired(true);
+
+			builder.Property(t => t.updatedAt)
+				.IsRequired(false);
+
+			builder.HasMany(t => t.Images)
+				.WithOne(t => t.Product)
+				.HasForeignKey(t => t.ProductId)
+				.IsRequired(false)
+				.OnDelete(DeleteBehavior.Cascade);
+
+
 		}
 	}
 }

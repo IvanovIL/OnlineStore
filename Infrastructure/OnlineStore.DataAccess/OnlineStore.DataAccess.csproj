@@ -21,4 +21,9 @@
     <ProjectReference Include="..\OnlineStore.Infrastructure\OnlineStore.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Images\" />
+    <Folder Include="Notification\Repositories\" />
+  </ItemGroup>
+
 </Project>
