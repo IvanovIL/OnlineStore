@@ -5,7 +5,7 @@ namespace OnlineStore.AppServices.Common.Models
 	/// <summary>
 	/// Класс настроек декорирования сервисов
 	/// </summary>
-	public sealed class DecoratorSetting
+	public sealed class DecoratorSettings
 	{
 		/// <summary>
 		/// Признак использования декорирующих сервисов

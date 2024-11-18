@@ -203,6 +203,9 @@ namespace OnlineStore.DataAccess.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("TelegramChatId")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -334,14 +337,8 @@ namespace OnlineStore.DataAccess.Migrations
                     b.Property<DateTime>("createdAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<int>("stockQuantity")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("updatedAt")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

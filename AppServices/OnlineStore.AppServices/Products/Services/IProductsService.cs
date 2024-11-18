@@ -6,5 +6,7 @@ namespace OnlineStore.AppServices.Products.Services
     {
         Task<List<Product>> GetProductAsync();
 
+        Task AddProductAsync(CancellationToken cancellation);
+
     }
 }

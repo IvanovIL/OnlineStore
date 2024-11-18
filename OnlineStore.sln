@@ -13,19 +13,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{51EF09
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{EB3E8E8F-FF97-4EE3-A6B0-4B6606E58E5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.MVC", "Host\OnlineStore.MVC\OnlineStore.MVC.csproj", "{E5E6F1ED-50A6-455C-A4D8-3BC5D5B6D311}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineStore.MVC", "Host\OnlineStore.MVC\OnlineStore.MVC.csproj", "{E5E6F1ED-50A6-455C-A4D8-3BC5D5B6D311}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.Domain", "Domain\OnlineStore.Domain\OnlineStore.Domain.csproj", "{233BE80C-2A69-4800-8800-4AAD1D0CFB4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineStore.Domain", "Domain\OnlineStore.Domain\OnlineStore.Domain.csproj", "{233BE80C-2A69-4800-8800-4AAD1D0CFB4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.Contracts", "Contracts\OnlineStore.Contracts\OnlineStore.Contracts.csproj", "{99AE3BD6-364D-474E-BBEE-3D73BB07186D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineStore.Contracts", "Contracts\OnlineStore.Contracts\OnlineStore.Contracts.csproj", "{99AE3BD6-364D-474E-BBEE-3D73BB07186D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.AppServices", "AppServices\OnlineStore.AppServices\OnlineStore.AppServices.csproj", "{9FD4BBC4-31F0-46EF-99A0-4CAE5E1924E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineStore.AppServices", "AppServices\OnlineStore.AppServices\OnlineStore.AppServices.csproj", "{9FD4BBC4-31F0-46EF-99A0-4CAE5E1924E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.ComponentRegistar", "Infrastructure\OnlineStore.ComponentRegistar\OnlineStore.ComponentRegistar.csproj", "{42591FA8-6150-4DC3-82F3-6E4E55753FDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineStore.ComponentRegistar", "Infrastructure\OnlineStore.ComponentRegistar\OnlineStore.ComponentRegistar.csproj", "{42591FA8-6150-4DC3-82F3-6E4E55753FDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.Infrastructure", "Infrastructure\OnlineStore.Infrastructure\OnlineStore.Infrastructure.csproj", "{8F2340A3-53B4-4020-AA91-8FC37AE8F565}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineStore.Infrastructure", "Infrastructure\OnlineStore.Infrastructure\OnlineStore.Infrastructure.csproj", "{8F2340A3-53B4-4020-AA91-8FC37AE8F565}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.DataAccess", "Infrastructure\OnlineStore.DataAccess\OnlineStore.DataAccess.csproj", "{006597EB-CB11-41EF-A12A-B4A92C150ABB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineStore.DataAccess", "Infrastructure\OnlineStore.DataAccess\OnlineStore.DataAccess.csproj", "{006597EB-CB11-41EF-A12A-B4A92C150ABB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{A65A507B-96BA-4B6C-98D9-516D6A2BC4B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineStoreApiClients", "Client\OnlineStoreApiClient\OnlineStoreApiClients.csproj", "{94832ED6-A609-4430-895F-D2B535A50022}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +65,10 @@ Global
 		{006597EB-CB11-41EF-A12A-B4A92C150ABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{006597EB-CB11-41EF-A12A-B4A92C150ABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{006597EB-CB11-41EF-A12A-B4A92C150ABB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94832ED6-A609-4430-895F-D2B535A50022}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94832ED6-A609-4430-895F-D2B535A50022}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94832ED6-A609-4430-895F-D2B535A50022}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94832ED6-A609-4430-895F-D2B535A50022}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +81,7 @@ Global
 		{42591FA8-6150-4DC3-82F3-6E4E55753FDE} = {EB3E8E8F-FF97-4EE3-A6B0-4B6606E58E5A}
 		{8F2340A3-53B4-4020-AA91-8FC37AE8F565} = {EB3E8E8F-FF97-4EE3-A6B0-4B6606E58E5A}
 		{006597EB-CB11-41EF-A12A-B4A92C150ABB} = {EB3E8E8F-FF97-4EE3-A6B0-4B6606E58E5A}
+		{94832ED6-A609-4430-895F-D2B535A50022} = {A65A507B-96BA-4B6C-98D9-516D6A2BC4B0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6C73772B-30A0-463B-B238-B534C8BA81DC}

@@ -12,8 +12,8 @@ using OnlineStore.DataAccess.Common;
 namespace OnlineStore.DataAccess.Migrations
 {
     [DbContext(typeof(MutableOnlineStoreDbContext))]
-    [Migration("20241112134745_Initial")]
-    partial class Initial
+    [Migration("20241115085615_Initital")]
+    partial class Initital
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -206,6 +206,9 @@ namespace OnlineStore.DataAccess.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("TelegramChatId")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -337,14 +340,8 @@ namespace OnlineStore.DataAccess.Migrations
                     b.Property<DateTime>("createdAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<int>("stockQuantity")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("updatedAt")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

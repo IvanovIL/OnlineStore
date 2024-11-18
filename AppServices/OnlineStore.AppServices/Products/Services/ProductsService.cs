@@ -12,20 +12,22 @@ namespace OnlineStore.AppServices.Products.Services
 
 		}
 
-        public async Task<List<Product>> GetProductAsync()
+        public Task AddProductAsync(CancellationToken cancellation)
         {
-            var product = await _repository.GetAsync(1);
+            throw new NotImplementedException();
+        }
 
-            var productCategory = product.Category;
+        public  Task<List<Product>> GetProductAsync()
+        {
 
-            var parent = productCategory.ParentCategory;
 
-            var result = await _repository.GetProductsAsync(new Models.GetProductsRequest
+           return _repository.GetProductsAsync(new Models.GetProductsRequest
             {
                 IncludeCategory = true
             });
 
-            return result;
         }
+
+      
     }
 }

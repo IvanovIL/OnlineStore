@@ -7,7 +7,7 @@ namespace OnlineStore.Domain.Entities
 		/// <summary>
 		/// Иднетификатор чата с пользователем в телеграм
 		/// </summary>
-		public long? TelegramChatId { get; set; }
+		//public long? TelegramChatId { get; set; }
 
 		/// <summary>
 		/// Каналы уведомления пользователя

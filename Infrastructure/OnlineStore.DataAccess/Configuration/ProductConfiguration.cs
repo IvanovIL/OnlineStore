@@ -37,9 +37,6 @@ namespace OnlineStore.DataAccess.Configuration
 			builder.Property(t => t.createdAt)
 				.IsRequired(true);
 
-			builder.Property(t => t.updatedAt)
-				.IsRequired(false);
-
 			builder.HasMany(t => t.Images)
 				.WithOne(t => t.Product)
 				.HasForeignKey(t => t.ProductId)

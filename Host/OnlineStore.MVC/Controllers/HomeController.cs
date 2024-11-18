@@ -1,8 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OnlineStore.AppServices.Attributes.Repositories;
 using OnlineStore.AppServices.Attributes.Services;
 using OnlineStore.AppServices.Products.Services;
 using OnlineStore.MVC.Models;
+using OnlineStoreApiClients;
 using System.Diagnostics;
 
 namespace OnlineStore.MVC.Controllers
@@ -10,28 +11,26 @@ namespace OnlineStore.MVC.Controllers
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
-		private readonly IProductAttributeService _productAttributeService;
-		private readonly IProductsService _productsService;
-		public HomeController(ILogger<HomeController> logger,
-			IProductAttributeService productAttributeService,
-			 IProductsService productsService)
+
+		private readonly IOnlineStoreApiClient _apiClient;
+	
+		public HomeController(ILogger<HomeController> logger, 
+			IOnlineStoreApiClient apiClient)
 		{
 			_logger = logger;
-			_productAttributeService = productAttributeService;
-			_productsService = productsService;
+			_apiClient = apiClient;
 		}
 
 		public async Task<IActionResult> Index()
 		{
-			var entity = await _productAttributeService.GetAsync(1);
-			var products = await _productsService.GetProductAsync();
 			return View();
 		}
 
-		public IActionResult Privacy()
-		{
+		[Authorize (Roles = "Admin")]
+		public async Task<IActionResult> Privacy()
+        {
 			return View();
-		}
+        }
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
