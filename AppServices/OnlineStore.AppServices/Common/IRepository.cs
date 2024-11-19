@@ -28,6 +28,13 @@ namespace OnlineStore.AppServices.Common
         /// </summary>
         /// <param name="cancellation">Токен отмены операции</param>
         Task<List<T>> GetAllAsync(CancellationToken cancellation);
-		Task<Product> GetProductsAsync(GetProductsRequest request);
-	}
+
+        /// <summary>
+        /// Обновляет существующую сущность.
+        /// </summary>
+        /// <param name="entity">Сущность</param>
+        /// <param name="cancellation">Токен отмены операции</param>
+        Task UpdateAsync(T entity, CancellationToken cancellation);
+
+    }
 }

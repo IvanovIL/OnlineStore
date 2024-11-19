@@ -35,6 +35,7 @@ using OnlineStore.AppServices.Common.Events.Common;
 using OnlineStore.AppServices.Categories.Repositories;
 using OnlineStore.DataAccess.Categories.Repositories;
 using OnlineStore.AppServices.Categories.Services;
+using System.Security.Claims;
 
 namespace OnlineStore.ComponentRegistar
 {

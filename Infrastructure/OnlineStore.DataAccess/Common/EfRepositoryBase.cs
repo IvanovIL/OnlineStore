@@ -18,17 +18,11 @@ namespace OnlineStore.DataAccess.Common
 		}
 
 		/// <inheritdoc/>
-		public async Task AddAsync(T entity)
+		public async Task AddAsync(T entity , CancellationToken cancellation)
 		{
-			  _mutableDbContext.AddAsync(entity);
-			await _mutableDbContext.SaveChangesAsync();
+            await _mutableDbContext.AddAsync(entity, cancellation);
+            await _mutableDbContext.SaveChangesAsync(cancellation);
 
-		}
-
-        /// <inheritdoc/>
-        public Task AddAsync(T entity, CancellationToken cancellation)
-        {
-            throw new NotImplementedException();
         }
 
 		/// <inheritdoc/>
@@ -38,26 +32,22 @@ namespace OnlineStore.DataAccess.Common
 		}
 
         /// <inheritdoc/>
-        public Task<List<T>> GetAllAsync(CancellationToken cancellation)
+        public virtual Task<List<T>> GetAllAsync(CancellationToken cancellation)
         {
-            throw new NotImplementedException();
+            return _readOnlydbContext.Set<T>().ToListAsync(cancellation);
         }
-
-        public Task<List<T>> GetAllAsync(Product product, CancellationToken cancellation)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc/>
-        public async virtual Task<T> GetAsync(int id)
-		{
-			return await _readOnlydbContext.FindAsync<T>(id);
-		}
 
 		/// <inheritdoc/>
-		public Task<Product> GetProductsAsync(GetProductsRequest request)
+		public  virtual Task<T> GetAsync(int id)
 		{
-			throw new NotImplementedException();
+			return _mutableDbContext.FindAsync<T>(id).AsTask();
 		}
-	}
+
+        /// <inheritdoc/>
+        public Task UpdateAsync(T entity, CancellationToken cancellation)
+        {
+            _mutableDbContext.Update(entity);
+            return _mutableDbContext.SaveChangesAsync(cancellation);
+        }
+    }
 }
