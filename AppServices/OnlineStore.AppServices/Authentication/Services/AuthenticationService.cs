@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using OnlineStore.Domain.Entities;
 
 
@@ -11,13 +12,16 @@ namespace OnlineStore.AppServices.Authentication.Services
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly SignInManager<ApplicationUser> _signInManager;
+		private readonly IHttpContextAccessor _httpContextAccessor;
 
-		/// <inheritdoc/>
+        /// <inheritdoc/>
         public AuthenticationService(UserManager<ApplicationUser> userManager,
-			SignInManager<ApplicationUser> signInManager)
+			SignInManager<ApplicationUser> signInManager,
+             IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
 			_signInManager = signInManager;
+			_httpContextAccessor = httpContextAccessor;
         }
 
 

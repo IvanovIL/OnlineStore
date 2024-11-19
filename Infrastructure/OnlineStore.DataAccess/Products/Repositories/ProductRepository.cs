@@ -31,20 +31,34 @@ namespace OnlineStore.DataAccess.Products.Repositories
 		/// <inheritdoc/>
 		public Task<List<Product>> GetProductsAsync(GetProductsRequest request, CancellationToken cancellation)
 		{
-			var query = _readOnlydbContext.Set<Product>().AsQueryable();
+            var query = _readOnlydbContext
+               .Set<Product>()
+               .AsQueryable()
+               .Where(p => !p.IsDeleted);
 
-			if (request.IncludeCategory)
-			{
-				query = query.Include(x => x.Category);
-			}
+            if (request.IncludeCategory)
+            {
+                query = query
+                    .Include(x => x.Category);
+            }
 
-			//if(request.IncludeImages)
-			//{
-			//	query = query.Include(x => x.Images);
-			//}
+            if (request.IncludeImages)
+            {
+                query = query
+                    .Include(x => x.Images);
+            }
 
-			return query.ToListAsync();
-		}
+            query = query
+                .OrderBy(x => x.Id)
+                .Skip(request.Skip);
+
+            if (request.Take != default)
+            {
+                query = query.Take(request.Take);
+            }
+
+            return query.ToListAsync(cancellation);
+        }
 
 		/// <inheritdoc/>
 		public override Task<Product> GetAsync(int id)
@@ -55,5 +69,13 @@ namespace OnlineStore.DataAccess.Products.Repositories
 				.Include(p => p.Images)
 				.FirstOrDefaultAsync();
 		}
-	}
+
+        public Task<int> GetProductsTotalCountAsync(CancellationToken cancellation)
+        {
+            return _readOnlydbContext
+                .Set<Product>()
+                .Where(p => !p.IsDeleted)
+                .CountAsync(cancellation);
+        }
+    }
 }

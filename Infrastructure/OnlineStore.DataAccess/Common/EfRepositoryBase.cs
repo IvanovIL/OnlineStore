@@ -43,6 +43,11 @@ namespace OnlineStore.DataAccess.Common
             throw new NotImplementedException();
         }
 
+        public Task<List<T>> GetAllAsync(Product product, CancellationToken cancellation)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <inheritdoc/>
         public async virtual Task<T> GetAsync(int id)
 		{

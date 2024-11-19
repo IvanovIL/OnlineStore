@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using OnlineStore.AppServices.Common.DataTimeProviders;
 using OnlineStore.AppServices.Common.Events.Common;
+using OnlineStore.AppServices.Products.Models;
 using OnlineStore.AppServices.Products.Repositories;
 using OnlineStore.Contracts.Common;
 using OnlineStore.Contracts.Product;
@@ -32,6 +33,7 @@ namespace OnlineStore.AppServices.Products.Services
         {
             var domainProduct = _mapper.Map<Product>(productDto);
 
+
             _eventContainer.AddEvent(new AddProductEvent
             {
                 eventDate = _dataTimeProvider.UtcNow,
@@ -56,9 +58,41 @@ namespace OnlineStore.AppServices.Products.Services
         }
 
         /// <inheritdoc/>
-        public Task<ProductsListDto> GetProductsAsync(PagedRequest request, CancellationToken cancellation)
+        public async  Task<ProductsListDto> GetProductsAsync(PagedRequest request, CancellationToken cancellation)
         {
-            throw new NotImplementedException();
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var totalCount = await _repository.GetProductsTotalCountAsync(cancellation);
+
+            if (totalCount == 0)
+            {
+                return new ProductsListDto
+                {
+                    PageNumber = 1,
+                    TotalCount = totalCount,
+                    PageSize = 1,
+                    Result = []
+                };
+            }
+            var products = await _repository.GetProductsAsync(new GetProductsRequest
+            {
+                Take = request.PageSize,
+                Skip = (request.PageNumber - 1) * request.PageSize,
+                IncludeCategory = true
+            }, cancellation);
+
+            var productList = _mapper.Map<List<ShortProductDto>>(products);
+
+            return new ProductsListDto
+            {
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize,
+                TotalCount = totalCount,
+                Result = productList
+            };
         }
     }
 }

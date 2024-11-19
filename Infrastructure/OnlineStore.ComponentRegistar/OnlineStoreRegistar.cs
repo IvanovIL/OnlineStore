@@ -32,6 +32,9 @@ using OnlineStore.AppServices.Common.DataTimeProviders;
 using OnlineStore.AppServices.Common.NotificationServices;
 using OnlineStore.AppServices.Common.Events.Handlers;
 using OnlineStore.AppServices.Common.Events.Common;
+using OnlineStore.AppServices.Categories.Repositories;
+using OnlineStore.DataAccess.Categories.Repositories;
+using OnlineStore.AppServices.Categories.Services;
 
 namespace OnlineStore.ComponentRegistar
 {
@@ -62,10 +65,14 @@ namespace OnlineStore.ComponentRegistar
                     };
                 });
 
+            Services.Configure<JwtOptions>(Configuration.GetSection("JwtOptions"));
+            Services.Configure<OnlineStoreApiClientOptions>(Configuration.GetSection("OnlineStoreApiClient"));
+
             RegisterRepositories(Services, Configuration);
             RegisterServices(Services, Configuration);
             RegisterMapper(Services, Configuration);
             RegisterApiClient(Services, Configuration);
+            RegisterScheduler(Services, Configuration);
         }
 
         public static void RegisterMiddlewares(WebApplication app)
@@ -88,6 +95,7 @@ namespace OnlineStore.ComponentRegistar
 
             Services.AddTransient<IAttributeRepository, AttributeRepository>();
             Services.AddScoped<IProductRepository, ProductRepository>();
+            Services.AddScoped<ICategoryRepository, CategoryRepository>();
         }
 
         private static void RegisterServices(IServiceCollection Services, IConfiguration Configuration)
@@ -102,6 +110,7 @@ namespace OnlineStore.ComponentRegistar
 
             Services.AddScoped<IProductsService, ProductsService>();
             Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            Services.AddScoped<ICategoryService, CategoryService>();
 
             Services.AddSingleton<IRedisCache, RedisCache>();
             Services.AddSingleton<ICacheService, RedisCacheService>();
@@ -151,10 +160,6 @@ namespace OnlineStore.ComponentRegistar
                 .UseSimpleAssemblyNameTypeSerializer()
                 .UseRecommendedSerializerSettings()
                 .UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection"))
-            //{
-            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            //})
-            //);
             );
             Services.AddHangfireServer();
         }

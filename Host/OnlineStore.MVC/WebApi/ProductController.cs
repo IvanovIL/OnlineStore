@@ -30,7 +30,7 @@ namespace OnlineStore.MVC.WebApi
 
 
 
-        [Route("")]
+        [Route("get/product")]
         [HttpGet]
         public async Task<IActionResult> GetProductAsync(CancellationToken cancellation)
         {

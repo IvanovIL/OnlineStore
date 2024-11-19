@@ -23,7 +23,6 @@ namespace OnlineStore.AppServices.Common.Events.Handlers
         /// <inheritdoc/>
         public Task HandleAsync(AddProductEvent @event)
         {
-            //return _messageQueueService.SendMessageAsync(new object(), CancellationToken.None);
             return _notificationService.SendNotificationAsync(new Contracts.Notifications.NotificationDto
             {
                 Theme = $"Добавлен новый товар - {@event.productName}",

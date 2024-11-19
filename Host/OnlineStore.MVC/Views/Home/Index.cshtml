@@ -1,9 +1,13 @@
-﻿@{
+﻿﻿@using OnlineStore.Contracts.Product
+@model ProductsListDto
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
+  <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>IsAuthentificated - @User.Identity.IsAuthenticated</p>
     <P>IsAdmin - @User.IsInRole("Admin")</P>
-</div>
+</div> 
+ 
