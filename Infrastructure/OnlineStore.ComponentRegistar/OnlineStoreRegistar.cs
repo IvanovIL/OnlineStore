@@ -24,6 +24,14 @@ using StackExchange.Redis.Extensions.Newtonsoft;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Hangfire;
+using Microsoft.AspNetCore.Builder;
+using OnlineStore.DataAccess.Middlewares;
+using OnlineStore.DataAccess.Events;
+using OnlineStore.AppServices.Common.DataTimeProviders;
+using OnlineStore.AppServices.Common.NotificationServices;
+using OnlineStore.AppServices.Common.Events.Handlers;
+using OnlineStore.AppServices.Common.Events.Common;
 
 namespace OnlineStore.ComponentRegistar
 {
@@ -60,6 +68,11 @@ namespace OnlineStore.ComponentRegistar
             RegisterApiClient(Services, Configuration);
         }
 
+        public static void RegisterMiddlewares(WebApplication app)
+        {
+            app.UseMiddleware<TransactionMiddleware>();
+        }
+
         private static void RegisterRepositories(IServiceCollection Services, IConfiguration Configuration)
         {
             Services.AddDbContext<MutableOnlineStoreDbContext>(options =>
@@ -93,6 +106,12 @@ namespace OnlineStore.ComponentRegistar
             Services.AddSingleton<IRedisCache, RedisCache>();
             Services.AddSingleton<ICacheService, RedisCacheService>();
             Services.AddSingleton<IJwtGenerator, JwtGenerator>();
+            Services.AddSingleton<IDataTimeProvider, DataTimeProvider>();
+
+
+            Services.AddScoped<IEventDispatcher, EventDispatcher>();
+            Services.AddScoped<IEventAccumulator, EventAccumulator>();
+            Services.AddScoped<INotificationService, EmailNotificationService>();
 
             Services.Configure<DecoratorSettings>(Configuration.GetSection("DecoratorSettings"));
             var decorationSettings = Configuration.GetSection("DecoratorSettings").Get<DecoratorSettings>();
@@ -101,6 +120,15 @@ namespace OnlineStore.ComponentRegistar
                 Services.Decorate<IProductAttributeService, CachedProductAttributeService>();
             }
 
+            Services.Scan(Scan =>
+            {
+                Scan.FromAssemblyOf<AddProductEventHandler>()
+                .AddClasses(Classes => Classes.AssignableTo(typeof(IDomainEventHandler<>)))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime();
+
+            });
+
         }
 
         private static void RegisterMapper(IServiceCollection Services, IConfiguration Configuration)
@@ -108,6 +136,7 @@ namespace OnlineStore.ComponentRegistar
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new ProductAttributeMappingProfile());
+                mc.AddProfile(new ProductMappingProfile());
             }
             );
             IMapper mapper = mapperConfig.CreateMapper();
@@ -115,7 +144,20 @@ namespace OnlineStore.ComponentRegistar
         }
 
 
-
+        public static void RegisterScheduler(IServiceCollection Services, IConfiguration Configuration)
+        {
+            Services.AddHangfire(conf =>
+                conf.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection"))
+            //{
+            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            //})
+            //);
+            );
+            Services.AddHangfireServer();
+        }
         private static void RegisterApiClient(IServiceCollection Services, IConfiguration Configuration)
         {
             Services.AddHttpClient<IOnlineStoreApiClient, OnlineStoreApiClient>(client =>

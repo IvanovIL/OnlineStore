@@ -43,10 +43,15 @@ namespace OnlineStore.Domain.Entities
 		/// </summary>
 		public DateTime createdAt { get; set; }
 
-		/// <summary>
-		/// Идентификатор категории
-		/// </summary>
-		public int CategoryId { get; set; }
+        /// <summary>
+        /// Признак удаление товара
+        /// </summary>
+        public bool IsDeleted { get; set; }
+
+        /// <summary>
+        /// Идентификатор категории
+        /// </summary>
+        public int CategoryId { get; set; }
 
 		/// <summary>
 		/// Категория

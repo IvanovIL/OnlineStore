@@ -28,7 +28,9 @@ namespace OnlineStore.MVC
 
 			app.UseRouting();
 
-			app.UseAuthorization();
+			OnlineStoreRegistar.RegisterMiddlewares(app);
+
+            app.UseAuthorization();
 
 			app.MapControllerRoute(
 				name: "default",

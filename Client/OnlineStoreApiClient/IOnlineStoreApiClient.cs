@@ -1,5 +1,7 @@
 ﻿
 
+using OnlineStore.Contracts.Product;
+
 namespace OnlineStoreApiClients
 {
     /// <summary>
@@ -12,6 +14,6 @@ namespace OnlineStoreApiClients
         /// </summary>
         /// <param name="cancellation">Токен отмены операции</param>
         /// <returns></returns>
-        public Task AddProductAsync(object body,CancellationToken cancellation);
+        public Task AddProductAsync(ShortProductDto productDto, CancellationToken cancellation);
     }
 }

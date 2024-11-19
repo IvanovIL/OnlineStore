@@ -34,5 +34,11 @@ namespace OnlineStore.DataAccess.Common
 			base.OnConfiguring(optionsBuilder);
 
 		}
-	}
+
+		public bool HasPendingChanges()
+		{
+			return ChangeTracker.HasChanges();
+		}
+
+    }
 }

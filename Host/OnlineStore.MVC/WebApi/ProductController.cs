@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using OnlineStore.AppServices.Products.Services;
-using OnlineStore.Domain.Entities;
+using OnlineStore.Contracts.Common;
+using OnlineStore.Contracts.Product;
 using OnlineStore.MVC.Attributes;
 
 
@@ -21,11 +19,28 @@ namespace OnlineStore.MVC.WebApi
             _productsService = productsService;
         }
 
-        [Route("Add/product")]
+        [Route("add/product")]
         [HttpPost]
-        public async Task<IActionResult> AddProductsAsync(CancellationToken cancellation)
+        public async Task<IActionResult> AddProductAsync([FromBody] ShortProductDto productDto, CancellationToken cancellation)
         {
-            return Ok();
+            await _productsService.AddProductAsync(productDto, cancellation);
+
+            return NoContent();
+        }
+
+
+
+        [Route("")]
+        [HttpGet]
+        public async Task<IActionResult> GetProductAsync(CancellationToken cancellation)
+        {
+            var result = await _productsService.GetProductsAsync(new PagedRequest
+            {
+                PageNumber = 1,
+                PageSize = 10
+            }, cancellation);
+
+            return Ok(result);
         }
 
     }

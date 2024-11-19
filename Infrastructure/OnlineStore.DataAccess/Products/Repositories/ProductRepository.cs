@@ -29,7 +29,7 @@ namespace OnlineStore.DataAccess.Products.Repositories
 		}
 
 		/// <inheritdoc/>
-		public Task<List<Product>> GetProductsAsync(GetProductsRequest request)
+		public Task<List<Product>> GetProductsAsync(GetProductsRequest request, CancellationToken cancellation)
 		{
 			var query = _readOnlydbContext.Set<Product>().AsQueryable();
 
@@ -47,16 +47,13 @@ namespace OnlineStore.DataAccess.Products.Repositories
 		}
 
 		/// <inheritdoc/>
-		public async override Task<Product> GetAsync(int id)
+		public override Task<Product> GetAsync(int id)
 		{
-
-			var entity = await _readOnlydbContext.FindAsync<Product>(id);
-
-			await _readOnlydbContext.Entry(entity)
-				.Reference(x => x.Category)
-				.LoadAsync();
-
-			return entity;
+			return _readOnlydbContext.Set<Product>()
+				.Where(x => x.Id == id)
+				.Where(x => !x.IsDeleted)
+				.Include(p => p.Images)
+				.FirstOrDefaultAsync();
 		}
 	}
 }

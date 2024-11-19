@@ -9,22 +9,25 @@ namespace OnlineStore.AppServices.Common
 	/// </summary>
 	public interface IRepository<T> where T : class
 	{
-		T Get(int id);
-		/// <summary>
-		/// Получает сущность по идентификотору
-		/// </summary>
 
-		Task<T> GetAsync(int id);
-		/// <summary>
-		/// Добавляет сущность
-		/// </summary>
-		void Add(int id);
-		Task AddAsync(T entity);
+        /// <summary>
+        /// Получает сущность по идентификотору
+        /// </summary>
+        /// <param name="cancellation">Токен отмены операции</param>
+        Task<T> GetAsync(int id);
 
-		/// <summary>
-		/// Получает все записи 
-		/// </summary>
-		Task <List<T>> GetAllAsync();
+
+        /// <summary>
+        /// Добавляет сущность
+        /// </summary>
+        /// <param name="cancellation">Токен отмены операции</param>
+        Task AddAsync(T entity, CancellationToken cancellation);
+
+        /// <summary>
+        /// Получает все записи 
+        /// </summary>
+        /// <param name="cancellation">Токен отмены операции</param>
+        Task<List<T>> GetAllAsync(CancellationToken cancellation);
 		Task<Product> GetProductsAsync(GetProductsRequest request);
 	}
 }

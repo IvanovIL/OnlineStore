@@ -1,4 +1,6 @@
-﻿using OnlineStore.Infrastructure.JwtGenerator;
+﻿using OnlineStore.Contracts.Product;
+using OnlineStore.Infrastructure.JwtGenerator;
+using System.ComponentModel.Design;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
@@ -20,9 +22,10 @@ namespace OnlineStoreApiClients
             _jwtToken = jwtGenerator.GenerateToken();
         }
 
-        public Task AddProductAsync(object body, CancellationToken cancellation)
+        public Task AddProductAsync(ShortProductDto productDto, CancellationToken cancellation)
         {
-            return PostAsync("Products/Add/product", body, cancellation);
+            
+            return PostAsync("Products/Add/product", productDto, cancellation);
         }
 
         private async Task<T> GetAsync<T>(string requestUri, CancellationToken cancellation)

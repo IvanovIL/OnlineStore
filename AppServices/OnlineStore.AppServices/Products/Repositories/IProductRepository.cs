@@ -8,6 +8,6 @@ namespace OnlineStore.AppServices.Products.Repositories
 {
 	public interface IProductRepository : IRepository<Product>
 	{
-		Task<List<Product>> GetProductsAsync(GetProductsRequest request);
+		Task<List<Product>> GetProductsAsync(GetProductsRequest request,CancellationToken cancellation);
 	}
 }

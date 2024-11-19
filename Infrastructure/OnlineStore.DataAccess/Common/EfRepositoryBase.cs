@@ -18,22 +18,18 @@ namespace OnlineStore.DataAccess.Common
 		}
 
 		/// <inheritdoc/>
-		public void Add(int id)
-		{
-			throw new NotImplementedException();
-		}
-
-		/// <inheritdoc/>
 		public async Task AddAsync(T entity)
 		{
-			 await _mutableDbContext.AddAsync(entity);
+			  _mutableDbContext.AddAsync(entity);
+			await _mutableDbContext.SaveChangesAsync();
+
 		}
 
-		/// <inheritdoc/>
-		public T Get(int id)
-		{
-			throw new NotImplementedException();
-		}
+        /// <inheritdoc/>
+        public Task AddAsync(T entity, CancellationToken cancellation)
+        {
+            throw new NotImplementedException();
+        }
 
 		/// <inheritdoc/>
 		public async virtual Task<List<T>> GetAllAsync()
@@ -41,8 +37,14 @@ namespace OnlineStore.DataAccess.Common
 			return await _readOnlydbContext.Set<T>().ToListAsync();
 		}
 
-		/// <inheritdoc/>
-		public async virtual Task<T> GetAsync(int id)
+        /// <inheritdoc/>
+        public Task<List<T>> GetAllAsync(CancellationToken cancellation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc/>
+        public async virtual Task<T> GetAsync(int id)
 		{
 			return await _readOnlydbContext.FindAsync<T>(id);
 		}
