@@ -147,6 +147,8 @@ namespace OnlineStore.ComponentRegistar
             {
                 mc.AddProfile(new ProductAttributeMappingProfile());
                 mc.AddProfile(new ProductMappingProfile());
+                mc.AddProfile(new CategoryMappingProfile());
+                mc.AddProfile(new ShortProductDtoMappingProfile());
             }
             );
             IMapper mapper = mapperConfig.CreateMapper();

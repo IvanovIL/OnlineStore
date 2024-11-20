@@ -12,16 +12,14 @@ namespace OnlineStore.AppServices.Authentication.Services
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly SignInManager<ApplicationUser> _signInManager;
-		private readonly IHttpContextAccessor _httpContextAccessor;
+
 
         /// <inheritdoc/>
         public AuthenticationService(UserManager<ApplicationUser> userManager,
-			SignInManager<ApplicationUser> signInManager,
-             IHttpContextAccessor httpContextAccessor)
+			SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
 			_signInManager = signInManager;
-			_httpContextAccessor = httpContextAccessor;
         }
 
 
@@ -54,7 +52,7 @@ namespace OnlineStore.AppServices.Authentication.Services
 			}
 			else
 			{
-				//throw new UnauthorizedAccessException("Неправильный email или пароль");
+				
 				return false;
 			}
 		}

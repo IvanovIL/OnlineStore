@@ -19,7 +19,6 @@ namespace OnlineStore.MVC.Controllers
 		/// Показывает окно для входа пользователя
 		/// </summary>
 		[HttpGet]
-		[Route("Login")]
 		public IActionResult Login()
 		{
 			return PartialView("_LoginPartial");
@@ -31,7 +30,7 @@ namespace OnlineStore.MVC.Controllers
 		/// <param name="model">Данные для входа.</param>
 		/// <param name="cancellation">Токен отмены операции.</param>
 		[HttpPost]
-		public async Task<IActionResult> Login(LoginViewModel model, CancellationToken cancellation)
+        public async Task<IActionResult> Login(LoginViewModel model, CancellationToken cancellation)
 		{
 			if (await _authenticationService.SignInAsync(model.Email, model.Password, cancellation))
 			{

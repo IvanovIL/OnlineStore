@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using OnlineStore.AppServices.Common.Events.Common;
 using OnlineStore.DataAccess.Common;
-using OnlineStore.DataAccess.Events;
 
 namespace OnlineStore.DataAccess.Middlewares
 {

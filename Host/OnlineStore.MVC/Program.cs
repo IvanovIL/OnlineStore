@@ -30,7 +30,7 @@ namespace OnlineStore.MVC
 
 			OnlineStoreRegistar.RegisterMiddlewares(app);
 
-            app.UseAuthorization();
+			app.UseAuthorization();
 
 			app.MapControllerRoute(
 				name: "default",

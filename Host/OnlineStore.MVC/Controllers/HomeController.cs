@@ -26,26 +26,16 @@ namespace OnlineStore.MVC.Controllers
 			_categoryService = categoryService;
 		}
 
-		public async Task<IActionResult> Index(int pageNumber = 1, CancellationToken cancellation = default)
+		public async Task<IActionResult> Index()
 		{
-            var result = await _productService.GetProductsAsync(new PagedRequest
-            {
-                PageNumber = pageNumber,
-                PageSize = 6
-            }, cancellation);
 
-            _logger.LogInformation("???????? ?????????: {Count}, ????????: {PageNumber}, ????? ?????????: {TotalCount}", result.Result.Count, result.PageNumber, result.TotalCount);
-
-            return View(result);
+            return View();
 		}
-		
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddProduct(CancellationToken cancellation)
-        {
-            var categories = await _categoryService.GetCategoriesAsync(cancellation);
 
-            ViewBag.Categories = new SelectList(categories, "CategoryId", "Name");
-            return View("Index");
+        [HttpGet]
+        public async Task<IActionResult> AddProduct()
+        {
+            return View("AddProduct");
         }
 
         [HttpPost]
@@ -60,8 +50,8 @@ namespace OnlineStore.MVC.Controllers
 
         [Authorize (Roles = "Admin")]
 		public async Task<IActionResult> Privacy()
-        {
-			return View();
+		{ 
+            return View();
         }
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
