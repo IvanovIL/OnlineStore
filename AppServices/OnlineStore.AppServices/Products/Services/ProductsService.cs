@@ -46,12 +46,6 @@ namespace OnlineStore.AppServices.Products.Services
 
 
         /// <inheritdoc/>
-        public Task<List<Product>> GetProductAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc/>
         public Task<ShortProductDto> GetProductByIdAsync(int productId, CancellationToken cancellation)
         {
             throw new NotImplementedException();

@@ -30,11 +30,11 @@ namespace OnlineStore.MVC.WebApi
 
 
 
-        [Route("get/product")]
+        [Route("")]
         [HttpGet]
         public async Task<IActionResult> GetProductAsync(CancellationToken cancellation)
         {
-            var result = await _productsService.GetProductsAsync(new PagedRequest
+            var result = await _productsService.GetProductsAsync(new Contracts.Common.PagedRequest
             {
                 PageNumber = 1,
                 PageSize = 10

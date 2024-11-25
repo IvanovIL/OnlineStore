@@ -6,7 +6,7 @@ namespace OnlineStore.AppServices.Products.Services
 {
     public interface IProductsService
     {
-        Task<List<Product>> GetProductAsync();
+
 
         /// <summary>
         /// Возвращает список товаров

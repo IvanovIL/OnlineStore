@@ -35,7 +35,9 @@ using OnlineStore.AppServices.Common.Events.Common;
 using OnlineStore.AppServices.Categories.Repositories;
 using OnlineStore.DataAccess.Categories.Repositories;
 using OnlineStore.AppServices.Categories.Services;
-using System.Security.Claims;
+using OnlineStore.AppServices.Images.Repositories;
+using OnlineStore.DataAccess.Images.Repositories;
+using OnlineStore.AppServices.Images.Services;
 
 namespace OnlineStore.ComponentRegistar
 {
@@ -97,6 +99,7 @@ namespace OnlineStore.ComponentRegistar
             Services.AddTransient<IAttributeRepository, AttributeRepository>();
             Services.AddScoped<IProductRepository, ProductRepository>();
             Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            Services.AddScoped<IImageRepository, ImageRepository>();
         }
 
         private static void RegisterServices(IServiceCollection Services, IConfiguration Configuration)
@@ -112,6 +115,7 @@ namespace OnlineStore.ComponentRegistar
             Services.AddScoped<IProductsService, ProductsService>();
             Services.AddScoped<IAuthenticationService, AuthenticationService>();
             Services.AddScoped<ICategoryService, CategoryService>();
+            Services.AddScoped<IImageService, ImageService>();
 
             Services.AddSingleton<IRedisCache, RedisCache>();
             Services.AddSingleton<ICacheService, RedisCacheService>();
@@ -148,7 +152,6 @@ namespace OnlineStore.ComponentRegistar
                 mc.AddProfile(new ProductAttributeMappingProfile());
                 mc.AddProfile(new ProductMappingProfile());
                 mc.AddProfile(new CategoryMappingProfile());
-                mc.AddProfile(new ShortProductDtoMappingProfile());
             }
             );
             IMapper mapper = mapperConfig.CreateMapper();

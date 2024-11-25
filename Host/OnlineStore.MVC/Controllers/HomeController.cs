@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineStore.AppServices.Categories.Services;
@@ -26,17 +26,63 @@ namespace OnlineStore.MVC.Controllers
 			_categoryService = categoryService;
 		}
 
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index(int pageNumber = 1, CancellationToken cancellation = default)
 		{
-
-            return View();
+            var result = await _productService.GetProductsAsync(new PagedRequest
+            {
+                PageNumber = pageNumber,
+                PageSize = 6
+            }, cancellation);
+            return View(result);
 		}
+
+        [HttpGet]
+        public IActionResult getProduct()
+        {
+            return View("getProduct");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> getProduct(int pageNumber = 1, CancellationToken cancellation = default)
+        {
+            var result = await _productService.GetProductsAsync(new PagedRequest
+            {
+                PageNumber = pageNumber,
+                PageSize = 6
+            }, cancellation);
+
+            
+            //var result = await _productService.GetProductsAsync(request, cancellation);
+            return View(result);
+        }
+
+        public async Task<IActionResult> Details(int id, CancellationToken cancellation)
+        {
+            var product = await _productService.GetProductByIdAsync(id, cancellation);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View("ProductDetails", product);
+        }
 
         [HttpGet]
         public async Task<IActionResult> AddProduct()
         {
             return View("AddProduct");
         }
+
+
+        public async Task<IActionResult> AddProduct(CancellationToken cancellation)
+        {
+            var categories = await _categoryService.GetCategoriesAsync(cancellation);
+
+            ViewBag.Categories = new SelectList(categories, "CategoryId", "Name");
+            return View("getProduct");
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> AddProduct(ShortProductDto productDto, CancellationToken cancellation)

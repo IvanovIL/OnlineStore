@@ -14,7 +14,7 @@ namespace OnlineStore.AppServices.Common.NotificationServices
         {
             using var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress("Администрация сайта", "login@yandex.ru"));
+            emailMessage.From.Add(new MailboxAddress("Администрация сайта", "01ilya37@mail.ru"));
             emailMessage.To.Add(new MailboxAddress("", notification.Email));
             emailMessage.Subject = notification.Theme;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -24,8 +24,8 @@ namespace OnlineStore.AppServices.Common.NotificationServices
 
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync("smtp.yandex.ru", 25, false, cancellation);
-                await client.AuthenticateAsync("login@yandex.ru", "password", cancellation);
+                await client.ConnectAsync("smtp.mail.ru", 587, MailKit.Security.SecureSocketOptions.StartTls, cancellation);
+                await client.AuthenticateAsync("01ilya37@mail.ru", "Qiia4Xkk8nejaVmCLxpc", cancellation);
                 await client.SendAsync(emailMessage, cancellation);
 
                 await client.DisconnectAsync(true);
