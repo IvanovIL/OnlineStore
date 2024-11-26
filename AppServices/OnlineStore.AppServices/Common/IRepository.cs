@@ -1,6 +1,4 @@
 ﻿
-using OnlineStore.AppServices.Products.Models;
-using OnlineStore.Domain.Entities;
 
 namespace OnlineStore.AppServices.Common
 {
