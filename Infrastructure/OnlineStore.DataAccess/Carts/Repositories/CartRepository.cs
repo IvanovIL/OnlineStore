@@ -1,7 +1,10 @@
-﻿using OnlineStore.AppServices.Cart.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using OnlineStore.AppServices.Carts.Repositories;
+using OnlineStore.Contracts.Enums;
 using OnlineStore.DataAccess.Common;
+using OnlineStore.Domain.Entities;
 
-namespace OnlineStore.DataAccess.Cart.Repositories
+namespace OnlineStore.DataAccess.Carts.Repositories
 {
     public sealed class CartRepository : EfRepositoryBase<Cart>, ICartRepository
     {

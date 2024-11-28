@@ -54,3 +54,67 @@
 
     <button type="submit" class="btn btn-primary">Add Product</button>
 </form>
+<script>
+    //главное изображение
+    document.getElementById('ImageFile').addEventListener('change', function () {
+        const file = this.files[0];
+        const formData = new FormData();
+        formData.append('ImageFiles', file);
+
+        fetch('@Url.Action("UploadImages", "Images")', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                const mainImagePreview = document.getElementById('mainImagePreview');
+                mainImagePreview.innerHTML = '';
+                const imgContainer = document.createElement('div');
+                imgContainer.style.position = 'relative';
+                imgContainer.style.display = 'inline-block';
+                imgContainer.style.marginRight = '10px';
+
+                const imgElement = document.createElement('img');
+                const url = data[0];
+                imgElement.src = url;
+                imgElement.style.width = '150px';
+                imgContainer.appendChild(imgElement);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'X';
+                deleteButton.style.position = 'absolute';
+                deleteButton.style.top = '5px';
+                deleteButton.style.right = '5px';
+                deleteButton.style.backgroundColor = 'red';
+                deleteButton.style.color = 'white';
+                deleteButton.style.border = 'none';
+                deleteButton.style.borderRadius = '50%';
+                deleteButton.style.cursor = 'pointer';
+                deleteButton.addEventListener('click', function () {
+                    if (confirm('Вы уверены что хотите удалить изображение?')) {
+                        event.preventDefault();
+                        fetch('@Url.Action("DeleteImage", "Images")', {
+                            method: 'POST',
+                            body: JSON.stringify({ imageUrl: url }),
+                            headers: { 'Content-Type': 'application/json' }
+                        }).then(response => {
+                            if (response.ok) {
+                                imgContainer.remove();
+                                document.querySelector(`input[name="ImageUrl"]`).remove();
+                            }
+                        });
+                    }
+                });
+
+                imgContainer.appendChild(deleteButton);
+                mainImagePreview.appendChild(imgContainer);
+
+                // Добавляем URL главного изображения в скрытое поле
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'ImageUrl';
+                input.value = url;
+                document.getElementById('productForm').appendChild(input);
+            });
+    });
+</script>

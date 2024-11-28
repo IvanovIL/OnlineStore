@@ -26,14 +26,10 @@ namespace OnlineStore.MVC.Controllers
 			_categoryService = categoryService;
 		}
 
-		public async Task<IActionResult> Index(int pageNumber = 1, CancellationToken cancellation = default)
+		public async Task<IActionResult> Index()
 		{
-            var result = await _productService.GetProductsAsync(new PagedRequest
-            {
-                PageNumber = pageNumber,
-                PageSize = 6
-            }, cancellation);
-            return View(result);
+           
+            return View("Index");
 		}
 
         [HttpGet]
@@ -49,11 +45,11 @@ namespace OnlineStore.MVC.Controllers
             var result = await _productService.GetProductsAsync(new PagedRequest
             {
                 PageNumber = pageNumber,
-                PageSize = 6
+                PageSize = 8
             }, cancellation);
 
-            
-            //var result = await _productService.GetProductsAsync(request, cancellation);
+          
+
             return View(result);
         }
 

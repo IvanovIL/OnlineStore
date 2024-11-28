@@ -1,6 +1,9 @@
 ﻿
 namespace OnlineStore.Domain.Entities
 {
+    /// <summary>
+    /// Корзина
+    /// </summary>
     public sealed class Cart
     {
         /// <summary>

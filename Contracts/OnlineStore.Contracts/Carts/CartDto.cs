@@ -1,5 +1,5 @@
 ﻿
-namespace OnlineStore.Contracts.Cart
+namespace OnlineStore.Contracts.Carts
 {
     public sealed class CartDto
     {

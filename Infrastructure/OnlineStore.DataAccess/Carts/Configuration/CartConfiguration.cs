@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using OnlineStore.Domain.Entities;
 
-namespace OnlineStore.DataAccess.Cart.Configuration
+namespace OnlineStore.DataAccess.Carts.Configuration
 {
     public sealed class CartConfiguration : IEntityTypeConfiguration<Cart>
     {
         public void Configure(EntityTypeBuilder<Cart> builder)
         {
-            builder.ToTable("cart");
+            builder.ToTable("Cart");
 
             builder.HasKey(t => t.Id);
 

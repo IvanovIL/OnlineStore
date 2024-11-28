@@ -1,6 +1,6 @@
-﻿using OnlineStore.Contracts.Cart;
+﻿using OnlineStore.Contracts.Carts;
 
-namespace OnlineStore.AppServices.Cart.Services
+namespace OnlineStore.AppServices.Carts.Services
 {
     /// <summary>
     /// Интерфейс сервиса по работе с корзиной

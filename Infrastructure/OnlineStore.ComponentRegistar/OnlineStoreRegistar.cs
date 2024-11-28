@@ -38,6 +38,9 @@ using OnlineStore.AppServices.Categories.Services;
 using OnlineStore.AppServices.Images.Repositories;
 using OnlineStore.DataAccess.Images.Repositories;
 using OnlineStore.AppServices.Images.Services;
+using OnlineStore.AppServices.Carts.Repositories;
+using OnlineStore.DataAccess.Carts.Repositories;
+using OnlineStore.AppServices.Carts.Services;
 
 namespace OnlineStore.ComponentRegistar
 {
@@ -100,6 +103,7 @@ namespace OnlineStore.ComponentRegistar
             Services.AddScoped<IProductRepository, ProductRepository>();
             Services.AddScoped<ICategoryRepository, CategoryRepository>();
             Services.AddScoped<IImageRepository, ImageRepository>();
+            Services.AddScoped<ICartRepository, CartRepository>();
         }
 
         private static void RegisterServices(IServiceCollection Services, IConfiguration Configuration)
@@ -116,6 +120,7 @@ namespace OnlineStore.ComponentRegistar
             Services.AddScoped<IAuthenticationService, AuthenticationService>();
             Services.AddScoped<ICategoryService, CategoryService>();
             Services.AddScoped<IImageService, ImageService>();
+            Services.AddScoped<ICartService, CartService>();
 
             Services.AddSingleton<IRedisCache, RedisCache>();
             Services.AddSingleton<ICacheService, RedisCacheService>();

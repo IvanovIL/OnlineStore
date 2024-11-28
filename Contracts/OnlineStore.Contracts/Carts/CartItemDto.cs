@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace OnlineStore.Contracts.Cart
+namespace OnlineStore.Contracts.Carts
 {
     public sealed class CartItemDto
     {
