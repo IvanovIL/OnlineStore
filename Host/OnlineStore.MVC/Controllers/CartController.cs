@@ -18,7 +18,7 @@ namespace OnlineStore.MVC.Controllers
 
             var cartCount = await _cartService.GetCartItemCountAsync(cancellation);
 
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("getProduct","Home");
         }
 
         [HttpGet]

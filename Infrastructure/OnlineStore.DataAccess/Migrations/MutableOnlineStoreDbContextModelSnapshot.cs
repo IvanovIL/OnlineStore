@@ -258,10 +258,7 @@ namespace OnlineStore.DataAccess.Migrations
             modelBuilder.Entity("OnlineStore.Domain.Entities.CartProduct", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CartId")
                         .HasColumnType("int");
@@ -278,7 +275,7 @@ namespace OnlineStore.DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CartProduct");
+                    b.ToTable("cartProduct", (string)null);
                 });
 
             modelBuilder.Entity("OnlineStore.Domain.Entities.CartStatus", b =>
@@ -291,11 +288,24 @@ namespace OnlineStore.DataAccess.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("CartStatus");
+                    b.ToTable("CartStatus", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Новая"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Оформлена"
+                        });
                 });
 
             modelBuilder.Entity("OnlineStore.Domain.Entities.Category", b =>
@@ -576,9 +586,15 @@ namespace OnlineStore.DataAccess.Migrations
 
             modelBuilder.Entity("OnlineStore.Domain.Entities.CartProduct", b =>
                 {
-                    b.HasOne("OnlineStore.Domain.Entities.Cart", "Cart")
+                    b.HasOne("OnlineStore.Domain.Entities.Cart", null)
                         .WithMany("Products")
                         .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineStore.Domain.Entities.Cart", "Cart")
+                        .WithMany()
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

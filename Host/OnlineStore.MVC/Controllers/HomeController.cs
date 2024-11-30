@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineStore.AppServices.Categories.Services;
+using OnlineStore.AppServices.Common.NotificationServices;
 using OnlineStore.AppServices.Products.Services;
 using OnlineStore.Contracts.Common;
+using OnlineStore.Contracts.Notifications;
 using OnlineStore.Contracts.Product;
 using OnlineStore.MVC.Models;
 using System.Diagnostics;
@@ -26,20 +28,20 @@ namespace OnlineStore.MVC.Controllers
 			_categoryService = categoryService;
 		}
 
-		public async Task<IActionResult> Index()
-		{
-           
-            return View("Index");
+        [HttpGet]
+		public async Task<IActionResult> personalAccount()
+        {
+            return View("personalAccount");
 		}
 
-        [HttpGet]
-        public IActionResult getProduct()
+
+        public async Task<IActionResult> Index()
         {
-            return View("getProduct");
+
+            return View("Index");
         }
 
-
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> getProduct(int pageNumber = 1, CancellationToken cancellation = default)
         {
             var result = await _productService.GetProductsAsync(new PagedRequest
@@ -48,10 +50,11 @@ namespace OnlineStore.MVC.Controllers
                 PageSize = 8
             }, cancellation);
 
-          
+
 
             return View(result);
         }
+
 
         public async Task<IActionResult> Details(int id, CancellationToken cancellation)
         {
@@ -85,7 +88,7 @@ namespace OnlineStore.MVC.Controllers
         {
             await _productService.AddProductAsync(productDto, cancellation);
 
-            return Ok();
+            return RedirectToAction("getProduct");
         }
 
 

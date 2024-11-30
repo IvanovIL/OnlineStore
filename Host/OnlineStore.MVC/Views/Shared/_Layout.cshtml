@@ -19,9 +19,17 @@
 				</button>
 				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 					<ul class="navbar-nav flex-grow-1">
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-						</li>
+						<form asp-controller="Home" asp-action="personalAccount" method="get" class="form-inline">
+							<button type="submit" class="btn btn-danger">
+								Личный кабинет
+							</button>
+						</form>
+						<form asp-controller="Home" asp-action="getProduct" method="get" class="form-inline">
+							<button type="submit" class="btn btn-danger">
+								Продукты
+							</button>
+						</form>
+
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 						</li>
@@ -36,19 +44,15 @@
 
 						@if (User?.Identity?.IsAuthenticated == true)
 						{
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Выход</a>
-							</li>
-							<form asp-controller="Home" asp-action="getProduct" method="post" class="form-inline">
-								<button type="submit" class="btn btn-danger">
-									Продукты
-								</button>
-							</form>
+
 							<li class="nav-item">
 								<a class="nav-link" href="@Url.Action("Index", "Cart")">
 									<span class="fa fa-shopping-cart"></span>
 									Корзина <span id="cart-count" class="badge badge-pill badge-danger">@ViewBag.CartCount</span>
 								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Выход</a>
 							</li>
 
 						}
@@ -61,7 +65,7 @@
 								<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Регистрация</a>
 							</li>
 						}
-						
+
 
 					</ul>
 				</div>
@@ -84,23 +88,77 @@
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
+	<script>
+		$('.add-to-cart-btn').click(function () {
+						var productId = $(this).data('product-id');
+						var isAuthenticated = '@User.Identity.IsAuthenticated' === 'True';
+						if (isAuthenticated) {
+							$.post('@Url.Action("AddToCart", "Cart")', { id: productId }, function (response) {
+								alert("Товар добавлен в корзину");
+
+								// Обновление счетчика корзины
+								$('#cart-count').text(response.cartCount);
+							});
+						}
+						else{
+							addToLocalStorageCart(productId);
+							alert('Товар добавлен в корзину');
+						}
+					});
+						var isAuthenticated = '@User.Identity.IsAuthenticated' === 'True';
+
+			if (isAuthenticated) {
+				// Если пользователь авторизован, делаем асинхронный запрос на сервер для получения количества товаров в корзине
+				$.ajax({
+					type: 'GET',
+					url: '/Cart/GetCartItemCount', // URL, который возвращает количество товаров в корзине
+					success: function (response) {
+						// Обновляем счетчик корзины
+						$('#cart-count').text(response.cartItemCount);
+					},
+					error: function (error) {
+						console.error('Ошибка при получении количества товаров в корзине:', error);
+					}
+				});
+			}
+			else {
+				// Если пользователь не авторизован, берем данные из LocalStorage
+				var cart = JSON.parse(localStorage.getItem('cart')) || [];
+				var totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+				// Обновляем счетчик корзины
+				$('#cart-count').text(totalCount);
+			}
+		});
+
+		function addToLocalStorageCart(productId) {
+			// Получаем текущую корзину из LocalStorage
+			let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+			// Проверяем, есть ли уже этот товар в корзине
+			let existingItem = cart.find(item => item.productId === productId);
+
+			if (existingItem) {
+				// Если товар уже есть, увеличиваем количество
+				existingItem.quantity += 1;
+			} else {
+				// Если товара нет, добавляем его в корзину
+				cart.push({ productId: productId, quantity: 1 });
+			}
+
+			// Сохраняем обновленную корзину в LocalStorage
+			localStorage.setItem('cart', JSON.stringify(cart));
+
+			// Обновляем счетчик в иконке корзины
+			updateCartIcon(cart);
+		}
+
+		// Функция для обновления счетчика товаров в корзине на иконке
+		function updateCartIcon(cart) {
+			let totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+			$('#cart-count').text(totalCount);
+		}
+	</script>
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-<script>
-	$('.add-to-cart-btn').click(function () {
-					var productId = $(this).data('product-id');
-					var isAuthenticated = '@User.Identity.IsAuthenticated' === 'True';
-					if (isAuthenticated) {
-						$.post('@Url.Action("AddToCart", "Cart")', { id: productId }, function (response) {
-							alert("Товар добавлен в корзину");
-
-							// Обновление счетчика корзины
-							$('#cart-count').text(response.cartCount);
-						});
-					}
-					else{
-						addToLocalStorageCart(productId);
-						alert('Товар добавлен в корзину');
-					}
-				});</script>

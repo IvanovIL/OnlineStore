@@ -14,12 +14,13 @@ namespace OnlineStore.AppServices.Common.NotificationServices
         {
             using var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress("Администрация сайта", "01ilya37@mail.ru"));
+            emailMessage.From.Add(new MailboxAddress("OnlineStore", "01ilya37@mail.ru"));
             emailMessage.To.Add(new MailboxAddress("", notification.Email));
             emailMessage.Subject = notification.Theme;
-            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            emailMessage.Body = new TextPart("Добавлен новый продукт!234253")
             {
                 Text = notification.Text
+
             };
 
             using (var client = new SmtpClient())
@@ -27,9 +28,11 @@ namespace OnlineStore.AppServices.Common.NotificationServices
                 await client.ConnectAsync("smtp.mail.ru", 587, MailKit.Security.SecureSocketOptions.StartTls, cancellation);
                 await client.AuthenticateAsync("01ilya37@mail.ru", "Qiia4Xkk8nejaVmCLxpc", cancellation);
                 await client.SendAsync(emailMessage, cancellation);
-
-                await client.DisconnectAsync(true);
+                
+                
+                 await client.DisconnectAsync(true);
             }
+           
         }
     }
 }

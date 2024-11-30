@@ -6,7 +6,6 @@ using OnlineStore.AppServices.Products.Services;
 using OnlineStore.Contracts.Carts;
 using OnlineStore.Contracts.Enums;
 using OnlineStore.Domain.Entities;
-using Org.BouncyCastle.Math.EC.Rfc7748;
 
 namespace OnlineStore.AppServices.Carts.Services
 {

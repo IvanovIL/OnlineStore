@@ -1,0 +1,32 @@
+﻿@{
+	ViewData["Title"] = "personal Account";
+}
+
+<div class="text-center">
+	<h1 class="display-10">Добро пожаловать в личный кабинет</h1>
+</div>
+
+<div align="right">
+	
+	@if (User?.Identity?.IsAuthenticated == true)
+	{
+	<h4>Ваша история заказов</h4>
+	}
+	else
+	{
+		<h4>Вам нужно войти в свой аккаунт что бы увидеть исиорию заказов</h4>
+	}
+</div>
+
+<div align="right">
+	<form asp-controller="Account" asp-action="panelAdmin" method="post" class="form-inline">
+		<button type="submit" class="btn btn-dark">
+			Ввойти как администратор
+		</button>
+	</form>
+
+	@* @if (isAdmin == true)
+	{
+		
+	} *@
+</div>
