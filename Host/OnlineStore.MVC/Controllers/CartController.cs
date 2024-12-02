@@ -12,9 +12,9 @@ namespace OnlineStore.MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddToCart(int id, CancellationToken cancellation)
+        public async Task<IActionResult> AddToCart(int id,int quantity ,CancellationToken cancellation)
         {
-            await _cartService.AddProductToCartAsync(id, cancellation);
+            await _cartService.AddProductToCartAsync(id, quantity, cancellation);
 
             var cartCount = await _cartService.GetCartItemCountAsync(cancellation);
 

@@ -12,7 +12,7 @@ namespace OnlineStore.AppServices.Carts.Services
         /// </summary>
         /// <param name="productId">Идентификатор товара.</param>
         /// <param name="cancellation">Токен отмены операции.</param>
-        Task AddProductToCartAsync(int productId, CancellationToken cancellation);
+        Task AddProductToCartAsync(int productId,int quantity,CancellationToken cancellation);
 
         /// <summary>
         /// Возвращает количество товара у текущего пользователя

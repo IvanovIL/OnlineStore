@@ -27,9 +27,9 @@ namespace OnlineStore.AppServices.Carts.Services
         }
 
         /// <inheritdoc/>
-        public async Task AddProductToCartAsync(int productId, CancellationToken cancellation)
+        public async Task AddProductToCartAsync(int productId,int quantity ,CancellationToken cancellation)
         {
-            await _cartService.AddProductToCartAsync(productId, cancellation);
+            await _cartService.AddProductToCartAsync(productId,quantity ,cancellation);
 
             var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
 

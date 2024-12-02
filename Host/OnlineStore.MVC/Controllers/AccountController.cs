@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using OnlineStore.AppServices.Authentication.Services;
+using OnlineStore.Domain.Entities;
 using OnlineStore.MVC.Models;
 using System.Runtime.CompilerServices;
 
@@ -11,10 +13,13 @@ namespace OnlineStore.MVC.Controllers
         /// Контролер аутентификации пользователя
         /// </summary>
         private readonly IAuthenticationService _authenticationService;
-      
-        public AccountController(IAuthenticationService authenticationService)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public AccountController(IAuthenticationService authenticationService,
+             UserManager<ApplicationUser> userManager)
         {
             _authenticationService = authenticationService;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -36,7 +41,7 @@ namespace OnlineStore.MVC.Controllers
         {
             if (await _authenticationService.SignInAsync(model.Email, model.Password, cancellation))
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("getProduct", "Home");
             }
 
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
@@ -86,18 +91,6 @@ namespace OnlineStore.MVC.Controllers
 
         }
 
-        [HttpPost]
-        public async Task<bool> panelAdmin(CancellationToken cancellation)
-        {
-            bool isAdmin;
-            await _authenticationService.SignOutAsync(cancellation);
-            if(User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
-            {
-                return isAdmin =true;
-            }
 
-            return isAdmin = false;
-        }
-       
     }
 }

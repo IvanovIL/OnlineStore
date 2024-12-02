@@ -6,6 +6,6 @@ namespace OnlineStore.AppServices.Carts.Repositories
 {
     public interface ICartRepository : IRepository<Cart>
     {
-        Task<Cart> GetCartByUserAsync(int userId, CancellationToken cancellation);
+        Task<Cart> GetCartByUserAsync(int userId,CancellationToken cancellation);
     }
 }

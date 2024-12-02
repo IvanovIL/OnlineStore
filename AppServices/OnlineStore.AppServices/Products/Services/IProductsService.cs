@@ -29,6 +29,7 @@ namespace OnlineStore.AppServices.Products.Services
         /// <param name="cancellation">Токен отмены операции</param>
         Task<ShortProductDto> GetProductByIdAsync(int productId, CancellationToken cancellation);
 
+        Task DeleteProductAsync(int productId,CancellationToken cancellation);
 
     }
 }

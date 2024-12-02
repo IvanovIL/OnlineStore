@@ -97,5 +97,16 @@ namespace OnlineStore.AppServices.Products.Services
                 Result = productList
             };
         }
+       
+
+        public async Task DeleteProductAsync(int id , CancellationToken cancellation)
+        {
+            var product = await _repository.GetAsync(id) ?? throw new Exception($"Не найден продукт Id = {id}");
+
+            product.IsDeleted = true;
+
+            await _repository.DeleteAsync(product, cancellation);
+
+        }
     }
 }

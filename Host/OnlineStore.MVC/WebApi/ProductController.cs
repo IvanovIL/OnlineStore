@@ -2,12 +2,13 @@
 using OnlineStore.AppServices.Products.Services;
 using OnlineStore.Contracts.Common;
 using OnlineStore.Contracts.Product;
+using OnlineStore.Domain.Entities;
 using OnlineStore.MVC.Attributes;
 
 
 namespace OnlineStore.MVC.WebApi
 {
-    
+
     [Route("api/[controller]")]
     [ApiController]
     [JwtAuthorize]
@@ -34,7 +35,7 @@ namespace OnlineStore.MVC.WebApi
         [HttpGet]
         public async Task<IActionResult> GetProductAsync(CancellationToken cancellation)
         {
-            var result = await _productsService.GetProductsAsync(new Contracts.Common.PagedRequest
+            var result = await _productsService.GetProductsAsync(new PagedRequest
             {
                 PageNumber = 1,
                 PageSize = 10
@@ -43,5 +44,13 @@ namespace OnlineStore.MVC.WebApi
             return Ok(result);
         }
 
+        [Route("delete/product")]
+        [HttpPost]
+        public async Task<IActionResult> DeleteProductAsync(int id, CancellationToken cancellation)
+        {
+            var result = _productsService.DeleteProductAsync(id, cancellation);
+
+            return Ok(result);
+        }
     }
 }

@@ -46,6 +46,16 @@
 			<p>@Model.Description</p>
 			<p class="price font-weight-bold">Цена: @Model.Price.ToString("C")</p>
 			<p class="stock">Доступное количество: @Model.StockQuantity</p>
+			<head>
+				<meta charset="utf-8">
+				<title>Рамка вокруг текста</title>
+				<style>
+					p {
+						border: 1px solid green;
+						padding: 10px;
+					}
+				</style>
+			</head>
 			@if (User?.Identity?.IsAuthenticated == true)
 			{
 				<!-- Форма добавления в корзину -->
@@ -64,22 +74,10 @@
 			}
 			else
 			{
-				<head>
-					<meta charset="utf-8">
-					<title>Рамка вокруг текста</title>
-					<style>
-						p {
-							border: 1px solid green;
-							padding: 10px;
-						}
-					</style>
-				</head>
-				<body>
-					<p class="text-danger">
-						Что бы добавить товар в корзину нужно сначла войти в аккаунт или зарегистрироватся
-					</p>
-				</body>
+				<p class="text-danger">
+					Что бы добавить товар в корзину нужно сначла войти в аккаунт или зарегистрироватся
+				</p>
 			}
+		</div>
 	</div>
-</div>
 </div>

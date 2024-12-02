@@ -35,7 +35,7 @@ namespace OnlineStore.AppServices.Carts.Services
 
 
 
-        public async Task AddProductToCartAsync(int productId, CancellationToken cancellation)
+        public async Task AddProductToCartAsync(int productId,int quantity ,CancellationToken cancellation)
         {
             var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
 
@@ -52,23 +52,22 @@ namespace OnlineStore.AppServices.Carts.Services
                 {
                     UserId = user.Id,
                     Created = _dataTimeProvider.UtcNow,
-                    StatusId = (int)CartStatusEnum.New
- 
+                    StatusId = (int)CartStatusEnum.New,
                 };
 
-                AddProductToCart(existingCart, productId);
+                AddProductToCart(existingCart, productId, quantity);
 
                 await _cartRepository.AddAsync(existingCart, cancellation);
             }
             else
             {
                 existingCart.Updated = _dataTimeProvider.UtcNow;
-                AddProductToCart(existingCart, productId);
+                AddProductToCart(existingCart, productId, quantity);
                 await _cartRepository.UpdateAsync(existingCart, cancellation);
             }
 
         }
-        private static void AddProductToCart(Cart cart, int productId)
+        private static void AddProductToCart(Cart cart, int productId,int quantity)
         {
             var productInCart = cart.Products.FirstOrDefault(p => p.ProductId == productId);
 
@@ -81,7 +80,7 @@ namespace OnlineStore.AppServices.Carts.Services
                 cart.Products.Add(new CartProduct
                 {
                     Cart = cart,
-                    Quantity = 1,
+                    Quantity = quantity,
                     ProductId = productId
                 });
             }

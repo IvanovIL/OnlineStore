@@ -29,19 +29,9 @@
 								Продукты
 							</button>
 						</form>
-
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 						</li>
-						@if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
-						{
-							<form asp-controller="Home" asp-action="AddProduct" method="get" class="form-inline">
-								<button type="submit" class="btn btn-danger">
-									Добавить продукт
-								</button>
-							</form>
-						}
-
 						@if (User?.Identity?.IsAuthenticated == true)
 						{
 

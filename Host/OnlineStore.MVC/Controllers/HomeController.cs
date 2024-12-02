@@ -91,15 +91,24 @@ namespace OnlineStore.MVC.Controllers
             return RedirectToAction("getProduct");
         }
 
-
-
-        [Authorize (Roles = "Admin")]
-		public async Task<IActionResult> Privacy()
-		{ 
-            return View();
+        [HttpGet]
+        public async Task<IActionResult> deleteProduct()
+        {
+            return View("deleteProductView");
         }
 
-		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+
+        [HttpPost]
+        public async Task<IActionResult> deleteProduct(int id, CancellationToken cancellation)
+        {
+            await _productService.DeleteProductAsync(id, cancellation);
+
+            return RedirectToAction("getProduct");
+        }
+
+
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
 		{
 			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

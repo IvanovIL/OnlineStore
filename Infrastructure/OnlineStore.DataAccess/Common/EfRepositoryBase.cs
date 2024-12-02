@@ -25,8 +25,18 @@ namespace OnlineStore.DataAccess.Common
 
         }
 
-		/// <inheritdoc/>
-		public async virtual Task<List<T>> GetAllAsync()
+     
+
+        public  Task DeleteAsync(T entity, CancellationToken cancellation)
+        {
+            _mutableDbContext.Update(entity);
+            return _mutableDbContext.SaveChangesAsync(cancellation);
+        }
+
+
+
+        /// <inheritdoc/>
+        public async virtual Task<List<T>> GetAllAsync()
 		{
 			return await _readOnlydbContext.Set<T>().ToListAsync();
 		}

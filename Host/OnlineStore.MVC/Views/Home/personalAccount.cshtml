@@ -1,4 +1,5 @@
-﻿@{
+﻿@model LoginViewModel
+@{
 	ViewData["Title"] = "personal Account";
 }
 
@@ -18,15 +19,13 @@
 	}
 </div>
 
-<div align="right">
-	<form asp-controller="Account" asp-action="panelAdmin" method="post" class="form-inline">
-		<button type="submit" class="btn btn-dark">
-			Ввойти как администратор
-		</button>
-	</form>
-
-	@* @if (isAdmin == true)
+<div align="left">
+	@if (User.IsInRole("Admin"))
 	{
-		
-	} *@
+		<form asp-controller="admin" asp-action="adminPanel" method="get" class="form-inline">
+			<button type="submit" class="btn btn-danger">
+				Ввойти в панель администратора
+			</button>
+		</form>
+	}
 </div>

@@ -1,0 +1,27 @@
+﻿﻿@using OnlineStore.Contracts.Product;
+
+@model ShortProductDto
+
+@{
+    ViewData["Title"] = "Удаление товара";
+}
+
+<h2>delete Product</h2>
+
+<form id="productForm" asp-action="deleteProduct" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="Name">Название товара</label>
+        <input type="text" class="form-control" id="Name" name="Name" asp-for="Name" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Id">Id товара</label>
+        class="form-group">
+        <label for="Name">Id товара</label>
+        <input type="text" class="form-control" id="Id" name="Id" asp-for="Id" required />
+    </div>
+
+  
+
+    <button type="submit" class="btn btn-primary">delete Product</button>
+</form>
