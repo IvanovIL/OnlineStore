@@ -20,7 +20,7 @@
 				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 					<ul class="navbar-nav flex-grow-1">
 						<form asp-controller="Home" asp-action="personalAccount" method="get" class="form-inline">
-							<button type="submit" class="btn btn-danger">
+							<button type="submit" class="btn btn-primary">
 								Личный кабинет
 							</button>
 						</form>
@@ -29,9 +29,11 @@
 								Продукты
 							</button>
 						</form>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-						</li>
+						<form asp-controller="Home" asp-action="findCategoryProductView" method="get" class="form-inline">
+							<button type="submit" class="btn btn-danger">
+								Категории продуктов
+							</button>
+						</form>
 						@if (User?.Identity?.IsAuthenticated == true)
 						{
 

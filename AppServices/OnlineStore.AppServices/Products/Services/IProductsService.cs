@@ -1,6 +1,6 @@
-﻿using OnlineStore.Contracts.Common;
+﻿using OnlineStore.Contracts.Categories;
+using OnlineStore.Contracts.Common;
 using OnlineStore.Contracts.Product;
-using OnlineStore.Domain.Entities;
 
 namespace OnlineStore.AppServices.Products.Services
 {
@@ -29,7 +29,23 @@ namespace OnlineStore.AppServices.Products.Services
         /// <param name="cancellation">Токен отмены операции</param>
         Task<ShortProductDto> GetProductByIdAsync(int productId, CancellationToken cancellation);
 
+        /// <summary>
+        /// Удаляет продук
+        /// </summary>
+        /// <param name="productId">Идентификатор продукта</param>
+        /// <param name="cancellation">Токен отмены операции</param>
+        /// <returns></returns>
         Task DeleteProductAsync(int productId,CancellationToken cancellation);
+
+        /// <summary>
+        /// Изменяет информацию продукта
+        /// </summary>
+        /// <param name="productDto">Транспортная модель товара</param>
+        /// <param name="cancellation">Токен отмены операции</param>
+        /// <returns></returns>
+        Task ChangeProductAsync(ShortProductDto productDto, CancellationToken cancellation);
+
+
 
     }
 }

@@ -99,6 +99,23 @@ namespace OnlineStore.AppServices.Images.Services
 
             return result.ToArray();
         }
+        public async Task<string> changeImageAsync(IFormFile imageFile,int id ,CancellationToken cancellation)
+        {
+            var productImageId = await _repository.GetAsync(id);
+
+
+            var productImage = new ProductImage
+            {
+                Name = imageFile.FileName,
+                Content = await GetByteArrayAsync(imageFile, cancellation),
+                ContentType = imageFile.ContentType
+            };
+
+            var imageId = await _repository.SaveAsync(productImage, cancellation);
+
+            return $"/images/{imageId}";
+        }
+
 
         private static int ExtractImageId(string url)
         {

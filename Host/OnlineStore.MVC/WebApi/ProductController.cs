@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineStore.AppServices.Products.Services;
+using OnlineStore.Contracts.Categories;
 using OnlineStore.Contracts.Common;
 using OnlineStore.Contracts.Product;
 using OnlineStore.Domain.Entities;
@@ -52,5 +53,16 @@ namespace OnlineStore.MVC.WebApi
 
             return Ok(result);
         }
+
+        [Route("change/product")]
+        [HttpPost]
+        public async Task<IActionResult> ChangeProductAsync([FromBody] ShortProductDto productDto, CancellationToken cancellation)
+        {
+            var result = _productsService.ChangeProductAsync(productDto, cancellation);
+
+            return Ok(result);
+        }
+
+
     }
 }

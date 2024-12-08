@@ -35,8 +35,9 @@ namespace OnlineStore.DataAccess.Common
 
 
 
+
         /// <inheritdoc/>
-        public async virtual Task<List<T>> GetAllAsync()
+        public async virtual Task<List<T>> GetAllOrdersAsync()
 		{
 			return await _readOnlydbContext.Set<T>().ToListAsync();
 		}
@@ -50,7 +51,7 @@ namespace OnlineStore.DataAccess.Common
 		/// <inheritdoc/>
 		public  virtual Task<T> GetAsync(int id)
 		{
-			return _mutableDbContext.FindAsync<T>(id).AsTask();
+			return _readOnlydbContext.FindAsync<T>(id).AsTask();
 		}
 
         /// <inheritdoc/>
@@ -59,5 +60,7 @@ namespace OnlineStore.DataAccess.Common
             _mutableDbContext.Update(entity);
             return _mutableDbContext.SaveChangesAsync(cancellation);
         }
+
+      
     }
 }

@@ -1,4 +1,6 @@
-﻿using OnlineStore.AppServices.Orders.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using OnlineStore.AppServices.Orders.Repositories;
+using OnlineStore.AppServices.Products.Models;
 using OnlineStore.DataAccess.Common;
 using OnlineStore.Domain.Entities;
 
@@ -15,5 +17,6 @@ namespace OnlineStore.DataAccess.Orders
 		{
 
 		}
-	}
+       
+    }
 }

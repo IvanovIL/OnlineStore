@@ -46,5 +46,24 @@ namespace OnlineStore.MVC.Controllers
 
 
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Checkout(int productId, string TotalAmount, CancellationToken cancellation)
+        {
+            decimal Total = Convert.ToDecimal(TotalAmount);
+            ViewBag.productId = productId;
+            ViewBag.TotalAmount = Total;
+
+            return View("~/Views/Order/CheckoutOrderView.cshtml");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> finalCheckout(int productId ,CancellationToken cancellation)
+        {
+            await _cartService.RemoveItemAsync(productId, cancellation);
+
+            return RedirectToAction("getProduct", "Home"); 
+        }
+
     }
 }

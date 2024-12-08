@@ -13,5 +13,6 @@ namespace OnlineStore.AppServices.Products.Repositories
 
 
         Task<int> GetProductsTotalCountAsync(CancellationToken cancellation);
+
     }
 }

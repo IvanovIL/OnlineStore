@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using OnlineStore.AppServices.Categories.Repositories;
 using OnlineStore.AppServices.Common.DataTimeProviders;
 using OnlineStore.AppServices.Common.Events.Common;
 using OnlineStore.AppServices.Images.Services;
 using OnlineStore.AppServices.Products.Models;
 using OnlineStore.AppServices.Products.Repositories;
+using OnlineStore.Contracts.Categories;
 using OnlineStore.Contracts.Common;
 using OnlineStore.Contracts.Product;
 using OnlineStore.Domain.Entities;
@@ -15,6 +17,7 @@ namespace OnlineStore.AppServices.Products.Services
     public sealed class ProductsService : IProductsService
     {
         private readonly IProductRepository _repository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
         private readonly IEventAccumulator _eventContainer;
         private readonly IDataTimeProvider _dataTimeProvider;
@@ -38,6 +41,7 @@ namespace OnlineStore.AppServices.Products.Services
         {
             var domainProduct = _mapper.Map<Product>(productDto);
 
+            domainProduct.createdAt = _dataTimeProvider.UtcNow;
 
             _eventContainer.AddEvent(new AddProductEvent
             {
@@ -98,7 +102,6 @@ namespace OnlineStore.AppServices.Products.Services
             };
         }
        
-
         public async Task DeleteProductAsync(int id , CancellationToken cancellation)
         {
             var product = await _repository.GetAsync(id) ?? throw new Exception($"Не найден продукт Id = {id}");
@@ -108,5 +111,24 @@ namespace OnlineStore.AppServices.Products.Services
             await _repository.DeleteAsync(product, cancellation);
 
         }
+
+        public async Task ChangeProductAsync(ShortProductDto productDto, CancellationToken cancellation)
+        {
+           
+            var domainProduct = _mapper.Map<Product>(productDto);
+
+            domainProduct.UpdatedAt = _dataTimeProvider.UtcNow;
+
+            _eventContainer.AddEvent(new AddProductEvent
+            {
+                eventDate = _dataTimeProvider.UtcNow,
+                productName = "productName"
+            });
+            
+            //await _imageService.
+            await _repository.UpdateAsync(domainProduct, cancellation);
+
+        }
+
     }
 }

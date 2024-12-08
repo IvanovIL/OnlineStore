@@ -28,5 +28,13 @@ namespace OnlineStore.DataAccess.Images.Repositories
 
             return image.Id;
         }
+        public async Task<int> ChangeAsync(ProductImage image, CancellationToken cancellation)
+        {
+            await _mutableDbContext.AddAsync(image, cancellation);
+            await _mutableDbContext.SaveChangesAsync(cancellation);
+
+            return image.Id;
+        }
+
     }
 }

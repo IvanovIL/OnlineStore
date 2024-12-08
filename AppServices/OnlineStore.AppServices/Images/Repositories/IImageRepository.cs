@@ -11,5 +11,7 @@ namespace OnlineStore.AppServices.Images.Repositories
 
         Task<ProductImage?> GetByUrlAsync(string url, CancellationToken cancellation);
 
+
+        Task<int> ChangeAsync(ProductImage image, CancellationToken cancellation);
     }
 }

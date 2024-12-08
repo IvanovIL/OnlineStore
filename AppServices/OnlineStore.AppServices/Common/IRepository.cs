@@ -1,5 +1,7 @@
 ﻿
 
+using OnlineStore.Domain.Entities;
+
 namespace OnlineStore.AppServices.Common
 {
 	/// <summary>
@@ -28,7 +30,7 @@ namespace OnlineStore.AppServices.Common
         Task<List<T>> GetAllAsync(CancellationToken cancellation);
 
         /// <summary>
-        /// Обновляет существующую сущность.
+        /// Обновляет существующую сущность
         /// </summary>
         /// <param name="entity">Сущность</param>
         /// <param name="cancellation">Токен отмены операции</param>
@@ -38,7 +40,7 @@ namespace OnlineStore.AppServices.Common
         /// Удаляет сущность
         /// </summary>
         /// <param name="entity">Сущность</param>
-        /// <param name="id">Токен отмены операции</param>
+        /// <param name="cancellation">Токен отмены операции</param>
         Task DeleteAsync( T entity, CancellationToken cancellation);
 
     }

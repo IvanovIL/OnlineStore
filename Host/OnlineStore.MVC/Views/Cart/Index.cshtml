@@ -21,6 +21,7 @@
         <tbody>
             @foreach (var item in Model.Items)
             {
+
                 <tr>
                     <td class="cartItem">@item.ProductName</td>
                     <td class="cartItem">@item.Quantity</td>
@@ -30,17 +31,22 @@
                         <form asp-action="RemoveFromCart" asp-route-productId="@item.ProductId" method="post">
                             <button type="submit">Удалить</button>
                         </form>
+                        <form asp-action="Checkout" asp-route-productId="@item.ProductId"
+                              asp-route-TotalAmount="@Model.TotalAmount.ToString()" method="post">
+                            <button type="submit">Оформить заказ</button>
+                        </form>
                     </td>
                 </tr>
+                 
             }
+            
         </tbody>
     </table>
-
+   @*  <form asp-action="Checkout" method="post">
     <h3>Итого: @Model.TotalAmount.ToString("C")</h3>
-
-    <form asp-action="Checkout" method="post">
-        <button type="submit">Оформить заказ</button>
-    </form>
+          <button type="submit">Оформить заказ</button> 
+    </form> *@
+    
 }
 else
 {

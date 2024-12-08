@@ -44,6 +44,11 @@ namespace OnlineStore.Domain.Entities
 		public DateTime createdAt { get; set; }
 
         /// <summary>
+        /// Дата обновления
+        /// </summary>
+        public DateTime? UpdatedAt { get; set; }
+
+        /// <summary>
         /// Признак удаление товара
         /// </summary>
         public bool IsDeleted { get; set; }

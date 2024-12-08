@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineStore.AppServices.Categories.Services;
-using OnlineStore.AppServices.Common.NotificationServices;
 using OnlineStore.AppServices.Products.Services;
 using OnlineStore.Contracts.Common;
-using OnlineStore.Contracts.Notifications;
 using OnlineStore.Contracts.Product;
 using OnlineStore.MVC.Models;
 using System.Diagnostics;
@@ -50,9 +47,32 @@ namespace OnlineStore.MVC.Controllers
                 PageSize = 8
             }, cancellation);
 
-
+            ViewBag.IsDeleted = false;
 
             return View(result);
+        
+        }
+
+        [HttpGet]
+        public IActionResult findCategoryProductView()
+        {
+            return View("findCategoryProductView");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> findCategoryProduct(int categoryId, int pageNumber = 1, CancellationToken cancellation = default)
+        {
+            var result = await _productService.GetProductsAsync(new PagedRequest
+            {
+                PageNumber = pageNumber,
+                PageSize = 8
+            }, cancellation);
+   
+            ViewBag.Categories = categoryId ;
+
+            
+            return View("getCategoryProduct",result);
+           
         }
 
 

@@ -1,12 +1,10 @@
 ﻿
-namespace OnlineStore.Domain.Entities
+
+namespace OnlineStore.Contracts.Order
 {
-	/// <summary>
-	/// Заказ
-	/// </summary>
-	public class Order
-	{
-        //// <summary>
+    public sealed class OrderDto
+    {
+        /// <summary>
         /// Идентификатор
         /// </summary>
         public int Id { get; set; }
@@ -46,14 +44,10 @@ namespace OnlineStore.Domain.Entities
         /// </summary>
         public int OrderStatusId { get; set; }
 
-        /// <summary>
-        /// Статус заказа
-        /// </summary>
-        public OrderStatus OrderStatus { get; set; }
 
         /// <summary>
         /// Позиции заказа
         /// </summary>
-        public ICollection<OrderItem> Items { get; set; } = [];
+        //public ICollection<OrderItem> Items { get; set; } = [];
     }
 }

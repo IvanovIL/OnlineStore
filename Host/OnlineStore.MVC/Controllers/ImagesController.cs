@@ -28,6 +28,16 @@ namespace OnlineStore.MVC.Controllers
 
             return Json(imageUrls);
         }
+        [HttpPost]
+        public async Task<IActionResult> ChangeUploadImages(List<IFormFile> ImageFiles,int id ,CancellationToken cancellation)
+        {
+             
+            var imageUrls = await _imageService.SaveImagesAsync(ImageFiles, cancellation);
+
+            return Json(imageUrls);
+        }
+
+
 
         [HttpPost]
         public IActionResult DeleteImage([FromBody] ImageDeleteRequest imageUrl, CancellationToken cancellation)

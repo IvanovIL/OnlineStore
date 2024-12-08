@@ -7,30 +7,30 @@ using OnlineStore.Domain.Entities;
 
 namespace OnlineStore.DataAccess.Products.Repositories
 {
-	/// <summary>
-	/// Репозитории по работе с товарами
-	/// </summary>
-	public sealed class ProductRepository : EfRepositoryBase<Product>, IProductRepository
-	{
-		public ProductRepository(MutableOnlineStoreDbContext mutabledbContext,
-			ReadOnlyOnlineStoreDbContext readOnlydbContext) 
-			: base(mutabledbContext, readOnlydbContext)
-		{
+    /// <summary>
+    /// Репозитории по работе с товарами
+    /// </summary>
+    public sealed class ProductRepository : EfRepositoryBase<Product>, IProductRepository
+    {
+        public ProductRepository(MutableOnlineStoreDbContext mutabledbContext,
+            ReadOnlyOnlineStoreDbContext readOnlydbContext)
+            : base(mutabledbContext, readOnlydbContext)
+        {
 
-		} 
+        }
 
 
-		/// <inheritdoc/>
-		public async override Task<List<Product>> GetAllAsync()
-		{
-			return await _readOnlydbContext.Set<Product>()
-				.Include(x => x.Category)
-				.ToListAsync();
-		}
+        /// <inheritdoc/>
+        public async override Task<List<Product>> GetAllOrdersAsync()
+        {
+            return await _readOnlydbContext.Set<Product>()
+                .Include(x => x.Category)
+                .ToListAsync();
+        }
 
-		/// <inheritdoc/>
-		public Task<List<Product>> GetProductsAsync(GetProductsRequest request, CancellationToken cancellation)
-		{
+        /// <inheritdoc/>
+        public Task<List<Product>> GetProductsAsync(GetProductsRequest request, CancellationToken cancellation)
+        {
             var query = _readOnlydbContext
                .Set<Product>()
                .AsQueryable()
@@ -60,15 +60,15 @@ namespace OnlineStore.DataAccess.Products.Repositories
             return query.ToListAsync(cancellation);
         }
 
-		/// <inheritdoc/>
-		public override Task<Product> GetAsync(int id)
-		{
-			return _readOnlydbContext.Set<Product>()
-				.Where(x => x.Id == id)
-				.Where(x => !x.IsDeleted)
-				.Include(p => p.Images)
-				.FirstOrDefaultAsync();
-		}
+        /// <inheritdoc/>
+        public override Task<Product> GetAsync(int id)
+        {
+            return _readOnlydbContext.Set<Product>()
+                .Where(x => x.Id == id)
+                .Where(x => !x.IsDeleted)
+                .Include(p => p.Images)
+                .FirstOrDefaultAsync();
+        }
 
         public Task<int> GetProductsTotalCountAsync(CancellationToken cancellation)
         {
@@ -77,5 +77,6 @@ namespace OnlineStore.DataAccess.Products.Repositories
                 .Where(p => !p.IsDeleted)
                 .CountAsync(cancellation);
         }
+       
     }
 }
