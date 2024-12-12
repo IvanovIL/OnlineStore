@@ -15,7 +15,7 @@ namespace OnlineStore.AppServices.Carts.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public CachedCartService(ICartService cartService,
-            ICacheService cacheService, 
+            ICacheService cacheService,
             UserManager<ApplicationUser> userManager,
             IHttpContextAccessor httpContextAccessor)
         {
@@ -23,13 +23,13 @@ namespace OnlineStore.AppServices.Carts.Services
             _cacheService = cacheService;
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
-                
+
         }
 
         /// <inheritdoc/>
-        public async Task AddProductToCartAsync(int productId,int quantity ,CancellationToken cancellation)
+        public async Task AddProductToCartAsync(int productId, int quantity, CancellationToken cancellation)
         {
-            await _cartService.AddProductToCartAsync(productId,quantity ,cancellation);
+            await _cartService.AddProductToCartAsync(productId, quantity, cancellation);
 
             var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
 
@@ -47,6 +47,7 @@ namespace OnlineStore.AppServices.Carts.Services
             return _cartService.GetCartAsync(cancellation);
         }
 
+
         /// <inheritdoc/>
         public async Task<int?> GetCartItemCountAsync(CancellationToken cancellation)
         {
@@ -63,14 +64,27 @@ namespace OnlineStore.AppServices.Carts.Services
                 func: async () => (await _cartService.GetCartItemCountAsync(cancellation)),
                 cancellation: cancellation
                 );
-            
+
+        }
+
+        public async Task RemoveAllItemAsync(CancellationToken cancellation)
+        {
+            await _cartService.RemoveAllItemAsync(cancellation);
+            var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+
+            if (user == null)
+            {
+                return;
+            }
+
+            await _cacheService.RemoveAsync(CartRedisKeyHelper.GetCartItemsCountKey(user.Id), cancellation);
         }
 
         public async Task RemoveItemAsync(int productId, CancellationToken cancellation)
         {
             await _cartService.RemoveItemAsync(productId, cancellation);
 
-            var user = await _userManager.GetUserAsync( _httpContextAccessor.HttpContext.User);
+            var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
 
             if (user == null)
             {

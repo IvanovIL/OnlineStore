@@ -5,7 +5,7 @@
 <h2>Оформить заказ</h2>
    Пожалуйста, введите свои данные, и мы отправим Ваш товар прямо сейчас!
 
-<form id="productForm" asp-action="finalCheckout" method="post" enctype="multipart/form-data">
+<form id="productForm" asp-action="finalCheckout" method="post" asp-route-productId="@ViewBag.ProductId" enctype="multipart/form-data">
 
     <div class="form-group">
         <label for="Name">Ф.И.О получателя</label>
@@ -18,16 +18,11 @@
     </div>
 
     <div class="form-group">
-        <label for="StockQuantity">Номер телефона</label>
-        <input type="number" class="form-control" id="numberPhoneUser" name="numberPhoneUser" asp-for="numberPhoneUser" required />
+        <label for="numberPhoneUser">Номер телефона</label>
+        <input type="tel" class="form-control" id="numberPhoneUser" name="numberPhoneUser" asp-for="numberPhoneUser" required />
     </div>
 
     <h3 class="TotalAmount">@ViewBag.TotalAmount.ToString("C")</h3>
-    <button id="Order">Заказть</button>
- 
-    
-</form>
-<form asp-action="finalCheckout" method="post" asp-route-productId= "@ViewBag.productId">
     <button type="submit">Заказть</button>
 </form>
 @Html.ActionLink("Отменить  и вернуться  назад", "Index")

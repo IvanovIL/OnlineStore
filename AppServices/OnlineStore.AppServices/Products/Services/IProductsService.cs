@@ -35,7 +35,7 @@ namespace OnlineStore.AppServices.Products.Services
         /// <param name="productId">Идентификатор продукта</param>
         /// <param name="cancellation">Токен отмены операции</param>
         /// <returns></returns>
-        Task DeleteProductAsync(int productId,CancellationToken cancellation);
+        Task DeleteProductAsync(string name, CancellationToken cancellation);
 
         /// <summary>
         /// Изменяет информацию продукта
@@ -45,7 +45,7 @@ namespace OnlineStore.AppServices.Products.Services
         /// <returns></returns>
         Task ChangeProductAsync(ShortProductDto productDto, CancellationToken cancellation);
 
-
+        Task<ShortProductDto> FindProductAsync(string nameProduct, CancellationToken cancellation);
 
     }
 }

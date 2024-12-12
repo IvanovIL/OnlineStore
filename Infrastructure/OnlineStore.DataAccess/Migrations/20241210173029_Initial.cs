@@ -278,6 +278,7 @@ namespace OnlineStore.DataAccess.Migrations
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     stockQuantity = table.Column<int>(type: "int", nullable: false),
                     createdAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -295,10 +296,12 @@ namespace OnlineStore.DataAccess.Migrations
                 name: "cartProduct",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    CartId = table.Column<int>(type: "int", nullable: false)
+                    CartId = table.Column<int>(type: "int", nullable: false),
+                    CartId1 = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -309,12 +312,6 @@ namespace OnlineStore.DataAccess.Migrations
                         principalTable: "Cart",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_cartProduct_Cart_Id",
-                        column: x => x.Id,
-                        principalTable: "Cart",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_cartProduct_Product_ProductId",
                         column: x => x.ProductId,

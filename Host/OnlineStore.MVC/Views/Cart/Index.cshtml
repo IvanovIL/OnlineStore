@@ -5,7 +5,7 @@
 }
 
 <h2>Ваша корзина</h2>
-
+ 
 @if (Model.Items.Any())
 {
     <table class="table">   
@@ -42,11 +42,14 @@
             
         </tbody>
     </table>
-   @*  <form asp-action="Checkout" method="post">
     <h3>Итого: @Model.TotalAmount.ToString("C")</h3>
-          <button type="submit">Оформить заказ</button> 
-    </form> *@
-    
+
+    <form asp-action="AllCheckout" method="post">
+        <button type="submit">Оформить заказ</button>
+    </form>
+    <form asp-action="removeCart" method="post">
+        <button type="submit">Очистить коризну</button>
+    </form>
 }
 else
 {

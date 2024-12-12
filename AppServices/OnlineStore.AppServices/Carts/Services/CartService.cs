@@ -1,10 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using OnlineStore.AppServices.Carts.Repositories;
+using OnlineStore.AppServices.Common;
 using OnlineStore.AppServices.Common.DataTimeProviders;
 using OnlineStore.AppServices.Products.Services;
 using OnlineStore.Contracts.Carts;
+using OnlineStore.Contracts.Common;
 using OnlineStore.Contracts.Enums;
+using OnlineStore.Contracts.Product;
 using OnlineStore.Domain.Entities;
 
 namespace OnlineStore.AppServices.Carts.Services
@@ -19,18 +24,21 @@ namespace OnlineStore.AppServices.Carts.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataTimeProvider _dataTimeProvider;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMapper _mapper;
 
         public CartService(ICartRepository cartRepository,
             IProductsService productsService,
             UserManager<ApplicationUser> userManager,
             IDataTimeProvider dataTimeProvider,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+              IMapper mapper)
         {
             _cartRepository = cartRepository;
             _productsService = productsService;
             _userManager = userManager;
             _dataTimeProvider = dataTimeProvider;
             _httpContextAccessor = httpContextAccessor;
+            _mapper = mapper;
         }
 
 
@@ -61,8 +69,9 @@ namespace OnlineStore.AppServices.Carts.Services
             }
             else
             {
-                existingCart.Updated = _dataTimeProvider.UtcNow;
+                
                 AddProductToCart(existingCart, productId, quantity);
+                existingCart.Updated = _dataTimeProvider.UtcNow;
                 await _cartRepository.UpdateAsync(existingCart, cancellation);
             }
 
@@ -73,16 +82,19 @@ namespace OnlineStore.AppServices.Carts.Services
 
             if (productInCart != null)
             {
-                productInCart.Quantity++;
+                productInCart.Quantity += quantity;
             }
             else
             {
                 cart.Products.Add(new CartProduct
                 {
+
                     Cart = cart,
                     Quantity = quantity,
-                    ProductId = productId
+                    ProductId = productId,
+
                 });
+
             }
         }
         public async Task<CartDto> GetCartAsync(CancellationToken cancellation)
@@ -121,7 +133,7 @@ namespace OnlineStore.AppServices.Carts.Services
 
         private async Task<CartDto> GetCartItemsAsync(Cart cart, CancellationToken cancellation)
         {
-            var products = await _productsService.GetProductsAsync(new Contracts.Common.PagedRequest(), cancellation);
+            var products = await _productsService.GetProductsAsync(new PagedRequest(), cancellation);
 
             var cartItems = new List<CartItemDto>(products.Result.Count);
 
@@ -138,7 +150,7 @@ namespace OnlineStore.AppServices.Carts.Services
                     Quantity = productInCart.Quantity
                 });
 
-                totalAmount = product.Price * productInCart.Quantity;
+                totalAmount += product.Price * productInCart.Quantity;
             }
 
             return new CartDto
@@ -153,11 +165,24 @@ namespace OnlineStore.AppServices.Carts.Services
             var cart = await GetCurrentUserCartAsync(cancellation)
             ?? throw new InvalidOperationException("Не найдена корзина текущего пользователя");
 
-            var productInCart = cart.Products.FirstOrDefault(x => x.ProductId == productId);
+            var productInCart = cart.Products.FirstOrDefault(x => x.ProductId == productId) 
+                ?? throw new InvalidOperationException("Не найден товар в корзине текущего пользователя для удаления");
 
             cart.Products.Remove(productInCart);
 
+
             await _cartRepository.UpdateAsync(cart, cancellation);
         }
+
+        public async Task RemoveAllItemAsync (CancellationToken cancellation)
+        {
+            var cart = await GetCurrentUserCartAsync(cancellation)
+            ?? throw new InvalidOperationException("Не найдена корзина текущего пользователя");
+
+            cart.Products.Clear();
+
+            await _cartRepository.UpdateAsync(cart, cancellation);
+        }
+
     }
 }

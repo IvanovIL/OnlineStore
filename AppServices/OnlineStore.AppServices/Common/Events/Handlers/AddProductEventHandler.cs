@@ -26,7 +26,7 @@ namespace OnlineStore.AppServices.Common.Events.Handlers
             return _notificationService.SendNotificationAsync(new Contracts.Notifications.NotificationDto
             {
                 Theme = $"Добавлен новый товар - {@event.productName}",
-                Email = "email@email.com",
+                Email = "14ilya46@mail.ru",
                 Text = $"Добавлен новый товар - {@event.productName}",
                 NotificationChannels = [NotificationChannelEnum.Email, NotificationChannelEnum.Telegram]
             }, CancellationToken.None);

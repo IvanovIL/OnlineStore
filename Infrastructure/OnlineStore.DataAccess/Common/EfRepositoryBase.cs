@@ -55,8 +55,9 @@ namespace OnlineStore.DataAccess.Common
 		}
 
         /// <inheritdoc/>
-        public Task UpdateAsync(T entity, CancellationToken cancellation)
+        public  Task UpdateAsync(T entity, CancellationToken cancellation)
         {
+            
             _mutableDbContext.Update(entity);
             return _mutableDbContext.SaveChangesAsync(cancellation);
         }

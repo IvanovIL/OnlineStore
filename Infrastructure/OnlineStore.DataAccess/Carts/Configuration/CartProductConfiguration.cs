@@ -14,13 +14,19 @@ namespace OnlineStore.DataAccess.Carts.Configuration
 
             builder.HasOne(x => x.Cart)
                 .WithMany()
-                .HasForeignKey(x => x.Id)
+                .HasForeignKey(x => x.CartId)
                 .IsRequired(true);
+
+            builder.Property(e => e.Id)
+         .IsRequired(true)
+         .ValueGeneratedOnAdd();
 
             builder.HasOne(x => x.Product)
                 .WithMany()
                 .HasForeignKey(x => x.ProductId)
                 .IsRequired(true);
+
+
         }
     }
 }

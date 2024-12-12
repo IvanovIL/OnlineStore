@@ -21,7 +21,7 @@ namespace OnlineStore.AppServices.Products.Services
         private readonly IMapper _mapper;
         private readonly IEventAccumulator _eventContainer;
         private readonly IDataTimeProvider _dataTimeProvider;
-        private  readonly IImageService _imageService;
+        private readonly IImageService _imageService;
 
         public ProductsService(IProductRepository repository,
             IMapper mapper,
@@ -34,10 +34,10 @@ namespace OnlineStore.AppServices.Products.Services
             _eventContainer = eventContainer;
             _dataTimeProvider = dataTimeProvider;
             _imageService = imageService;
-		}
+        }
 
         /// <inheritdoc/>
-        public async Task AddProductAsync(ShortProductDto productDto,CancellationToken cancellation)
+        public async Task AddProductAsync(ShortProductDto productDto, CancellationToken cancellation)
         {
             var domainProduct = _mapper.Map<Product>(productDto);
 
@@ -46,7 +46,7 @@ namespace OnlineStore.AppServices.Products.Services
             _eventContainer.AddEvent(new AddProductEvent
             {
                 eventDate = _dataTimeProvider.UtcNow,
-                productName = "productName"
+                productName = domainProduct.Name,
             });
 
             await _repository.AddAsync(domainProduct, cancellation);
@@ -57,7 +57,7 @@ namespace OnlineStore.AppServices.Products.Services
         /// <inheritdoc/>
         public async Task<ShortProductDto> GetProductByIdAsync(int productId, CancellationToken cancellation)
         {
-           var product = await _repository.GetAsync(productId) ?? throw new Exception($"Не найден продукт Id = {productId}");
+            var product = await _repository.GetAsync(productId) ?? throw new Exception($"Не найден продукт Id = {productId}");
 
             var result = _mapper.Map<ShortProductDto>(product);
             result.ImagesUrls = _imageService.GetImagesUrls(product.Images.ToArray());
@@ -65,7 +65,7 @@ namespace OnlineStore.AppServices.Products.Services
         }
 
         /// <inheritdoc/>
-        public async  Task<ProductsListDto> GetProductsAsync(PagedRequest request, CancellationToken cancellation)
+        public async Task<ProductsListDto> GetProductsAsync(PagedRequest request, CancellationToken cancellation)
         {
             if (request == null)
             {
@@ -101,9 +101,20 @@ namespace OnlineStore.AppServices.Products.Services
                 Result = productList
             };
         }
-       
-        public async Task DeleteProductAsync(int id , CancellationToken cancellation)
+
+        public async Task DeleteProductAsync(string name , CancellationToken cancellation)
         {
+            List<Product> productsList = await _repository.GetAllAsync(cancellation);
+            int id = 0;
+            foreach (var item in productsList)
+            {
+                if (item.Name == name)
+                {
+                    id = item.Id; 
+                    break;
+                }
+            }
+
             var product = await _repository.GetAsync(id) ?? throw new Exception($"Не найден продукт Id = {id}");
 
             product.IsDeleted = true;
@@ -114,7 +125,7 @@ namespace OnlineStore.AppServices.Products.Services
 
         public async Task ChangeProductAsync(ShortProductDto productDto, CancellationToken cancellation)
         {
-           
+
             var domainProduct = _mapper.Map<Product>(productDto);
 
             domainProduct.UpdatedAt = _dataTimeProvider.UtcNow;
@@ -124,11 +135,33 @@ namespace OnlineStore.AppServices.Products.Services
                 eventDate = _dataTimeProvider.UtcNow,
                 productName = "productName"
             });
-            
-            //await _imageService.
+
             await _repository.UpdateAsync(domainProduct, cancellation);
 
         }
 
+        public async Task<ShortProductDto> FindProductAsync(string name, CancellationToken cancellation)
+        {
+            var productAll = await _repository.GetAllAsync(cancellation);
+
+            int productId = 0;
+            foreach (var item in productAll)
+            {
+                if(item.Name == name)
+                {
+                    productId = item.Id;
+                    break;
+                }
+               
+                
+            }
+
+            var product = await _repository.GetAsync(productId) ?? throw new Exception($"Не найден продукт Id = {productId}");
+
+            var result = _mapper.Map<ShortProductDto>(product);
+            result.ImagesUrls = _imageService.GetImagesUrls(product.Images.ToArray());
+            return result;
+
+        }
     }
 }

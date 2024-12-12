@@ -1,4 +1,11 @@
-﻿@model LoginViewModel
+﻿@* ﻿﻿﻿@using OnlineStore.Contracts.Product;
+
+@model ProductsListDto *@
+﻿@using OnlineStore.Contracts.Carts;
+@model CartDto
+
+
+
 @{
 	ViewData["Title"] = "personal Account";
 }
@@ -8,10 +15,11 @@
 </div>
 
 <div align="right">
-	
+
 	@if (User?.Identity?.IsAuthenticated == true)
 	{
-	<h4>Ваша история заказов</h4>
+		<h3>История покупок</h3>
+
 	}
 	else
 	{
@@ -29,3 +37,6 @@
 		</form>
 	}
 </div>
+
+
+

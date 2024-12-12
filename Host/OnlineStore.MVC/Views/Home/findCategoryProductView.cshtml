@@ -13,11 +13,13 @@
     </div>
     <button type="submit" class="btn btn-primary">Найти продукты по категории</button>
 </form>
-@* <div>Напшите название продукта</div>
-<form id="productForm" asp-action="AddProduct" method="post" enctype="multipart/form-data">
+<br />
+  <div>Напишите название продукта</div> 
+<form id="productForm" asp-action="FindProduct" method="post"enctype ="multipart/form-data">
     <div class="form-group">
         <label for="Name">Название товара</label>
-        <input type="text" class="form-control" id="Name" name="Name" asp-for="Name" required />
+        <input type="text" class="form-control" id="Name" name="Name" asp-for="Name" value="" required />
     </div>
-    <button type="submit" class="btn btn-primary">Add Product</button>
-</form> *@
+    <button type="submit" class="btn btn-primary">Найти продукты по названию</button>
+</form> 
+

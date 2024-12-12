@@ -32,12 +32,6 @@ namespace OnlineStore.MVC.Controllers
 		}
 
 
-        public async Task<IActionResult> Index()
-        {
-
-            return View("Index");
-        }
-
         [HttpGet]
         public async Task<IActionResult> getProduct(int pageNumber = 1, CancellationToken cancellation = default)
         {
@@ -69,10 +63,18 @@ namespace OnlineStore.MVC.Controllers
             }, cancellation);
    
             ViewBag.Categories = categoryId ;
-
+            
             
             return View("getCategoryProduct",result);
            
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FindProduct(string name, CancellationToken cancellation)
+        {
+            var result = await _productService.FindProductAsync(name, cancellation);
+
+            return View("ProductDetails", result);
         }
 
 
@@ -86,46 +88,6 @@ namespace OnlineStore.MVC.Controllers
 
             return View("ProductDetails", product);
         }
-
-        [HttpGet]
-        public async Task<IActionResult> AddProduct()
-        {
-            return View("AddProduct");
-        }
-
-
-        public async Task<IActionResult> AddProduct(CancellationToken cancellation)
-        {
-            var categories = await _categoryService.GetCategoriesAsync(cancellation);
-
-            ViewBag.Categories = new SelectList(categories, "CategoryId", "Name");
-            return View("getProduct");
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> AddProduct(ShortProductDto productDto, CancellationToken cancellation)
-        {
-            await _productService.AddProductAsync(productDto, cancellation);
-
-            return RedirectToAction("getProduct");
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> deleteProduct()
-        {
-            return View("deleteProductView");
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> deleteProduct(int id, CancellationToken cancellation)
-        {
-            await _productService.DeleteProductAsync(id, cancellation);
-
-            return RedirectToAction("getProduct");
-        }
-
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

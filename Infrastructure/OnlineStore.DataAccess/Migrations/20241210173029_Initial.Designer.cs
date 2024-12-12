@@ -12,8 +12,8 @@ using OnlineStore.DataAccess.Common;
 namespace OnlineStore.DataAccess.Migrations
 {
     [DbContext(typeof(MutableOnlineStoreDbContext))]
-    [Migration("20241205131739_addMigratProductChange")]
-    partial class addMigratProductChange
+    [Migration("20241210173029_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -261,9 +261,15 @@ namespace OnlineStore.DataAccess.Migrations
             modelBuilder.Entity("OnlineStore.Domain.Entities.CartProduct", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CartId1")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductId")
@@ -275,6 +281,8 @@ namespace OnlineStore.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CartId");
+
+                    b.HasIndex("CartId1");
 
                     b.HasIndex("ProductId");
 
@@ -592,17 +600,15 @@ namespace OnlineStore.DataAccess.Migrations
 
             modelBuilder.Entity("OnlineStore.Domain.Entities.CartProduct", b =>
                 {
-                    b.HasOne("OnlineStore.Domain.Entities.Cart", null)
-                        .WithMany("Products")
+                    b.HasOne("OnlineStore.Domain.Entities.Cart", "Cart")
+                        .WithMany()
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OnlineStore.Domain.Entities.Cart", "Cart")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("OnlineStore.Domain.Entities.Cart", null)
+                        .WithMany("Products")
+                        .HasForeignKey("CartId1");
 
                     b.HasOne("OnlineStore.Domain.Entities.Product", "Product")
                         .WithMany()

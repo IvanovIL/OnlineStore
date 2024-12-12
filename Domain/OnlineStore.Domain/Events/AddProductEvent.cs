@@ -14,5 +14,8 @@ namespace OnlineStore.Domain.Events
         /// </summary>
         public string productName { get; set; } = default!;
 
+
+        public string Email { get; set; }
+
     }
 }

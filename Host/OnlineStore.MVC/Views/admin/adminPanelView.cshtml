@@ -8,26 +8,21 @@
 </div>
 
 <div align="left">
-	<form asp-controller="Home" asp-action="AddProduct" method="get" class="form-inline">
+	<form asp-controller="Admin" asp-action="AddProduct" method="get" class="form-inline">
 		<button type="submit" class="btn btn-warning">
 			Добавить продукт
 		</button>
 	</form>
-	<form asp-controller="Home" asp-action="deleteProduct" method="get" class="form-inline">
+	<br />
+	<form asp-controller="Admin" asp-action="deleteProduct" method="get" class="form-inline">
 		<button type="submit" class="btn btn-danger">
 			Удалить продукт
 		</button>
 	</form>
+	<br />
 	<form asp-controller="Admin" asp-action="getChangeProduct" method="get" class="form-inline">
 		<button type="submit" class="btn btn-primary">
 			изменить информацию о продукте
 		</button>
 	</form>
-	<form asp-controller="Admin" asp-action="getDeleteProduct" method="get" class="form-inline">
-		<button type="submit" class="btn btn-link">
-			Посмотреть удаленные продукты
-		</button>
-	</form>
-
-
 </div>

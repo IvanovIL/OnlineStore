@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineStore.AppServices.Categories.Services;
 using OnlineStore.AppServices.Products.Services;
 using OnlineStore.Contracts.Common;
 using OnlineStore.Contracts.Product;
-using OnlineStore.Domain.Entities;
 
 
 namespace OnlineStore.MVC.Controllers
@@ -63,19 +63,44 @@ namespace OnlineStore.MVC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> getDeleteProduct(int pageNumber = 1, CancellationToken cancellation = default)
+        public async Task<IActionResult> AddProduct()
         {
-           
-            var result = await _productService.GetProductsAsync(new PagedRequest
-            {
-                PageNumber = pageNumber,
-                PageSize = 8
-            }, cancellation);
-
-            ViewBag.IsDeleted = true;
-            
-            return View("~/Views/Home/getProduct.cshtml", result);
+            return View("AddProduct");
         }
+
+
+        public async Task<IActionResult> AddProduct(CancellationToken cancellation)
+        {
+            var categories = await _categoryService.GetCategoriesAsync(cancellation);
+
+            ViewBag.Categories = new SelectList(categories, "CategoryId", "Name");
+            return View("getProduct");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddProduct(ShortProductDto productDto, CancellationToken cancellation)
+        {
+            await _productService.AddProductAsync(productDto, cancellation);
+
+            return RedirectToAction("getProduct", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> deleteProduct()
+        {
+            return View("deleteProductView");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> deleteProduct(string name, CancellationToken cancellation)
+        {
+            await _productService.DeleteProductAsync(name, cancellation);
+
+            return RedirectToAction("getProduct", "Home");
+        }
+
 
 
     }

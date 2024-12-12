@@ -47,9 +47,9 @@ namespace OnlineStore.MVC.WebApi
 
         [Route("delete/product")]
         [HttpPost]
-        public async Task<IActionResult> DeleteProductAsync(int id, CancellationToken cancellation)
+        public async Task<IActionResult> DeleteProductAsync(string name, CancellationToken cancellation)
         {
-            var result = _productsService.DeleteProductAsync(id, cancellation);
+            var result = _productsService.DeleteProductAsync(name, cancellation);
 
             return Ok(result);
         }

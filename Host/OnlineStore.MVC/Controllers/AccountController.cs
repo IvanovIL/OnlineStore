@@ -55,7 +55,7 @@ namespace OnlineStore.MVC.Controllers
         public async Task<IActionResult> Logout(CancellationToken cancellation)
         {
             await _authenticationService.SignOutAsync(cancellation);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("getProduct", "Home");
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace OnlineStore.MVC.Controllers
             if (result.Succeeded)
             {
                 await _authenticationService.SignInAsync(model.Email, model.Password, cancellation);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("getProduct", "Home");
             }
 
             var errors = result.Errors?.Select(x => x.Description).ToList() ?? [];

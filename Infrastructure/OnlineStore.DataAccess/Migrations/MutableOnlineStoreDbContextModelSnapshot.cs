@@ -258,7 +258,10 @@ namespace OnlineStore.DataAccess.Migrations
             modelBuilder.Entity("OnlineStore.Domain.Entities.CartProduct", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CartId")
                         .HasColumnType("int");
@@ -589,15 +592,9 @@ namespace OnlineStore.DataAccess.Migrations
 
             modelBuilder.Entity("OnlineStore.Domain.Entities.CartProduct", b =>
                 {
-                    b.HasOne("OnlineStore.Domain.Entities.Cart", null)
-                        .WithMany("Products")
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("OnlineStore.Domain.Entities.Cart", "Cart")
                         .WithMany()
-                        .HasForeignKey("Id")
+                        .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
