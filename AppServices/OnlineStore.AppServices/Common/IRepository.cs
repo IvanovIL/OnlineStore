@@ -13,7 +13,8 @@ namespace OnlineStore.AppServices.Common
         /// <summary>
         /// Получает сущность по идентификотору
         /// </summary>
-        /// <param name="cancellation">Токен отмены операции</param>
+        /// <param name="id">Идентификотор сущности</param>
+        /// <returns></returns>
         Task<T> GetAsync(int id);
 
       
@@ -43,6 +44,12 @@ namespace OnlineStore.AppServices.Common
         /// <param name="entity">Сущность</param>
         /// <param name="cancellation">Токен отмены операции</param>
         Task DeleteAsync( T entity, CancellationToken cancellation);
+
+        /// <summary>
+        /// Получает сущность по идентификатору
+        /// </summary>
+        /// <param name="name">Наименование по идентификатору</param>
+        Task<List<T>> FindAsync(string name);
 
 
     }

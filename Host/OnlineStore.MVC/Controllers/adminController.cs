@@ -87,6 +87,18 @@ namespace OnlineStore.MVC.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> AddCategory()
+        {
+            return View("AddCategoryView");
+        }
+
+        [HttpPost]
+        public Task<IActionResult> AddCategory(string nameCategory)
+        {
+
+        }
+
+        [HttpGet]
         public async Task<IActionResult> deleteProduct()
         {
             return View("deleteProductView");

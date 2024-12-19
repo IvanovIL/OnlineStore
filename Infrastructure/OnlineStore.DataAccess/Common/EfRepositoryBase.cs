@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineStore.AppServices.Common;
-using OnlineStore.AppServices.Products.Models;
-using OnlineStore.Domain.Entities;
+using OnlineStore.Contracts.Product;
+using System.Diagnostics;
+
 
 namespace OnlineStore.DataAccess.Common
 {
@@ -62,6 +63,12 @@ namespace OnlineStore.DataAccess.Common
             return _mutableDbContext.SaveChangesAsync(cancellation);
         }
 
-      
+        public async virtual Task<List<T>> FindAsync(string name)
+        {
+            return await _readOnlydbContext.Set<T>(name).ToListAsync();
+
+        }
+
+
     }
 }

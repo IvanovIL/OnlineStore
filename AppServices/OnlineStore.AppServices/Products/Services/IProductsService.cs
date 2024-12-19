@@ -32,9 +32,8 @@ namespace OnlineStore.AppServices.Products.Services
         /// <summary>
         /// Удаляет продук
         /// </summary>
-        /// <param name="productId">Идентификатор продукта</param>
+        /// <param name="name">Идентификатор продукта</param>
         /// <param name="cancellation">Токен отмены операции</param>
-        /// <returns></returns>
         Task DeleteProductAsync(string name, CancellationToken cancellation);
 
         /// <summary>
@@ -42,10 +41,15 @@ namespace OnlineStore.AppServices.Products.Services
         /// </summary>
         /// <param name="productDto">Транспортная модель товара</param>
         /// <param name="cancellation">Токен отмены операции</param>
-        /// <returns></returns>
         Task ChangeProductAsync(ShortProductDto productDto, CancellationToken cancellation);
 
-        Task<ShortProductDto> FindProductAsync(string nameProduct, CancellationToken cancellation);
+
+        /// <summary>
+        ///  Находит продукт по наименованию
+        /// </summary>
+        /// <param name="nameProduct">Наименование продукта</param>
+        /// <param name="cancellation">Токен отмены операции</param>
+        Task<ProductsListDto> FindProductAsync(string nameProduct, PagedRequest request, CancellationToken cancellation);
 
     }
 }

@@ -32,5 +32,7 @@ namespace OnlineStore.DataAccess.Common
 			base.OnConfiguring(optionsBuilder);
 
 		}
-	}
+
+        
+    }
 }

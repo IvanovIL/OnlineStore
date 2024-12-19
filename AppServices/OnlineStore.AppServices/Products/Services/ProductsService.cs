@@ -10,14 +10,15 @@ using OnlineStore.Contracts.Common;
 using OnlineStore.Contracts.Product;
 using OnlineStore.Domain.Entities;
 using OnlineStore.Domain.Events;
+using Org.BouncyCastle.Operators.Utilities;
 using System.Net.WebSockets;
+using System.Text.Json.Nodes;
 
 namespace OnlineStore.AppServices.Products.Services
 {
     public sealed class ProductsService : IProductsService
     {
         private readonly IProductRepository _repository;
-        private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
         private readonly IEventAccumulator _eventContainer;
         private readonly IDataTimeProvider _dataTimeProvider;
@@ -46,7 +47,7 @@ namespace OnlineStore.AppServices.Products.Services
             _eventContainer.AddEvent(new AddProductEvent
             {
                 eventDate = _dataTimeProvider.UtcNow,
-                productName = domainProduct.Name,
+                productName = "Добавлен новый продукт" + domainProduct.Name,
             });
 
             await _repository.AddAsync(domainProduct, cancellation);
@@ -102,25 +103,25 @@ namespace OnlineStore.AppServices.Products.Services
             };
         }
 
-        public async Task DeleteProductAsync(string name , CancellationToken cancellation)
+        public async Task DeleteProductAsync(string name, CancellationToken cancellation)
         {
             List<Product> productsList = await _repository.GetAllAsync(cancellation);
-            int id = 0;
+
             foreach (var item in productsList)
             {
                 if (item.Name == name)
                 {
-                    id = item.Id; 
+                    item.IsDeleted = true;
+                    await _repository.DeleteAsync(item, cancellation);
+
+                    _eventContainer.AddEvent(new AddProductEvent
+                    {
+                        eventDate = _dataTimeProvider.UtcNow,
+                        productName = "Продукт" + item.Name + "удален",
+                    });
                     break;
                 }
             }
-
-            var product = await _repository.GetAsync(id) ?? throw new Exception($"Не найден продукт Id = {id}");
-
-            product.IsDeleted = true;
-
-            await _repository.DeleteAsync(product, cancellation);
-
         }
 
         public async Task ChangeProductAsync(ShortProductDto productDto, CancellationToken cancellation)
@@ -133,35 +134,50 @@ namespace OnlineStore.AppServices.Products.Services
             _eventContainer.AddEvent(new AddProductEvent
             {
                 eventDate = _dataTimeProvider.UtcNow,
-                productName = "productName"
+                productName = "Продукт" + domainProduct.Name + "изменен",
             });
 
             await _repository.UpdateAsync(domainProduct, cancellation);
 
         }
 
-        public async Task<ShortProductDto> FindProductAsync(string name, CancellationToken cancellation)
+        public async Task<ProductsListDto> FindProductAsync(string name, PagedRequest request, CancellationToken cancellation)
         {
-            var productAll = await _repository.GetAllAsync(cancellation);
-
-            int productId = 0;
-            foreach (var item in productAll)
+            if (request == null)
             {
-                if(item.Name == name)
-                {
-                    productId = item.Id;
-                    break;
-                }
-               
-                
+                throw new ArgumentNullException(nameof(request));
             }
 
-            var product = await _repository.GetAsync(productId) ?? throw new Exception($"Не найден продукт Id = {productId}");
+            var totalCount = await _repository.GetProductsNameTotalCountAsync(name,cancellation);
 
-            var result = _mapper.Map<ShortProductDto>(product);
-            result.ImagesUrls = _imageService.GetImagesUrls(product.Images.ToArray());
-            return result;
+            if (totalCount == 0)
+            {
+                return new ProductsListDto
+                {
+                    PageNumber = 1,
+                    TotalCount = totalCount,
+                    PageSize = 1,
+                    Result = []
+                };
+            }
+            var products = await _repository.FindAsync(name,new GetProductsRequest
+            {
+                Take = request.PageSize,
+                Skip = (request.PageNumber - 1) * request.PageSize,
+                IncludeCategory = true
+            }, cancellation);
 
+            var productList = _mapper.Map<List<ShortProductDto>>(products);
+
+            return new ProductsListDto
+            {
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize,
+                TotalCount = totalCount,
+                Result = productList
+            };
         }
+
+ 
     }
 }

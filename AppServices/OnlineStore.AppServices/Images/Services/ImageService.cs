@@ -52,6 +52,7 @@ namespace OnlineStore.AppServices.Images.Services
             var productImage = new ProductImage
             {
                 Name = imageFile.FileName,
+                
                 Content = await GetByteArrayAsync(imageFile, cancellation),
                 ContentType = imageFile.ContentType
             };
@@ -88,7 +89,7 @@ namespace OnlineStore.AppServices.Images.Services
 
                 if (existingImage == null)
                 {
-                    _logger.LogError("Не найдена картинка с Id = {imageId}", imageId);
+                    _logger.LogError($"Не найдена картинка с Id = {imageId}", imageId);
                     throw new Exception();
                 }
 

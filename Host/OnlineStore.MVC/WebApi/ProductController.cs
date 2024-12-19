@@ -64,5 +64,20 @@ namespace OnlineStore.MVC.WebApi
         }
 
 
+        [Route("find/product")]
+        [HttpPost]
+        public async Task<IActionResult> FindProductAsync([FromBody] ShortProductDto productDto, CancellationToken cancellation)
+        {
+            var result = await _productsService.FindProductAsync(productDto.Name, new PagedRequest
+            {
+                PageNumber = 1,
+                PageSize = 10
+            }, cancellation);
+
+            return Ok(result);
+        }
+
+
+
     }
 }

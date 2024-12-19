@@ -1,0 +1,13 @@
+﻿@using OnlineStore.Contracts.Categories;
+
+@model CategoryDto
+
+
+<form id="id" asp-action="AddCategory" method="post" enctype="multipart/form-data">
+	<div class="form-group">
+		<label for="Name">Название товара</label>
+		<input type="text" class="form-control" id="Name" name="Name" asp-for="Name" required />
+	</div>
+	<button type="submit" class="btn btn-primary">Добавить  продукт</button>
+</form>
+

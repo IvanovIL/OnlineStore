@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnlineStore.AppServices.Authentication.Services;
 using OnlineStore.Domain.Entities;
@@ -26,6 +27,7 @@ namespace OnlineStore.MVC.Controllers
         /// Показывает окно для входа пользователя
         /// </summary>
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return PartialView("_LoginPartial");
@@ -37,6 +39,7 @@ namespace OnlineStore.MVC.Controllers
         /// <param name="model">Данные для входа.</param>
         /// <param name="cancellation">Токен отмены операции.</param>
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model, CancellationToken cancellation)
         {
             if (await _authenticationService.SignInAsync(model.Email, model.Password, cancellation))
@@ -52,6 +55,7 @@ namespace OnlineStore.MVC.Controllers
         /// Разлогинивает пользователя
         /// </summary>
         /// <param name="cancellation">Токен отмены операции.</param>
+        [Authorize]
         public async Task<IActionResult> Logout(CancellationToken cancellation)
         {
             await _authenticationService.SignOutAsync(cancellation);
@@ -62,6 +66,7 @@ namespace OnlineStore.MVC.Controllers
         /// Возвращает форму для регистрации пользователя
         /// </summary>
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return PartialView("_RegisterPartial");
@@ -73,6 +78,7 @@ namespace OnlineStore.MVC.Controllers
         /// <param name="model">Модель с данными для регистрации</param>
         /// <param name="cancellation">Токен отмены операции</param>
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model, CancellationToken cancellation)
         {
             var result = await _authenticationService.RegisterAsync(model.Email, model.Password, cancellation);

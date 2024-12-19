@@ -70,6 +70,49 @@ namespace OnlineStore.DataAccess.Products.Repositories
                 .FirstOrDefaultAsync();
         }
 
+        /// <inheritdoc/>
+        public async Task<List<Product>> FindAsync(string name, GetProductsRequest request, CancellationToken cancellation)
+        {
+            var query = _readOnlydbContext
+              .Set<Product>()
+              .AsQueryable()
+              .Where(p => !p.IsDeleted)
+              .Where(p => p.Name == name);
+
+            if (request.IncludeCategory)
+            {
+                query = query
+                    .Include(x => x.Category);
+            }
+
+            if (request.IncludeImages)
+            {
+                query = query
+                    .Include(x => x.Images);
+            }
+
+            query = query
+                .OrderBy(x => x.Id)
+                .Skip(request.Skip);
+
+            if (request.Take != default)
+            {
+                query = query.Take(request.Take);
+            }
+
+            return await query.ToListAsync(cancellation);
+     
+        }
+        public Task<int> GetProductsNameTotalCountAsync(string name,CancellationToken cancellation)
+        {
+            return _readOnlydbContext
+                .Set<Product>()
+                .Where(p => !p.IsDeleted)
+                .Where(p => p.Name == name)
+                .CountAsync(cancellation);
+        }
+
+
         public Task<int> GetProductsTotalCountAsync(CancellationToken cancellation)
         {
             return _readOnlydbContext

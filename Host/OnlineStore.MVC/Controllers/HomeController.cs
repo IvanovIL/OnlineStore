@@ -9,27 +9,27 @@ using System.Diagnostics;
 
 namespace OnlineStore.MVC.Controllers
 {
-	public class HomeController : Controller
-	{
-		private readonly ILogger<HomeController> _logger;
-		private readonly IProductsService _productService;
-		private readonly ICategoryService _categoryService;
+    public class HomeController : Controller
+    {
+        private readonly ILogger<HomeController> _logger;
+        private readonly IProductsService _productService;
+        private readonly ICategoryService _categoryService;
 
 
-        public HomeController(ILogger<HomeController> logger, 
+        public HomeController(ILogger<HomeController> logger,
             IProductsService productService,
             ICategoryService categoryService)
-		{
-			_logger = logger;
-			_productService = productService;
-			_categoryService = categoryService;
-		}
+        {
+            _logger = logger;
+            _productService = productService;
+            _categoryService = categoryService;
+        }
 
         [HttpGet]
-		public async Task<IActionResult> personalAccount()
+        public async Task<IActionResult> personalAccount()
         {
             return View("personalAccount");
-		}
+        }
 
 
         [HttpGet]
@@ -41,10 +41,8 @@ namespace OnlineStore.MVC.Controllers
                 PageSize = 8
             }, cancellation);
 
-            ViewBag.IsDeleted = false;
-
             return View(result);
-        
+
         }
 
         [HttpGet]
@@ -53,28 +51,17 @@ namespace OnlineStore.MVC.Controllers
             return View("findCategoryProductView");
         }
 
+       
         [HttpPost]
-        public async Task<IActionResult> findCategoryProduct(int categoryId, int pageNumber = 1, CancellationToken cancellation = default)
+        public async Task<IActionResult> FindProduct(string name, int pageNumber = 1, CancellationToken cancellation = default)
         {
-            var result = await _productService.GetProductsAsync(new PagedRequest
+            var result = await _productService.FindProductAsync(name,new PagedRequest
             {
                 PageNumber = pageNumber,
                 PageSize = 8
             }, cancellation);
-   
-            ViewBag.Categories = categoryId ;
-            
-            
-            return View("getCategoryProduct",result);
-           
-        }
 
-        [HttpPost]
-        public async Task<IActionResult> FindProduct(string name, CancellationToken cancellation)
-        {
-            var result = await _productService.FindProductAsync(name, cancellation);
-
-            return View("ProductDetails", result);
+            return View("findProductNameView", result);
         }
 
 
@@ -91,9 +78,9 @@ namespace OnlineStore.MVC.Controllers
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-		public IActionResult Error()
-		{
-			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-		}
-	}
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
 }

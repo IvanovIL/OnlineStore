@@ -91,14 +91,16 @@
                 deleteButton.style.borderRadius = '50%';
                 deleteButton.style.cursor = 'pointer';
                 deleteButton.addEventListener('click', function () {
-                    if (confirm('Вы уверены что хотите удалить изображение?')) {
+                    if (confirm('Вы уверены что хотите удалить изображение?'))
+                    {
                         event.preventDefault();
                         fetch('@Url.Action("DeleteImage", "Images")', {
                             method: 'POST',
                             body: JSON.stringify({ imageUrl: url }),
                             headers: { 'Content-Type': 'application/json' }
                         }).then(response => {
-                            if (response.ok) {
+                            if (response.ok)
+                            {
                                 imgContainer.remove();
                                 document.querySelector(`input[name="ImageUrl"]`).remove();
                             }
@@ -123,7 +125,8 @@
         const files = this.files;
         const formData = new FormData();
 
-        for (let i = 0; i < files.length; i++) {
+        for (let i = 0; i < files.length; i++)
+        {
             formData.append('ImageFiles', files[i]);
         }
 
@@ -159,14 +162,16 @@
                     deleteButton.style.borderRadius = '50%';
                     deleteButton.style.cursor = 'pointer';
                     deleteButton.addEventListener('click', function () {
-                        if (confirm('Вы уверены что хотите удалить изображение?')) {
+                        if (confirm('Вы уверены что хотите удалить изображение?')) 
+                        {
                             event.preventDefault();
                             fetch('@Url.Action("DeleteImage", "Images")', {
                                 method: 'POST',
                                 body: JSON.stringify({ imageUrl: url }),
                                 headers: { 'Content-Type': 'application/json' }
                             }).then(response => {
-                                if (response.ok) {
+                                if (response.ok) 
+                                {
                                     imgContainer.remove();
                                     document.querySelector(`input[name="ImagesUrls"][value="${url}"]`).remove();
                                 }
