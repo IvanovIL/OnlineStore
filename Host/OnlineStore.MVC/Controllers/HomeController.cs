@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineStore.AppServices.Categories.Services;
 using OnlineStore.AppServices.Products.Services;
 using OnlineStore.Contracts.Common;
-using OnlineStore.Contracts.Product;
 using OnlineStore.MVC.Models;
 using System.Diagnostics;
 

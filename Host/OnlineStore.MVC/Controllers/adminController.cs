@@ -92,23 +92,29 @@ namespace OnlineStore.MVC.Controllers
             return View("AddCategoryView");
         }
 
-        [HttpPost]
-        public Task<IActionResult> AddCategory(string nameCategory)
-        {
+        //[HttpPost]
+        //public Task<IActionResult> AddCategory(string nameCategory)
+        //{
 
-        }
+        //}
 
         [HttpGet]
-        public async Task<IActionResult> deleteProduct()
+        public async Task<IActionResult> deleteProductList(int pageNumber = 1, CancellationToken cancellation = default)
         {
-            return View("deleteProductView");
+            var result = await _productService.GetProductsAsync(new PagedRequest
+            {
+                PageNumber = pageNumber,
+                PageSize = 8
+            }, cancellation);
+
+            return View("deleteProductView", result);
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> deleteProduct(string name, CancellationToken cancellation)
+        [HttpGet]
+        public async Task<IActionResult> deleteProduct(int id, CancellationToken cancellation)
         {
-            await _productService.DeleteProductAsync(name, cancellation);
+            await _productService.DeleteProductAsync(id, cancellation);
 
             return RedirectToAction("getProduct", "Home");
         }

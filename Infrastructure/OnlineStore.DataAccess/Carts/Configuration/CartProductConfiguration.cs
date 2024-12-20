@@ -11,15 +11,16 @@ namespace OnlineStore.DataAccess.Carts.Configuration
             builder.ToTable("cartProduct");
 
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id)
+                .IsRequired(true)
+                .ValueGeneratedOnAdd();
 
             builder.HasOne(x => x.Cart)
                 .WithMany()
                 .HasForeignKey(x => x.CartId)
                 .IsRequired(true);
 
-            builder.Property(e => e.Id)
-         .IsRequired(true)
-         .ValueGeneratedOnAdd();
+
 
             builder.HasOne(x => x.Product)
                 .WithMany()

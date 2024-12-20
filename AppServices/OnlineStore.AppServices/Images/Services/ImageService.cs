@@ -52,7 +52,6 @@ namespace OnlineStore.AppServices.Images.Services
             var productImage = new ProductImage
             {
                 Name = imageFile.FileName,
-                
                 Content = await GetByteArrayAsync(imageFile, cancellation),
                 ContentType = imageFile.ContentType
             };
@@ -92,14 +91,30 @@ namespace OnlineStore.AppServices.Images.Services
                     _logger.LogError($"Не найдена картинка с Id = {imageId}", imageId);
                     throw new Exception();
                 }
-
+               
                 existingImage.Product = product;
+                existingImage.Id = product.Id;
+               
 
                 result.Add(existingImage);
             }
 
             return result.ToArray();
         }
+
+        private static int ExtractImageId(string url)
+        {
+            int lastSlashIndex = url.LastIndexOf('/');
+            if (lastSlashIndex != -1 && lastSlashIndex + 1 < url.Length)
+            {
+                var stringId = url.Substring(lastSlashIndex + 1);
+
+                return int.Parse(stringId);
+            }
+            throw new Exception();
+        }
+
+
         public async Task<string> changeImageAsync(IFormFile imageFile,int id ,CancellationToken cancellation)
         {
             var productImageId = await _repository.GetAsync(id);
@@ -118,17 +133,7 @@ namespace OnlineStore.AppServices.Images.Services
         }
 
 
-        private static int ExtractImageId(string url)
-        {
-            int lastSlashIndex = url.LastIndexOf('/');
-            if (lastSlashIndex != -1 && lastSlashIndex + 1 < url.Length)
-            {
-                var stringId = url.Substring(lastSlashIndex + 1);
-
-                return int.Parse(stringId);
-            }
-            throw new Exception();
-        }
+       
 
         private async Task<byte[]> GetByteArrayAsync(IFormFile imageFile, CancellationToken cancellation)
         {
