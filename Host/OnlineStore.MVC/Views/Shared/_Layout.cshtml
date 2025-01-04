@@ -29,9 +29,9 @@
 								Продукты
 							</button>
 						</form>
-						<form asp-controller="Home" asp-action="findCategoryProductView" method="get" class="form-inline">
+						<form asp-controller="Home" asp-action="findProductView" method="get" class="form-inline">
 							<button type="submit" class="btn btn-danger">
-								Категории продуктов
+								Найти продукт
 							</button>
 						</form>
 						@if (User?.Identity?.IsAuthenticated == true)

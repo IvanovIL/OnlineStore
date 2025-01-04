@@ -1,26 +1,30 @@
 ﻿
 
+using OnlineStore.AppServices.Common;
+using OnlineStore.Contracts.Carts;
 using OnlineStore.Contracts.Common;
 using OnlineStore.Contracts.Order;
 using OnlineStore.Contracts.Product;
+using OnlineStore.Domain.Entities;
+
 
 namespace OnlineStore.AppServices.Orders.Services
 {
-    public interface IOrderServices
+    public interface IOrderServices 
     {
         /// <summary>
         /// Возвращает список заказов
         /// </summary>
-        /// <param name="request">Запрос на получение списка заказов</param>
         /// <param name="cancellation">Токен отмены операции</param>
-        Task<ProductsListDto> GetOrderAsync(PagedRequest request, CancellationToken cancellation);
+        Task<OrderDto> GetOrderAsync(CancellationToken cancellation);
 
         /// <summary>
         /// Добавляет заказ
         /// </summary>
-        /// <param name="orderDto">Транспортная модель заказа</param>
+        /// <param name="productId">Идентификатор продукта</param>
+        /// <param name="quantity">Количество продукта</param>
         /// <param name="cancellation">Токен отмены операции</param>
-        Task AddOrderAsync(OrderDto orderDto, CancellationToken cancellation);
+        Task AddOrderAsync(CartDto cart, OrderDto orderDto, CancellationToken cancellation);
 
 
         /// <summary>
@@ -28,7 +32,6 @@ namespace OnlineStore.AppServices.Orders.Services
         /// </summary>
         /// <param name="productId">Идентификатор заказ</param>
         /// <param name="cancellation">Токен отмены операции</param>
-        /// <returns></returns>
         Task DeleteOrderAsync(int orderId, CancellationToken cancellation);
     }
 }

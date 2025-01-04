@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
 
 	ViewData["Title"] = "Admin Panel";
 }
@@ -7,10 +6,17 @@
 	<h1 class="display-10">Панель администрирования</h1>
 </div>
 
+
 <div align="left">
 	<form asp-controller="Admin" asp-action="AddProduct" method="get" class="form-inline">
 		<button type="submit" class="btn btn-warning">
 			Добавить продукт
+		</button>
+	</form>
+	<br />
+	<form asp-controller="Admin" asp-action="AddCategory" method="get" class="form-inline">
+		<button type="submit" class="btn btn-warning">
+			Добавить новую  категорию продуктов
 		</button>
 	</form>
 	<br />
@@ -26,3 +32,4 @@
 		</button>
 	</form>
 </div>
+

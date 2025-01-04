@@ -1,9 +1,7 @@
-﻿@* ﻿﻿﻿@using OnlineStore.Contracts.Product;
+﻿@using OnlineStore.Contracts.Order
 
-@model ProductsListDto *@
-﻿@using OnlineStore.Contracts.Carts;
-@model CartDto
 
+@model OrderDto
 
 
 @{
@@ -18,8 +16,11 @@
 
 	@if (User?.Identity?.IsAuthenticated == true)
 	{
-		<h3>История покупок</h3>
-
+		<form asp-controller="Order" asp-action="OrderStatus" method="get" class="form-inline">
+			<button type="submit" class="btn btn-info">
+				История покупок
+			</button>
+		</form>
 	}
 	else
 	{
@@ -37,6 +38,3 @@
 		</form>
 	}
 </div>
-
-
-

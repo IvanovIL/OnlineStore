@@ -29,12 +29,18 @@ namespace OnlineStore.AppServices.Carts.Services
 
 
         /// <summary>
-        /// Удаляет товар из корзины.
+        /// Удаляет товар из корзины
         /// </summary>
-        /// <param name="productId">Идентификатор товара.</param>
-        /// <param name="cancellation">Токен отмены операции.</param>
+        /// <param name="productId">Идентификатор товара</param>
+        /// <param name="cancellation">Токен отмены операции</param>
         Task RemoveItemAsync(int productId, CancellationToken cancellation);
 
+        /// <summary>
+        /// Удвляет все товара из корзины
+        /// </summary>
+        /// <param name="cancellation">Токен отмены операции</param>
         Task RemoveAllItemAsync(CancellationToken cancellation);
+
+ 
     }
 }

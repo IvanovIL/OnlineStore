@@ -25,6 +25,8 @@ namespace OnlineStore.DataAccess.Carts.Configuration
 
             builder.Property(t => t.Closed)
                 .IsRequired(false);
+
+
         }
     }
 }

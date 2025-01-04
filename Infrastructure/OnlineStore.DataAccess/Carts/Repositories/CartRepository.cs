@@ -24,5 +24,7 @@ namespace OnlineStore.DataAccess.Carts.Repositories
                 .Include(c => c.Products)
                 .FirstOrDefaultAsync(cancellation);
         }
+
+       
     }
 }

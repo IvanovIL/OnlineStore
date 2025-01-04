@@ -15,6 +15,11 @@ namespace OnlineStore.AppServices.Products.Repositories
         Task<int> GetProductsTotalCountAsync(CancellationToken cancellation);
 
 		Task<List<Product>> FindAsync(string name, GetProductsRequest request, CancellationToken cancellation);
+
         Task<int> GetProductsNameTotalCountAsync(string name, CancellationToken cancellation);
+
+        Task<List<Product>> findCategoryAsync(int CategoryId, GetProductsRequest request, CancellationToken cancellation);
+
+        Task<int> GetCategoryTotalCountAsync(int CategoryId, CancellationToken cancellation);
     }
 }

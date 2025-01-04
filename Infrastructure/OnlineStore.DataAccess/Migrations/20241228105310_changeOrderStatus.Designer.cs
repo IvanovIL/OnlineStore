@@ -12,8 +12,8 @@ using OnlineStore.DataAccess.Common;
 namespace OnlineStore.DataAccess.Migrations
 {
     [DbContext(typeof(MutableOnlineStoreDbContext))]
-    [Migration("20241210173029_Initial")]
-    partial class Initial
+    [Migration("20241228105310_changeOrderStatus")]
+    partial class changeOrderStatus
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -269,9 +269,6 @@ namespace OnlineStore.DataAccess.Migrations
                     b.Property<int>("CartId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CartId1")
-                        .HasColumnType("int");
-
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -281,8 +278,6 @@ namespace OnlineStore.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CartId");
-
-                    b.HasIndex("CartId1");
 
                     b.HasIndex("ProductId");
 
@@ -397,6 +392,150 @@ namespace OnlineStore.DataAccess.Migrations
                         {
                             Id = 3,
                             Name = "Личный кабинет"
+                        });
+                });
+
+            modelBuilder.Entity("OnlineStore.Domain.Entities.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasPrecision(30, 4)
+                        .HasColumnType("decimal(30,4)");
+
+                    b.Property<int?>("UserId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<string>("addressUser")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("numberPhoneUser")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("userName")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderStatusId");
+
+                    b.ToTable("Order", (string)null);
+                });
+
+            modelBuilder.Entity("OnlineStore.Domain.Entities.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasPrecision(30, 4)
+                        .HasColumnType("decimal(30,4)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderItem", (string)null);
+                });
+
+            modelBuilder.Entity("OnlineStore.Domain.Entities.OrderStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderStatus", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Новый"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "В обработке"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Подтвержден"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Отправлен"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Доставлен"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Отменен"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Возвращен"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Средства возвращены"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "В ожидании"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Ожидает оплаты"
                         });
                 });
 
@@ -601,14 +740,10 @@ namespace OnlineStore.DataAccess.Migrations
             modelBuilder.Entity("OnlineStore.Domain.Entities.CartProduct", b =>
                 {
                     b.HasOne("OnlineStore.Domain.Entities.Cart", "Cart")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("OnlineStore.Domain.Entities.Cart", null)
-                        .WithMany("Products")
-                        .HasForeignKey("CartId1");
 
                     b.HasOne("OnlineStore.Domain.Entities.Product", "Product")
                         .WithMany()
@@ -635,6 +770,36 @@ namespace OnlineStore.DataAccess.Migrations
                     b.HasOne("OnlineStore.Domain.Entities.ApplicationUser", null)
                         .WithMany("NotificationChannels")
                         .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("OnlineStore.Domain.Entities.Order", b =>
+                {
+                    b.HasOne("OnlineStore.Domain.Entities.OrderStatus", "OrderStatus")
+                        .WithMany()
+                        .HasForeignKey("OrderStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrderStatus");
+                });
+
+            modelBuilder.Entity("OnlineStore.Domain.Entities.OrderItem", b =>
+                {
+                    b.HasOne("OnlineStore.Domain.Entities.Order", "Order")
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineStore.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("OnlineStore.Domain.Entities.Product", b =>
@@ -664,6 +829,11 @@ namespace OnlineStore.DataAccess.Migrations
             modelBuilder.Entity("OnlineStore.Domain.Entities.Cart", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("OnlineStore.Domain.Entities.Order", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("OnlineStore.Domain.Entities.Product", b =>

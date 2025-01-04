@@ -120,6 +120,46 @@ namespace OnlineStore.DataAccess.Products.Repositories
                 .Where(p => !p.IsDeleted)
                 .CountAsync(cancellation);
         }
-       
+        public async Task<List<Product>> findCategoryAsync(int CategoryId, GetProductsRequest request, CancellationToken cancellation)
+        {
+            var query = _readOnlydbContext
+              .Set<Product>()
+              .AsQueryable()
+              .Where(p => !p.IsDeleted)
+              .Where(p => p.CategoryId == CategoryId);
+
+            if (request.IncludeCategory)
+            {
+                query = query
+                    .Include(x => x.Category);
+            }
+
+            if (request.IncludeImages)
+            {
+                query = query
+                    .Include(x => x.Images);
+            }
+
+            query = query
+                .OrderBy(x => x.Id)
+                .Skip(request.Skip);
+
+            if (request.Take != default)
+            {
+                query = query.Take(request.Take);
+            }
+
+            return await query.ToListAsync(cancellation);
+
+        }
+        public Task<int> GetCategoryTotalCountAsync(int CategoryId, CancellationToken cancellation)
+        {
+            return _readOnlydbContext
+                .Set<Product>()
+                .Where(p => !p.IsDeleted)
+                .Where(p => p.CategoryId == CategoryId)
+                .CountAsync(cancellation);
+        }
+
     }
 }

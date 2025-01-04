@@ -1,6 +1,8 @@
-﻿using OnlineStore.Contracts.Categories;
+﻿using OnlineStore.Contracts.Carts;
+using OnlineStore.Contracts.Categories;
 using OnlineStore.Contracts.Common;
 using OnlineStore.Contracts.Product;
+using OnlineStore.Domain.Entities;
 
 namespace OnlineStore.AppServices.Products.Services
 {
@@ -50,6 +52,18 @@ namespace OnlineStore.AppServices.Products.Services
         /// <param name="nameProduct">Наименование продукта</param>
         /// <param name="cancellation">Токен отмены операции</param>
         Task<ProductsListDto> FindProductAsync(string nameProduct, PagedRequest request, CancellationToken cancellation);
+
+        /// <summary>
+        /// Отправляет данные на изменение в БД
+        /// </summary>
+        /// <param name="productDto">Наименование продукта</param>
+        /// <param name="cancellation">Токен отмены операции</param>
+        Task CheckoutAsync(CartDto cart, CancellationToken cancellation);
+
+        Task CheckoutItemAsync(CartItemDto carts, CancellationToken cancellation);
+
+
+
 
     }
 }

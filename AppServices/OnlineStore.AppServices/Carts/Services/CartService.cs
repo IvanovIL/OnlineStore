@@ -1,15 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using OnlineStore.AppServices.Carts.Repositories;
-using OnlineStore.AppServices.Common;
 using OnlineStore.AppServices.Common.DataTimeProviders;
 using OnlineStore.AppServices.Products.Services;
 using OnlineStore.Contracts.Carts;
 using OnlineStore.Contracts.Common;
 using OnlineStore.Contracts.Enums;
-using OnlineStore.Contracts.Product;
 using OnlineStore.Domain.Entities;
 
 namespace OnlineStore.AppServices.Carts.Services
@@ -183,6 +180,8 @@ namespace OnlineStore.AppServices.Carts.Services
 
             await _cartRepository.UpdateAsync(cart, cancellation);
         }
+
+      
 
     }
 }

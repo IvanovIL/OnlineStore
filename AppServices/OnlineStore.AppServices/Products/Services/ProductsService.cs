@@ -4,7 +4,7 @@ using OnlineStore.AppServices.Common.Events.Common;
 using OnlineStore.AppServices.Images.Services;
 using OnlineStore.AppServices.Products.Models;
 using OnlineStore.AppServices.Products.Repositories;
-using OnlineStore.Contracts.Categories;
+using OnlineStore.Contracts.Carts;
 using OnlineStore.Contracts.Common;
 using OnlineStore.Contracts.Product;
 using OnlineStore.Domain.Entities;
@@ -39,17 +39,34 @@ namespace OnlineStore.AppServices.Products.Services
             var domainProduct = _mapper.Map<Product>(productDto);
             domainProduct.createdAt = _dataTimeProvider.UtcNow;
             domainProduct.Images = await _imageService.SaveProductImagesAsync(productDto.ImagesUrls, domainProduct, cancellation);
-            
 
             _eventContainer.AddEvent(new AddProductEvent
             {
                 eventDate = _dataTimeProvider.UtcNow,
-                productName = "Добавлен новый продукт" + domainProduct.Name,
+                productName = "Добавлен новый продукт " + domainProduct.Name,
             });
 
             await _repository.AddAsync(domainProduct, cancellation);
         }
 
+        public async Task CheckoutAsync(CartDto carts, CancellationToken cancellation)
+        {
+           
+            foreach(var product in carts.Items)
+            {
+                var result = await _repository.GetAsync(product.ProductId);
+                    result.stockQuantity -= product.Quantity;
+                await _repository.UpdateAsync(result, cancellation);
+            }
+        }
+
+        public async Task CheckoutItemAsync(CartItemDto carts, CancellationToken cancellation)
+        {
+            var result = await _repository.GetAsync(carts.ProductId);
+            result.stockQuantity -= carts.Quantity;
+            await _repository.UpdateAsync(result,cancellation);
+            
+        }
 
 
         /// <inheritdoc/>
@@ -100,16 +117,16 @@ namespace OnlineStore.AppServices.Products.Services
             };
         }
 
-        public async Task DeleteProductAsync(int idIsDeleted, CancellationToken cancellation)
+        public async Task DeleteProductAsync(int id, CancellationToken cancellation)
         {
-            var product = await _repository.GetAsync(idIsDeleted);
+            var product = await _repository.GetAsync(id);
 
              product.IsDeleted = true;
             
             _eventContainer.AddEvent(new AddProductEvent
             {
                 eventDate = _dataTimeProvider.UtcNow,
-                productName = "Продукт" + product.Name + "удален",
+                productName = "Продукт " + product.Name + " удален",
             });
 
             await _repository.UpdateAsync(product, cancellation);
@@ -125,7 +142,7 @@ namespace OnlineStore.AppServices.Products.Services
             _eventContainer.AddEvent(new AddProductEvent
             {
                 eventDate = _dataTimeProvider.UtcNow,
-                productName = "Продукт" + domainProduct.Name + "изменен",
+                productName = "Продукт " + domainProduct.Name + " изменен",
             });
 
             await _repository.UpdateAsync(domainProduct, cancellation);
@@ -168,6 +185,8 @@ namespace OnlineStore.AppServices.Products.Services
                 Result = productList
             };
         }
+
+      
 
  
     }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineStore.AppServices.Categories.Services;
 using OnlineStore.AppServices.Products.Services;
 using OnlineStore.Contracts.Common;
@@ -24,13 +26,16 @@ namespace OnlineStore.MVC.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> personalAccount()
         {
+
             return View("personalAccount");
         }
 
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> getProduct(int pageNumber = 1, CancellationToken cancellation = default)
         {
             var result = await _productService.GetProductsAsync(new PagedRequest
@@ -44,16 +49,37 @@ namespace OnlineStore.MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult findCategoryProductView()
+        [AllowAnonymous]
+        public async Task<IActionResult> findProductView(CancellationToken cancellation)
         {
-            return View("findCategoryProductView");
+            var categories = await _categoryService.GetCategoriesAsync(cancellation);
+
+            ViewBag.Categories = new SelectList(categories, "CategoryId", "Name");
+            return View("findProductView");
         }
 
-       
         [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> findCategory(int CategoryId, int pageNumber = 1, CancellationToken cancellation = default)
+        {
+
+            var result = await _categoryService.findCatregoryAsync(CategoryId, new PagedRequest
+            {
+                PageNumber = pageNumber,
+                PageSize = 8
+            }, cancellation);
+
+            return View("getCategoryProduct", result);
+
+
+        }
+
+
+        [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> FindProduct(string name, int pageNumber = 1, CancellationToken cancellation = default)
         {
-            var result = await _productService.FindProductAsync(name,new PagedRequest
+            var result = await _productService.FindProductAsync(name, new PagedRequest
             {
                 PageNumber = pageNumber,
                 PageSize = 8
@@ -62,7 +88,7 @@ namespace OnlineStore.MVC.Controllers
             return View("findProductNameView", result);
         }
 
-
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id, CancellationToken cancellation)
         {
             var product = await _productService.GetProductByIdAsync(id, cancellation);

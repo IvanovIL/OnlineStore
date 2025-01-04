@@ -100,6 +100,19 @@ namespace OnlineStore.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrderStatus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderStatus", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductAttributeType",
                 columns: table => new
                 {
@@ -293,6 +306,31 @@ namespace OnlineStore.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Order",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    userName = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    addressUser = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    numberPhoneUser = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "decimal(30,4)", precision: 30, scale: 4, nullable: false),
+                    OrderStatusId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Order", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Order_OrderStatus_OrderStatusId",
+                        column: x => x.OrderStatusId,
+                        principalTable: "OrderStatus",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "cartProduct",
                 columns: table => new
                 {
@@ -300,8 +338,7 @@ namespace OnlineStore.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    CartId = table.Column<int>(type: "int", nullable: false),
-                    CartId1 = table.Column<int>(type: "int", nullable: true)
+                    CartId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -343,6 +380,34 @@ namespace OnlineStore.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "OrderItem",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "decimal(30,4)", precision: 30, scale: 4, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderItem_Order_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Order",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderItem_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "CartStatus",
                 columns: new[] { "Id", "Name" },
@@ -370,6 +435,15 @@ namespace OnlineStore.DataAccess.Migrations
                     { 1, null, "Email" },
                     { 2, null, "Telegram" },
                     { 3, null, "Личный кабинет" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "OrderStatus",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Новая" },
+                    { 2, "Оформлена" }
                 });
 
             migrationBuilder.InsertData(
@@ -451,6 +525,21 @@ namespace OnlineStore.DataAccess.Migrations
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Order_OrderStatusId",
+                table: "Order",
+                column: "OrderStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItem_OrderId",
+                table: "OrderItem",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItem_ProductId",
+                table: "OrderItem",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Product_CategoryId",
                 table: "Product",
                 column: "CategoryId");
@@ -489,6 +578,9 @@ namespace OnlineStore.DataAccess.Migrations
                 name: "NotificationChannel");
 
             migrationBuilder.DropTable(
+                name: "OrderItem");
+
+            migrationBuilder.DropTable(
                 name: "ProductAttributeType");
 
             migrationBuilder.DropTable(
@@ -501,6 +593,9 @@ namespace OnlineStore.DataAccess.Migrations
                 name: "Cart");
 
             migrationBuilder.DropTable(
+                name: "Order");
+
+            migrationBuilder.DropTable(
                 name: "Product");
 
             migrationBuilder.DropTable(
@@ -508,6 +603,9 @@ namespace OnlineStore.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "CartStatus");
+
+            migrationBuilder.DropTable(
+                name: "OrderStatus");
 
             migrationBuilder.DropTable(
                 name: "Category");

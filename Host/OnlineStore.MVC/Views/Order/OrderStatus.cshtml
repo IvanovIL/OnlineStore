@@ -1,0 +1,50 @@
+﻿@using OnlineStore.Contracts.Order
+
+@model OrderDto
+
+@{
+    ViewBag.Title = "Ваши заказы";
+}
+
+<h2>Ваши заказы</h2>
+
+@if (Model.orderItems.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="cartItem">Номер заказа</th>
+                <th class="cartItem">Название</th>
+                <th class="cartItem">Количество</th>
+                <th class="cartItem">Цена</th>
+                <th class="cartItem">Всего</th>
+                <th class="cartItem">Действие</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.orderItems)
+            {
+
+                <tr>
+                    <td class="cartItem">@item.OrderId</td>
+                    <td class="cartItem">@item.ProductName</td>
+                    <td class="cartItem">@item.Quantity</td>
+                    <td class="cartItem">@item.UnitPrice.ToString("C")</td>
+                    <td class="cartItem">@((item.Quantity * item.UnitPrice).ToString("C"))</td>
+                    <td>
+                        <form asp-controller="Home" asp-action="Details" asp-route-id="@item.ProductId" method="post">
+                            <button type="submit">Подробнее</button>
+                        </form>
+                    </td>
+                </tr>
+
+            }
+
+        </tbody>
+    </table>
+    <h3>Итого: @Model.TotalAmount.ToString("C")</h3> 
+}
+else
+{
+    <p>У вас нет заказов.</p>
+}

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineStore.DataAccess.Common;
 
@@ -11,9 +12,11 @@ using OnlineStore.DataAccess.Common;
 namespace OnlineStore.DataAccess.Migrations
 {
     [DbContext(typeof(MutableOnlineStoreDbContext))]
-    partial class MutableOnlineStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241228103051_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -487,52 +490,12 @@ namespace OnlineStore.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Новый"
+                            Name = "Новая"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "В обработке"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Подтвержден"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Отправлен"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Доставлен"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Отменен"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Возвращен"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Средства возвращены"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Name = "В ожидании"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Name = "Ожидает оплаты"
+                            Name = "Оформлена"
                         });
                 });
 

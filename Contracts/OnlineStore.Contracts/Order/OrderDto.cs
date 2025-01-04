@@ -44,10 +44,9 @@ namespace OnlineStore.Contracts.Order
         /// </summary>
         public int OrderStatusId { get; set; }
 
-
         /// <summary>
         /// Позиции заказа
         /// </summary>
-        //public ICollection<OrderItem> Items { get; set; } = [];
+        public ICollection<OrderItemDto> orderItems { get; set; } = [];
     }
 }

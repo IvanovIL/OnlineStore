@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineStore.AppServices.Common;
-using OnlineStore.Contracts.Product;
-using System.Diagnostics;
+
 
 
 namespace OnlineStore.DataAccess.Common
@@ -26,22 +25,26 @@ namespace OnlineStore.DataAccess.Common
 
         }
 
-     
-
         public  Task DeleteAsync(T entity, CancellationToken cancellation)
         {
             _mutableDbContext.Update(entity);
             return _mutableDbContext.SaveChangesAsync(cancellation);
         }
 
-
-
-
         /// <inheritdoc/>
         public async virtual Task<List<T>> GetAllOrdersAsync()
 		{
 			return await _readOnlydbContext.Set<T>().ToListAsync();
 		}
+
+
+        /// <inheritdoc/>
+        public async virtual Task<List<T>> GetOrdersAsync()
+        {
+            return await _readOnlydbContext.Set<T>().ToListAsync();
+        }
+
+       
 
         /// <inheritdoc/>
         public virtual Task<List<T>> GetAllAsync(CancellationToken cancellation)
@@ -67,6 +70,11 @@ namespace OnlineStore.DataAccess.Common
         {
             return await _readOnlydbContext.Set<T>(name).ToListAsync();
 
+        }
+
+        public async virtual Task<List<T>> FindCategoryAsync(int CategoryId)
+        {
+            return await _readOnlydbContext.Set<T>(CategoryId.ToString()).ToListAsync();
         }
 
 

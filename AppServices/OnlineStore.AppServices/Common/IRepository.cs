@@ -1,7 +1,5 @@
 ﻿
 
-using OnlineStore.Domain.Entities;
-
 namespace OnlineStore.AppServices.Common
 {
 	/// <summary>
@@ -16,8 +14,6 @@ namespace OnlineStore.AppServices.Common
         /// <param name="id">Идентификотор сущности</param>
         /// <returns></returns>
         Task<T> GetAsync(int id);
-
-      
 
         /// <summary>
         /// Добавляет сущность
@@ -46,10 +42,16 @@ namespace OnlineStore.AppServices.Common
         Task DeleteAsync( T entity, CancellationToken cancellation);
 
         /// <summary>
-        /// Получает сущность по идентификатору
+        /// Получает список сущностей по наименованию
         /// </summary>
-        /// <param name="name">Наименование по идентификатору</param>
+        /// <param name="name">Наименование</param>
         Task<List<T>> FindAsync(string name);
+
+        /// <summary>
+        /// Получает список сущностей по идентификатору
+        /// </summary>
+        /// <param name="CategoryId">идентификатор</param>
+        Task<List<T>> FindCategoryAsync(int CategoryId);
 
 
     }

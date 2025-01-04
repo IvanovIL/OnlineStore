@@ -41,6 +41,9 @@ using OnlineStore.AppServices.Images.Services;
 using OnlineStore.AppServices.Carts.Repositories;
 using OnlineStore.DataAccess.Carts.Repositories;
 using OnlineStore.AppServices.Carts.Services;
+using OnlineStore.AppServices.Orders.Services;
+using OnlineStore.AppServices.Orders.Repositories;
+using OnlineStore.DataAccess.Orders.Repositories;
 
 namespace OnlineStore.ComponentRegistar
 {
@@ -104,6 +107,8 @@ namespace OnlineStore.ComponentRegistar
             Services.AddScoped<ICategoryRepository, CategoryRepository>();
             Services.AddScoped<IImageRepository, ImageRepository>();
             Services.AddScoped<ICartRepository, CartRepository>();
+            Services.AddScoped<IOrderRepository, OrderRepository>();
+
         }
 
         private static void RegisterServices(IServiceCollection Services, IConfiguration Configuration)
@@ -121,6 +126,7 @@ namespace OnlineStore.ComponentRegistar
             Services.AddScoped<ICategoryService, CategoryService>();
             Services.AddScoped<IImageService, ImageService>();
             Services.AddScoped<ICartService, CartService>();
+            Services.AddScoped<IOrderServices, OrderServices>();
 
             Services.AddSingleton<IRedisCache, RedisCache>();
             Services.AddSingleton<ICacheService, RedisCacheService>();
@@ -157,6 +163,7 @@ namespace OnlineStore.ComponentRegistar
                 mc.AddProfile(new ProductAttributeMappingProfile());
                 mc.AddProfile(new ProductMappingProfile());
                 mc.AddProfile(new CategoryMappingProfile());
+                mc.AddProfile(new CartMappingProfile());
             }
             );
             IMapper mapper = mapperConfig.CreateMapper();

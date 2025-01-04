@@ -10,6 +10,8 @@ namespace OnlineStore.Infrastructure.Mappings
         {
             CreateMap<Category, CategoryDto>()
                 .ForMember(dest => dest.CategoryId, o => o.MapFrom(src => src.Id));
+            CreateMap<CategoryDto, Category>();
+               
         }
     }
 }

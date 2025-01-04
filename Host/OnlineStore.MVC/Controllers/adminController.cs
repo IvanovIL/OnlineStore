@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineStore.AppServices.Categories.Services;
 using OnlineStore.AppServices.Products.Services;
+using OnlineStore.Contracts.Categories;
 using OnlineStore.Contracts.Common;
 using OnlineStore.Contracts.Product;
 
@@ -25,12 +27,14 @@ namespace OnlineStore.MVC.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult adminPanel()
         {
             return View("adminPanelView");
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> getChangeProduct(int pageNumber = 1, CancellationToken cancellation = default)
         {
             var result = await _productService.GetProductsAsync(new PagedRequest
@@ -43,14 +47,16 @@ namespace OnlineStore.MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> saveProduct(ShortProductDto productDto,CancellationToken cancellation)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> saveProduct(ShortProductDto productDto, CancellationToken cancellation)
         {
-           
+
             await _productService.ChangeProductAsync(productDto, cancellation);
 
-            return RedirectToAction("getProduct","Home");
+            return RedirectToAction("getProduct", "Home");
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DetailsChangeProduct(int id, CancellationToken cancellation)
         {
             var product = await _productService.GetProductByIdAsync(id, cancellation);
@@ -63,22 +69,18 @@ namespace OnlineStore.MVC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddProduct()
-        {
-            return View("AddProduct");
-        }
-
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddProduct(CancellationToken cancellation)
         {
             var categories = await _categoryService.GetCategoriesAsync(cancellation);
 
             ViewBag.Categories = new SelectList(categories, "CategoryId", "Name");
-            return View("getProduct");
+            return View("AddProduct");
         }
 
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddProduct(ShortProductDto productDto, CancellationToken cancellation)
         {
             await _productService.AddProductAsync(productDto, cancellation);
@@ -92,13 +94,18 @@ namespace OnlineStore.MVC.Controllers
             return View("AddCategoryView");
         }
 
-        //[HttpPost]
-        //public Task<IActionResult> AddCategory(string nameCategory)
-        //{
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddCategory(CategoryDto categoryDto, CancellationToken cancellation)
+        {
+            await _categoryService.AddCategoryAsync(categoryDto, cancellation);
 
-        //}
+            return RedirectToAction("getProduct", "Home");
+
+        }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> deleteProductList(int pageNumber = 1, CancellationToken cancellation = default)
         {
             var result = await _productService.GetProductsAsync(new PagedRequest
@@ -112,6 +119,7 @@ namespace OnlineStore.MVC.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> deleteProduct(int id, CancellationToken cancellation)
         {
             await _productService.DeleteProductAsync(id, cancellation);

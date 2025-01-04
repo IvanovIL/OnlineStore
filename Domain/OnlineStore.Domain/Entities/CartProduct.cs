@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace OnlineStore.Domain.Entities
 {
     /// <summary>
@@ -24,11 +26,13 @@ namespace OnlineStore.Domain.Entities
         /// <summary>
         /// Идентфикатор корзины
         /// </summary>
+        //[ForeignKey(nameof(Cart))]
         public int CartId { get; set; }
 
         /// <summary>
         /// Корзина
         /// </summary>
+        //[ForeignKey(nameof(CartId))]
         public Cart Cart { get; set; }
 
         /// <summary>

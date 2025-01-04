@@ -54,6 +54,6 @@ namespace OnlineStore.Domain.Entities
         /// <summary>
         /// Позиции заказа
         /// </summary>
-        public ICollection<OrderItem> Items { get; set; } = [];
+        public ICollection<OrderItem> orderItems { get; set; } = [];
     }
 }

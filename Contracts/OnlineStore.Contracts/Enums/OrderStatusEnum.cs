@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace OnlineStore.Contracts.Enum
+namespace OnlineStore.Contracts.Enums
 {
 	/// <summary>
 	/// Статус заказа
