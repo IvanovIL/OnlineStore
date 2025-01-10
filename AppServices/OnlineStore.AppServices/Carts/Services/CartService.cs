@@ -21,7 +21,7 @@ namespace OnlineStore.AppServices.Carts.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataTimeProvider _dataTimeProvider;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IMapper _mapper;
+
 
         public CartService(ICartRepository cartRepository,
             IProductsService productsService,
@@ -35,7 +35,6 @@ namespace OnlineStore.AppServices.Carts.Services
             _userManager = userManager;
             _dataTimeProvider = dataTimeProvider;
             _httpContextAccessor = httpContextAccessor;
-            _mapper = mapper;
         }
 
 

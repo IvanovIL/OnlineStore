@@ -164,6 +164,7 @@ namespace OnlineStore.ComponentRegistar
                 mc.AddProfile(new ProductMappingProfile());
                 mc.AddProfile(new CategoryMappingProfile());
                 mc.AddProfile(new CartMappingProfile());
+                mc.AddProfile(new OrderMappingProfile());
             }
             );
             IMapper mapper = mapperConfig.CreateMapper();

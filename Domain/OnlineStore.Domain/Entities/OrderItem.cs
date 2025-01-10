@@ -21,6 +21,10 @@ namespace OnlineStore.Domain.Entities
 		/// </summary>
 		public int ProductId { get; set; }
 
+		public string ProductName { get; set; }
+
+		public bool IsDeleted { get; set; }
+
 		/// <summary>
 		/// Количество
 		/// </summary>

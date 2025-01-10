@@ -58,6 +58,11 @@ namespace OnlineStore.DataAccess.Common
 			return _readOnlydbContext.FindAsync<T>(id).AsTask();
 		}
 
+        public Task<T> GetIdAsync(int id)
+        {
+            return _mutableDbContext.FindAsync<T>(id).AsTask();
+        }
+
         /// <inheritdoc/>
         public  Task UpdateAsync(T entity, CancellationToken cancellation)
         {

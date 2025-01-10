@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineStore.AppServices.Categories.Services;
+using OnlineStore.AppServices.Orders.Services;
 using OnlineStore.AppServices.Products.Services;
 using OnlineStore.Contracts.Common;
 using OnlineStore.MVC.Models;
@@ -14,23 +15,18 @@ namespace OnlineStore.MVC.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IProductsService _productService;
         private readonly ICategoryService _categoryService;
+        private readonly IOrderServices _orderServices;
 
 
         public HomeController(ILogger<HomeController> logger,
             IProductsService productService,
-            ICategoryService categoryService)
+            ICategoryService categoryService,
+            IOrderServices orderServices)
         {
             _logger = logger;
             _productService = productService;
             _categoryService = categoryService;
-        }
-
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> personalAccount()
-        {
-
-            return View("personalAccount");
+            _orderServices = orderServices;
         }
 
 

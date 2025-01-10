@@ -22,6 +22,9 @@ namespace OnlineStore.Contracts.Order
         /// </summary>
         public int ProductId { get; set; }
 
+
+        public bool IsDeleted { get; set; } 
+
         /// <summary>
         /// Наименование товара
         /// </summary>

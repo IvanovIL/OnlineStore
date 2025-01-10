@@ -15,6 +15,7 @@ namespace OnlineStore.AppServices.Common
         /// <returns></returns>
         Task<T> GetAsync(int id);
 
+        Task<T> GetIdAsync(int id);
         /// <summary>
         /// Добавляет сущность
         /// </summary>

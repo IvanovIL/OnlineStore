@@ -8,7 +8,13 @@ namespace OnlineStore.AppServices.Orders.Repositories
 
         Task<List<Order>> GetOrdersAsync(int userId);
 
-        Task<List<Order>> GetOrderByUserAsync(int userId, CancellationToken cancellation);
+        Task<Order> GetOrderAsync(int OrderId);
+
+        Task<List<OrderItem>> GetOrderItemAsync(int orderId);
+
+        Task<OrderItem> DeleteProductOrderAsync(int orderId, int productId);
+
+        Task updateOrderItem(OrderItem orderItem, CancellationToken cancellation);
 
     }
 }

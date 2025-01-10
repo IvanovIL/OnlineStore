@@ -1,0 +1,52 @@
+﻿@using OnlineStore.Contracts.Order
+
+@model OrderDto
+
+@{
+	ViewBag.Title = "Ваш заказ";
+}
+
+<h2>Ваш заказ</h2>
+
+@if (Model.orderItems.Any())
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th class="orderItem">Номер заказа</th>
+				<th class="orderItem">Название</th>
+				<th class="orderItem">Количество</th>
+				<th class="orderItem">Цена</th>
+				<th class="orderItem">Всего</th>
+				<th class="orderItem">Действие</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.orderItems)
+			{
+
+				<tr>
+					<td class="orderItem">@item.OrderId</td>
+					<td class="orderItem">@item.ProductName</td>
+					<td class="orderItem">@item.Quantity</td>
+					<td class="orderItem">@item.UnitPrice.ToString("C")</td>
+					<td class="orderItem">@((item.Quantity * item.UnitPrice).ToString("C"))</td>
+					<td>
+						<form asp-controller="Home" asp-action="Details" asp-route-id="@item.ProductId" method="post">
+							<button type="submit">Подробнее</button>
+						</form>
+						<form asp-controller="Order" asp-action="CancelOrderProduct" asp-route-OrderId="@item.OrderId" asp-route-ProductId="@item.ProductId" method="post">
+							<button type="submit">отменить заказа на товар</button>
+						</form>
+					</td>
+				</tr>
+
+			}
+
+		</tbody>
+	</table>
+	<form asp-controller="Order" asp-action="CancelOrder" asp-route-OrderId="@ViewBag.OrderId" method="post">
+		<button type="submit">отменить весь заказа</button>
+	</form>
+	<h3>Итого: @Model.TotalAmount.ToString("C")</h3>
+}
