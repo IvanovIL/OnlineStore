@@ -1,0 +1,57 @@
+﻿@using OnlineStore.Contracts.Order
+
+@model List<OrderDto>
+
+@{
+	ViewData["Title"] = "personal Account";
+}
+
+<div class="text-center">
+	<h1 class="display-6">Добро пожаловать в личный кабинет</h1>
+</div>
+
+<div align="left">
+	@if (User.IsInRole("Admin"))
+	{
+		<form asp-controller="admin" asp-action="adminPanel" method="get" class="form-inline">
+			<button type="submit" class="btn btn-info">
+				Ввойти в панель администратора
+			</button>
+		</form>
+	}
+</div>
+
+<div align="right">
+
+	@if (User?.Identity?.IsAuthenticated == true)
+	{
+		<form asp-controller="Order" asp-action="OrderStatus" method="get" class="form-inline">
+			<button type="submit" class="btn btn-outline-primary">
+				Вся история покупок
+			</button>
+		</form>
+
+		@foreach (var item in Model)
+		{
+
+			<div class="col-md-4 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">@item.OrderDate</h5>
+						<p class="card-text">@item.userName</p>
+						<p class="card-text text-success">Цена: @item.TotalAmount.ToString("C")</p>
+						<a href="@Url.Action("getOrder", "Order",new { id = item.Id })" class="btn btn-outline-secondary">Заказ</a>
+					</div>
+				</div>
+			</div>
+		}
+	
+		
+	}
+	else
+	{
+		<h4>Вам нужно войти в свой аккаунт что бы увидеть исиорию заказов</h4>
+	}
+</div>
+
+

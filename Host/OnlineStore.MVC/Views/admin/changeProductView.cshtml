@@ -1,0 +1,23 @@
+﻿﻿@using OnlineStore.Contracts.Product;
+
+@model ShortProductDto
+
+@{
+    ViewBag.Title = "Админ панель: редактирование товара";
+}
+
+<h2>Редактирование продукта «@Model.Name»</h2> 
+
+@using (Html.BeginForm("saveProduct", "Admin", FormMethod.Post))
+{
+
+    @Html.EditorForModel()
+
+   
+    <input type="submit" value="Сохранить" />
+
+    @Html.ActionLink("Отменить изменения и вернуться  назад", "adminPanel")
+}
+
+
+

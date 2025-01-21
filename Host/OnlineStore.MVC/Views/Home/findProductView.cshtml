@@ -1,0 +1,22 @@
+﻿﻿@using OnlineStore.Contracts.Product;
+
+@model ShortProductDto
+<div>Выберите категорию для сортировки продуктов</div>
+<form id="productForm" asp-action="findCategory" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="CategoryId">Категория</label>
+        <select class="form-control" asp-for="CategoryId"  asp-items="ViewBag.Categories">
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Найти продукты по категории</button>
+</form>
+<br />
+  <div>Напишите название продукта</div> 
+<form id="productForm" asp-action="FindProduct" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="Name">Название товара</label>
+        <input type="text" class="form-control" id="Name" name="Name" asp-for="Name" value="" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Найти продукты по названию</button>
+</form> 
+

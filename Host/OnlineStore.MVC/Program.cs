@@ -1,3 +1,5 @@
+using OnlineStore.ComponentRegistar;
+
 namespace OnlineStore.MVC
 {
 	public class Program
@@ -8,6 +10,8 @@ namespace OnlineStore.MVC
 
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
+
+			OnlineStoreRegistar.AddComponents(builder.Services, builder.Configuration);
 
 			var app = builder.Build();
 
@@ -22,13 +26,16 @@ namespace OnlineStore.MVC
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
-			app.UseRouting();
+            app.UseRouting();
+
+			OnlineStoreRegistar.RegisterMiddlewares(app);
 
 			app.UseAuthorization();
 
-			app.MapControllerRoute(
+           
+            app.MapControllerRoute(
 				name: "default",
-				pattern: "{controller=Home}/{action=Index}/{id?}");
+				pattern: "{controller=Home}/{action=getProduct}/{id?}");
 
 			app.Run();
 		}

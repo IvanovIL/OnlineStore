@@ -1,0 +1,28 @@
+﻿@using OnlineStore.Contracts.Order;
+
+@model OrderDto
+
+<h2>Оформить заказ</h2>
+   Пожалуйста, введите свои данные, и мы отправим Ваш товар прямо сейчас!
+
+<form id="productForm" asp-controller="Cart" asp-action="AllCheckout" method="post" enctype="multipart/form-data">
+
+    <div class="form-group">
+        <label for="Name">Ф.И.О получателя</label>
+        <input type="text" class="form-control" id="userName" name="userName" asp-for="userName" required />
+    </div>
+
+    <div class="form-group">
+        <label for="addressUser">Адрес доставки</label>
+        <input type="text" class="form-control" id="addressUser" name="addressUser" asp-for="addressUser" required />
+    </div>
+
+    <div class="form-group">
+        <label for="numberPhoneUser">Номер телефона</label>
+        <input type="tel" class="form-control" id="numberPhoneUser" name="numberPhoneUser" asp-for="numberPhoneUser" required />
+    </div>
+
+     <h3 class="TotalAmount">@ViewBag.TotalAmount.ToString("C")</h3> 
+    <button type="submit">Заказть</button>
+</form>
+@Html.ActionLink("Отменить  и вернуться  назад", "Index")

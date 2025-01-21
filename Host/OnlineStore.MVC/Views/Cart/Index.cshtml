@@ -1,0 +1,57 @@
+﻿﻿@using OnlineStore.Contracts.Carts;
+@model CartDto
+@{
+    ViewBag.Title = "Ваша корзина";
+}
+
+<h2>Ваша корзина</h2>
+ 
+@if (Model.Items.Any())
+{
+    <table class="table">   
+        <thead>
+            <tr>
+                <th class="cartItem">Название</th>
+                <th class="cartItem">Количество</th>
+                <th class="cartItem">Цена</th>
+                <th class="cartItem">Всего</th>
+                <th class="cartItem">Действие</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+
+                <tr>
+                    <td class="cartItem">@item.ProductName</td>
+                    <td class="cartItem">@item.Quantity</td>
+                    <td class="cartItem">@item.Price.ToString("C")</td>
+                    <td class="cartItem">@((item.Quantity * item.Price).ToString("C"))</td>
+                    <td>
+                        <form asp-action="RemoveFromCart" asp-route-productId="@item.ProductId" method="post">
+                            <button type="submit">Удалить</button>
+                        </form>
+                        <form asp-action="Checkout" asp-route-productId="@item.ProductId"
+                              asp-route-TotalAmount="@Model.TotalAmount.ToString()" method="post">
+                            <button type="submit">Оформить заказ</button>
+                        </form>
+                    </td>
+                </tr>
+                 
+            }
+            
+        </tbody>
+    </table>
+    <h3>Итого: @Model.TotalAmount.ToString("C")</h3>
+
+    <form asp-action="finalCheckout" method="post">
+        <button type="submit">Оформить заказ</button>
+    </form>
+    <form asp-action="removeCart" method="post">
+        <button type="submit">Очистить коризну</button>
+    </form>
+}
+else
+{
+    <p>Ваша корзина пуста.</p>
+}
