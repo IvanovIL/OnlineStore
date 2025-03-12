@@ -1,5 +1,4 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using OnlineStore.AppServices.Categories.Repositories;
 using OnlineStore.AppServices.Common.DataTimeProviders;
 using OnlineStore.AppServices.Common.Events.Common;
@@ -9,13 +8,12 @@ using OnlineStore.Contracts.Categories;
 using OnlineStore.Contracts.Common;
 using OnlineStore.Contracts.Product;
 using OnlineStore.Domain.Entities;
-using OnlineStore.Domain.Events;
-using Org.BouncyCastle.Asn1.Ocsp;
-using System.Runtime.CompilerServices;
-using System.Xml.Linq;
 
 namespace OnlineStore.AppServices.Categories.Services
 {
+    /// <summary>
+    /// Сервис по работе с категориями продуктов
+    /// </summary>
     public sealed class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _repository;
@@ -38,20 +36,17 @@ namespace OnlineStore.AppServices.Categories.Services
             _productRepository = productRepository;
         }
 
+        /// <inheritdoc/>
         public async Task AddCategoryAsync(CategoryDto categoryDto, CancellationToken cancellation)
         {
             var category = _mapper.Map<Category>(categoryDto);
-            _eventContainer.AddEvent(new AddProductEvent
-            {
-                eventDate = _dataTimeProvider.UtcNow,
-                productName = "Добавлена новая категория " + category.Name,
-            });
+            
             await _repository.AddAsync(category, cancellation);
         }
 
+        /// <inheritdoc/>
         public async Task<ProductsListDto> findCatregoryAsync(int CategoryId, PagedRequest request, CancellationToken cancellation)
         {
-
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
@@ -69,7 +64,7 @@ namespace OnlineStore.AppServices.Categories.Services
                     Result = []
                 };
             }
-            var products = await _productRepository.findCategoryAsync(CategoryId, new GetProductsRequest
+            var products = await _productRepository.GetCategoryAsync(CategoryId, new GetProductsRequest
             {
                 Take = request.PageSize,
                 Skip = (request.PageNumber - 1) * request.PageSize,
@@ -85,18 +80,14 @@ namespace OnlineStore.AppServices.Categories.Services
                 TotalCount = totalCount,
                 Result = productList
             };
-
         }
-     
 
-
+        /// <inheritdoc/>
         public async Task<IReadOnlyCollection<CategoryDto>> GetCategoriesAsync(CancellationToken cancellation)
         {
             var result = await _repository.GetAllAsync(cancellation);
 
             return _mapper.Map<IReadOnlyCollection<CategoryDto>>(result);
-        }
-
-
+        }   
     }
 }

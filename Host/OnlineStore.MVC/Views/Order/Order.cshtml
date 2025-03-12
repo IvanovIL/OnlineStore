@@ -14,10 +14,10 @@
 		<thead>
 			<tr>
 				<th class="orderItem">Номер заказа</th>
+				<th class="orderItem">Статус заказа</th>
 				<th class="orderItem">Название</th>
 				<th class="orderItem">Количество</th>
 				<th class="orderItem">Цена</th>
-				<th class="orderItem">Всего</th>
 				<th class="orderItem">Действие</th>
 			</tr>
 		</thead>
@@ -27,13 +27,13 @@
 
 				<tr>
 					<td class="orderItem">@item.OrderId</td>
+					<td class="orderItem">@Model.OrderStatusDto.Name</td>
 					<td class="orderItem">@item.ProductName</td>
 					<td class="orderItem">@item.Quantity</td>
 					<td class="orderItem">@item.UnitPrice.ToString("C")</td>
-					<td class="orderItem">@((item.Quantity * item.UnitPrice).ToString("C"))</td>
 					<td>
 						<form asp-controller="Home" asp-action="Details" asp-route-id="@item.ProductId" method="post">
-							<button type="submit">Подробнее</button>
+							<button type="submit">Перейти на страницу товара</button>
 						</form>
 						<form asp-controller="Order" asp-action="CancelOrderProduct" asp-route-OrderId="@item.OrderId" asp-route-ProductId="@item.ProductId" method="post">
 							<button type="submit">отменить заказа на товар</button>

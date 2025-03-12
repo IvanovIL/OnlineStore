@@ -54,18 +54,6 @@ namespace OnlineStore.DataAccess.Migrations
                     table.PrimaryKey("PK_ApplicationUser", x => x.Id);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Attributes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Attributes", x => x.Id);
-                });
 
             migrationBuilder.CreateTable(
                 name: "CartStatus",
@@ -112,18 +100,6 @@ namespace OnlineStore.DataAccess.Migrations
                     table.PrimaryKey("PK_OrderStatus", x => x.Id);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ProductAttributeType",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductAttributeType", x => x.Id);
-                });
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
@@ -446,14 +422,6 @@ namespace OnlineStore.DataAccess.Migrations
                     { 2, "Оформлена" }
                 });
 
-            migrationBuilder.InsertData(
-                table: "ProductAttributeType",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { 1, "Используется для поиска" },
-                    { 2, "Не используется для поиска" }
-                });
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
@@ -569,9 +537,6 @@ namespace OnlineStore.DataAccess.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Attributes");
-
-            migrationBuilder.DropTable(
                 name: "cartProduct");
 
             migrationBuilder.DropTable(
@@ -579,9 +544,6 @@ namespace OnlineStore.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrderItem");
-
-            migrationBuilder.DropTable(
-                name: "ProductAttributeType");
 
             migrationBuilder.DropTable(
                 name: "ProductImage");

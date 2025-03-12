@@ -71,48 +71,41 @@ namespace OnlineStore.DataAccess.Products.Repositories
         }
 
         /// <inheritdoc/>
-        public async Task<List<Product>> FindAsync(string name, GetProductsRequest request, CancellationToken cancellation)
+        public async Task<List<Product>> GetProducts(string name, decimal Price, GetProductsRequest request, CancellationToken cancellation)
         {
-            var query = _readOnlydbContext
-              .Set<Product>()
-              .AsQueryable()
-              .Where(p => !p.IsDeleted)
-              .Where(p => p.Name == name);
+            var product = _readOnlydbContext.Set<Product>()
+                .AsQueryable()
+                .Where(x => !x.IsDeleted)
+                .Where(x => x.Name.Contains(name))
+                .Where(x => x.Price >= Price);
 
             if (request.IncludeCategory)
             {
-                query = query
+                product = product
                     .Include(x => x.Category);
             }
 
             if (request.IncludeImages)
             {
-                query = query
+                product = product
                     .Include(x => x.Images);
             }
 
-            query = query
+            product = product
                 .OrderBy(x => x.Id)
                 .Skip(request.Skip);
 
             if (request.Take != default)
             {
-                query = query.Take(request.Take);
+                product = product.Take(request.Take);
             }
 
-            return await query.ToListAsync(cancellation);
-     
-        }
-        public Task<int> GetProductsNameTotalCountAsync(string name,CancellationToken cancellation)
-        {
-            return _readOnlydbContext
-                .Set<Product>()
-                .Where(p => !p.IsDeleted)
-                .Where(p => p.Name == name)
-                .CountAsync(cancellation);
+
+            return await product.ToListAsync(cancellation);
+
         }
 
-
+        /// <inheritdoc/>
         public Task<int> GetProductsTotalCountAsync(CancellationToken cancellation)
         {
             return _readOnlydbContext
@@ -120,7 +113,9 @@ namespace OnlineStore.DataAccess.Products.Repositories
                 .Where(p => !p.IsDeleted)
                 .CountAsync(cancellation);
         }
-        public async Task<List<Product>> findCategoryAsync(int CategoryId, GetProductsRequest request, CancellationToken cancellation)
+
+        /// <inheritdoc/>
+        public async Task<List<Product>> GetCategoryAsync(int CategoryId, GetProductsRequest request, CancellationToken cancellation)
         {
             var query = _readOnlydbContext
               .Set<Product>()
@@ -152,6 +147,8 @@ namespace OnlineStore.DataAccess.Products.Repositories
             return await query.ToListAsync(cancellation);
 
         }
+
+        /// <inheritdoc/>
         public Task<int> GetCategoryTotalCountAsync(int CategoryId, CancellationToken cancellation)
         {
             return _readOnlydbContext
@@ -160,6 +157,5 @@ namespace OnlineStore.DataAccess.Products.Repositories
                 .Where(p => p.CategoryId == CategoryId)
                 .CountAsync(cancellation);
         }
-
     }
 }

@@ -2,28 +2,20 @@
 using Microsoft.AspNetCore.Mvc;
 using OnlineStore.AppServices.Orders.Services;
 using OnlineStore.AppServices.Products.Services;
-using OnlineStore.Contracts.Order;
+
 
 namespace OnlineStore.MVC.Controllers
 {
     public class OrderController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IProductsService _productService;
         private readonly IOrderServices _orderServices;
 
-        public OrderController(ILogger<HomeController> logger,
-            IProductsService productService,
+        public OrderController(IProductsService productService,
             IOrderServices orderServices)
         {
-            _logger = logger;
             _productService = productService;
             _orderServices = orderServices;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
         }
 
         [HttpGet]
@@ -40,7 +32,7 @@ namespace OnlineStore.MVC.Controllers
         public async Task<IActionResult> getOrders(CancellationToken cancellation)
         {
             var order = await _orderServices.GetOrderAsync(cancellation);
-
+            
             return View("~/Views/Home/personalAccount.cshtml", order.ToList());
         }
 
@@ -74,9 +66,5 @@ namespace OnlineStore.MVC.Controllers
             return RedirectToAction("getOrders");
 
         }
-
-
-
-
     }
 }

@@ -13,6 +13,8 @@ namespace OnlineStore.Infrastructure.Mappings
             CreateMap<OrderDto, Order>();
             CreateMap<OrderItemDto, OrderItem>();
             CreateMap<OrderItem, OrderItemDto>();
+            CreateMap<OrderStatusDto, OrderStatus>();
+            CreateMap<OrderStatus, OrderStatusDto>();
         }
     }
 }

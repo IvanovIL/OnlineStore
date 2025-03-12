@@ -6,35 +6,31 @@ using OnlineStore.Domain.Events;
 namespace OnlineStore.AppServices.Common.Events.Handlers
 {
     /// <summary>
-    /// Обработчик события создания товара
+    /// Обработчик события добавления нового заказа на продукт
     /// </summary>
-    public sealed class AddProductEventHandler : IDomainEventHandler<AddProductEvent>
+    public sealed class OrderProductsEventHandler : IDomainEventHandler<AddOrderProductsEvent>
     {
         private readonly INotificationService _notificationService;
 
-
-        public AddProductEventHandler(
-            INotificationService notificationService)
+        public OrderProductsEventHandler(INotificationService notificationService)
         {
             _notificationService = notificationService;
-
         }
 
-        /// <inheritdoc/>
-        public Task HandleAsync(AddProductEvent @event)
+        public Task HandleAsync(AddOrderProductsEvent @event)
         {
             return _notificationService.SendNotificationAsync(new Contracts.Notifications.NotificationDto
             {
-                Theme = $"Добавлен новый товар - {@event.productName}",
-                Email = "14ilya46@mail.ru",
-                Text = $"Добавлен новый товар - {@event.productName}",
+                Theme = "Онлайн магазин",
+                Email = @event.Email,
+                Text = @event.productName,
                 NotificationChannels = [NotificationChannelEnum.Email, NotificationChannelEnum.Telegram]
             }, CancellationToken.None);
         }
 
         public Task HandleAsync(IDomainEvent @event)
         {
-            return HandleAsync((AddProductEvent)@event);
+            return HandleAsync((AddOrderProductsEvent)@event);
         }
     }
 }

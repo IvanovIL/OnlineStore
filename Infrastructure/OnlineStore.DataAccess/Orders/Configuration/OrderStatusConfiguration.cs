@@ -19,7 +19,7 @@ namespace OnlineStore.DataAccess.Orders.Configuration
             builder.HasData(
                 Enum.GetValues(typeof(OrderStatusEnum))
                 .Cast<OrderStatusEnum>()
-                .Select(e => new CartStatus()
+                .Select(e => new OrderStatus()
                 {
                     Id = (int)e,
                     Name = e.GetEnumDescription()

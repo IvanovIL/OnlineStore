@@ -1,0 +1,31 @@
+﻿@using OnlineStore.Contracts.Order
+
+@model List<OrderDto>
+
+@{
+	ViewData["Title"] = "Изменение статуса товара";
+}
+
+@foreach (var order in Model)
+{
+	<br>
+	<form asp-action="changeStatusOrder" asp-route-id="@order.Id" asp-route-orderStatus="@order" method="post">
+		<div class="col-md-4 mb-4">
+			<div class="card">
+				<div class="card-body">
+					<h5>@order.OrderDate</h5>
+					<label for="Id">Статус заказа:</label>
+					<select class="form-control" asp-for="@order.OrderStatusDto.Id" asp-items="ViewBag.OrderStatusDtoS">
+					</select>
+					<p class="card-text">Статус заказа: @order.OrderStatusDto.Name</p>
+					<p class="card-text">@order.userName</p>
+					<p class="card-text text-success">Цена: @order.TotalAmount.ToString("C")</p>
+					<a href="@Url.Action("getOrder", "Order",new { id = order.Id })" class="btn btn-outline-secondary">Подробнее о заказе</a>
+				</div>
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary">Изменить статус продукта</button>
+	</form>
+}
+
+	

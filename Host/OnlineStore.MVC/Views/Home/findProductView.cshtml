@@ -14,9 +14,13 @@
   <div>Напишите название продукта</div> 
 <form id="productForm" asp-action="FindProduct" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="Name">Название товара</label>
-        <input type="text" class="form-control" id="Name" name="Name" asp-for="Name" value="" required />
+        <label for="Name">Введите название продукта</label>
+        <input type="text" class="form-control" id="Name" name="Name" asp-for="Name" value=""/>
     </div>
-    <button type="submit" class="btn btn-primary">Найти продукты по названию</button>
+    <div class="form-group">
+        <label for="Price">Введите цену на продукт от </label>
+        <input type="number" class="form-control" id="Price" name="Price" asp-for="Price" step="0.01" />
+    </div>
+    <button type="submit" class="btn btn-primary">Найти продукт</button>
 </form> 
 

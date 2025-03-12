@@ -2,6 +2,9 @@
 
 namespace OnlineStore.AppServices.Products.Models
 {
+	/// <summary>
+	/// Получение элементов главной страницы
+	/// </summary>
 	public sealed class GetProductsRequest
 	{
         public int Take { get; set; }

@@ -8,11 +8,11 @@ using System.Runtime.CompilerServices;
 
 namespace OnlineStore.MVC.Controllers
 {
+    /// <summary>
+    /// Контролер аутентификации пользователя
+    /// </summary>
     public class AccountController : Controller
     {
-        /// <summary>
-        /// Контролер аутентификации пользователя
-        /// </summary>
         private readonly IAuthenticationService _authenticationService;
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -96,7 +96,5 @@ namespace OnlineStore.MVC.Controllers
             });
 
         }
-
-
     }
 }

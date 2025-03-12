@@ -1,6 +1,6 @@
-﻿
-
+﻿using Microsoft.AspNetCore.Mvc;
 using OnlineStore.AppServices.Common;
+using OnlineStore.Contracts.Images;
 using OnlineStore.Domain.Entities;
 
 namespace OnlineStore.AppServices.Images.Repositories
@@ -13,5 +13,7 @@ namespace OnlineStore.AppServices.Images.Repositories
 
 
         Task<int> ChangeAsync(ProductImage image, CancellationToken cancellation);
+
+        Task DeleteAsync(ProductImage image);
     }
 }
