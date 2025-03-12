@@ -17,7 +17,6 @@
                 <th class="orderItem">Название</th>
                 <th class="orderItem">Количество</th>
                 <th class="orderItem">Цена</th>
-                <th class="orderItem">Всего</th>
                 <th class="orderItem">Действие</th>
             </tr>
         </thead>
@@ -30,10 +29,9 @@
                     <td class="orderItem">@item.ProductName</td>
                     <td class="orderItem">@item.Quantity</td>
                     <td class="orderItem">@item.UnitPrice.ToString("C")</td>
-                    <td class="orderItem">@((item.Quantity * item.UnitPrice).ToString("C"))</td>
                     <td>
                         <form asp-controller="Home" asp-action="Details" asp-route-id="@item.ProductId" method="post">
-                            <button type="submit">Подробнее</button>
+                            <button type="submit">Подробнее о заказе</button>
                         </form>
                     </td>
                 </tr>

@@ -11,11 +11,26 @@
 </div>
 
 <div align="left">
-	@if (User.IsInRole("Admin"))
+	@if (User?.Identity?.IsAuthenticated == true)
 	{
-		<form asp-controller="admin" asp-action="adminPanel" method="get" class="form-inline">
-			<button type="submit" class="btn btn-info">
-				Ввойти в панель администратора
+		@if (User.IsInRole("Admin"))
+		{
+			<form asp-controller="admin" asp-action="adminPanel" method="get" class="form-inline">
+				<button type="submit" class="btn btn-info">
+					Ввойти в панель администратора
+				</button>
+			</form>
+
+			<form asp-controller="admin" asp-action="managementOrder" method="get" class="form-inline">
+				<button type="submit" class="btn alert-success">
+					Панель управления заказами
+				</button>
+			</form>
+		}
+		<br/>
+		<form asp-controller="Account" asp-action="Logout" method="get" class="form-inline">
+			<button type="submit" class="btn btn-dark">
+				Выход
 			</button>
 		</form>
 	}
@@ -33,24 +48,22 @@
 
 		@foreach (var item in Model)
 		{
-
 			<div class="col-md-4 mb-4">
 				<div class="card">
 					<div class="card-body">
-						<h5 class="card-title">@item.OrderDate</h5>
+						<h5>@item.OrderDate</h5>
+						<p class="card-text">Статус заказа: @item.OrderStatusDto.Name</p>
 						<p class="card-text">@item.userName</p>
 						<p class="card-text text-success">Цена: @item.TotalAmount.ToString("C")</p>
-						<a href="@Url.Action("getOrder", "Order",new { id = item.Id })" class="btn btn-outline-secondary">Заказ</a>
+						<a href="@Url.Action("getOrder", "Order",new { id = item.Id })" class="btn btn-outline-secondary">Подробнее о заказе</a>
 					</div>
 				</div>
 			</div>
 		}
-	
-		
 	}
 	else
 	{
-		<h4>Вам нужно войти в свой аккаунт что бы увидеть исиорию заказов</h4>
+		<h4>Вам нужно войти в свой аккаунт что бы увидеть историю заказов</h4>
 	}
 </div>
 

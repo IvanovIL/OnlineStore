@@ -8,6 +8,6 @@ namespace OnlineStore.AppServices.Common.DataTimeProviders
     /// </summary>
     public sealed class DataTimeProvider : IDataTimeProvider
     {
-        public DateTime UtcNow => DateTime.Now;
+        public DateTime Now => DateTime.Now;
     }
 }

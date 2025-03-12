@@ -13,6 +13,7 @@ namespace OnlineStore.MVC
 
 			OnlineStoreRegistar.AddComponents(builder.Services, builder.Configuration);
 
+
 			var app = builder.Build();
 
 			// Configure the HTTP request pipeline.

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineStore.AppServices.Orders.Repositories;
+using OnlineStore.Contracts.Enums;
 using OnlineStore.DataAccess.Common;
 using OnlineStore.Domain.Entities;
 
@@ -17,7 +18,6 @@ namespace OnlineStore.DataAccess.Orders.Repositories
 
         }
 
-
         public Task<List<Order>> GetOrdersAsync(int userId)
         {
             return _readOnlydbContext.Set<Order>()
@@ -31,12 +31,10 @@ namespace OnlineStore.DataAccess.Orders.Repositories
         {
             return _readOnlydbContext.Set<Order>()
                 .Where(c => c.Id == OrderId)
-                .Where(c => c.OrderStatusId != 6)
+                .Where(c => c.OrderStatusId != (int)OrderStatusEnum.Canceled)
                  .Include(c => c.orderItems.Where(cr => !cr.IsDeleted))
                 .FirstOrDefaultAsync();
         }
-
-
 
         public Task<List<OrderItem>> GetOrderItemAsync(int orderId)
         {
@@ -61,6 +59,5 @@ namespace OnlineStore.DataAccess.Orders.Repositories
             await _mutableDbContext.SaveChangesAsync(cancellation);
 
         }
-
     }
 }

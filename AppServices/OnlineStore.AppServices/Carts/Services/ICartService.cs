@@ -21,12 +21,17 @@ namespace OnlineStore.AppServices.Carts.Services
         Task<int?> GetCartItemCountAsync(CancellationToken cancellation);
 
         /// <summary>
+        /// Получает продукт из коризны по его идентификатору
+        /// </summary>
+        /// <param name="id">Идентификатор</param>
+        /// <param name="cancellation">Токен отмены операции</param>
+        Task<CartItemDto> GetCartItemId(int id, CancellationToken cancellation);
+
+        /// <summary>
         /// Получает содержимое корзины товаров
         /// </summary>
         /// <param name="cancellation">Токен отмены операции.</param>
         Task<CartDto> GetCartAsync(CancellationToken cancellation);
-
-
 
         /// <summary>
         /// Удаляет товар из корзины
@@ -40,7 +45,5 @@ namespace OnlineStore.AppServices.Carts.Services
         /// </summary>
         /// <param name="cancellation">Токен отмены операции</param>
         Task RemoveAllItemAsync(CancellationToken cancellation);
-
- 
     }
 }

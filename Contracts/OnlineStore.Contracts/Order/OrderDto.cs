@@ -48,7 +48,7 @@ namespace OnlineStore.Contracts.Order
         /// Статус заказа
         /// </summary>
         public OrderStatusDto OrderStatusDto { get; set; }
-
+     
         /// <summary>
         /// Позиции заказа
         /// </summary>

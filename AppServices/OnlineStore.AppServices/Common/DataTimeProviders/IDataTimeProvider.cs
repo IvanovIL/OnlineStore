@@ -9,6 +9,6 @@ namespace OnlineStore.AppServices.Common.DataTimeProviders
         /// <summary>
         /// Текущее время по UTC
         /// </summary>
-        DateTime UtcNow { get; }
+        DateTime Now { get; }
     }
 }

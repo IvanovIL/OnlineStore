@@ -6,6 +6,9 @@ using OnlineStore.Domain.Entities;
 
 namespace OnlineStore.DataAccess.Carts.Repositories
 {
+    /// <summary>
+    /// Репозиторий корзины
+    /// </summary>
     public sealed class CartRepository : EfRepositoryBase<Cart>, ICartRepository
     {
         public CartRepository(
@@ -16,15 +19,24 @@ namespace OnlineStore.DataAccess.Carts.Repositories
 
         }
 
+        /// <inheritdoc/>
         public Task<Cart> GetCartByUserAsync(int userId, CancellationToken cancellation)
         {
             return _mutableDbContext.Set<Cart>()
                 .Where(c => c.UserId == userId)
-                .Where(c => c.StatusId == (int)CartStatusEnum.New)
+                .Where(c => c.StatusId != (int)CartStatusEnum.Done)
                 .Include(c => c.Products)
                 .FirstOrDefaultAsync(cancellation);
         }
 
-       
+
+        /// <inheritdoc/>
+        public Task<CartProduct> GetCartItemId(int id, int userId, CancellationToken cancellation)
+        {
+            return _mutableDbContext.Set<CartProduct>()
+                .Where (c => c.CartId == userId)
+                .Where(c => c.ProductId == id)
+               .FirstOrDefaultAsync(cancellation);
+        }
     }
 }

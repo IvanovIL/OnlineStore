@@ -3,9 +3,9 @@
 @model OrderDto
 
 <h2>Оформить заказ</h2>
-   Пожалуйста, введите свои данные, и мы отправим Ваш товар прямо сейчас!
+   Пожалуйста, введите свои данные, и мы отправим ваш товар.
 
-<form id="productForm" asp-controller="Cart" asp-action="AllCheckout" method="post" enctype="multipart/form-data">
+<form id="productForm" asp-controller="Cart" asp-action="CheckoutAllOrder" asp-route-productId="@ViewBag.productId" method="post" enctype="multipart/form-data">
 
     <div class="form-group">
         <label for="Name">Ф.И.О получателя</label>
@@ -21,7 +21,7 @@
         <label for="numberPhoneUser">Номер телефона</label>
         <input type="tel" class="form-control" id="numberPhoneUser" name="numberPhoneUser" asp-for="numberPhoneUser" required />
     </div>
-
+   
      <h3 class="TotalAmount">@ViewBag.TotalAmount.ToString("C")</h3> 
     <button type="submit">Заказть</button>
 </form>

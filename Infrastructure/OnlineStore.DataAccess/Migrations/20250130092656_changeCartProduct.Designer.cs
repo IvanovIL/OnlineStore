@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineStore.DataAccess.Common;
 
@@ -11,9 +12,11 @@ using OnlineStore.DataAccess.Common;
 namespace OnlineStore.DataAccess.Migrations
 {
     [DbContext(typeof(MutableOnlineStoreDbContext))]
-    partial class MutableOnlineStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250130092656_changeCartProduct")]
+    partial class changeCartProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -274,10 +277,6 @@ namespace OnlineStore.DataAccess.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
-
-                    b.Property<string>("productName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -596,7 +595,53 @@ namespace OnlineStore.DataAccess.Migrations
                     b.ToTable("Product", (string)null);
                 });
 
+            modelBuilder.Entity("OnlineStore.Domain.Entities.ProductAttribute", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Attributes", (string)null);
+                });
+
+            modelBuilder.Entity("OnlineStore.Domain.Entities.ProductAttributeType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductAttributeType", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Используется для поиска"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Не используется для поиска"
+                        });
+                });
 
             modelBuilder.Entity("OnlineStore.Domain.Entities.ProductImage", b =>
                 {

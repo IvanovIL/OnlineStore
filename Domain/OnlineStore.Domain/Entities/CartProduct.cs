@@ -19,6 +19,17 @@ namespace OnlineStore.Domain.Entities
         public int ProductId { get; set; }
 
         /// <summary>
+        /// Наименование продукта
+        /// </summary>
+        public string productName { get; set; }
+
+        /// <summary>
+        /// Цена
+        /// </summary>
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal Price { get; set; }
+
+        /// <summary>
         /// Количество
         /// </summary>
         public int Quantity { get; set; }
@@ -26,13 +37,11 @@ namespace OnlineStore.Domain.Entities
         /// <summary>
         /// Идентфикатор корзины
         /// </summary>
-        //[ForeignKey(nameof(Cart))]
         public int CartId { get; set; }
 
         /// <summary>
         /// Корзина
         /// </summary>
-        //[ForeignKey(nameof(CartId))]
         public Cart Cart { get; set; }
 
         /// <summary>

@@ -3,16 +3,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OnlineStore.AppServices.Attributes.Repositories;
-using OnlineStore.AppServices.Attributes.Services;
 using OnlineStore.AppServices.Authentication.Services;
 using OnlineStore.AppServices.Common.CacheService;
 using OnlineStore.AppServices.Common.CacheServices;
-using OnlineStore.AppServices.Common.Models;
 using OnlineStore.AppServices.Common.Redis;
 using OnlineStore.AppServices.Products.Repositories;
 using OnlineStore.AppServices.Products.Services;
-using OnlineStore.DataAccess.Attributes.Repositories;
 using OnlineStore.DataAccess.Common;
 using OnlineStore.DataAccess.Products.Repositories;
 using OnlineStore.Domain.Entities;
@@ -44,6 +40,8 @@ using OnlineStore.AppServices.Carts.Services;
 using OnlineStore.AppServices.Orders.Services;
 using OnlineStore.AppServices.Orders.Repositories;
 using OnlineStore.DataAccess.Orders.Repositories;
+using OnlineStore.Contracts.Notifications;
+
 
 namespace OnlineStore.ComponentRegistar
 {
@@ -74,8 +72,11 @@ namespace OnlineStore.ComponentRegistar
                     };
                 });
 
+
             Services.Configure<JwtOptions>(Configuration.GetSection("JwtOptions"));
             Services.Configure<OnlineStoreApiClientOptions>(Configuration.GetSection("OnlineStoreApiClient"));
+
+
 
             RegisterRepositories(Services, Configuration);
             RegisterServices(Services, Configuration);
@@ -102,7 +103,7 @@ namespace OnlineStore.ComponentRegistar
                 options.UseSqlServer(connectionString);
             });
 
-            Services.AddTransient<IAttributeRepository, AttributeRepository>();
+
             Services.AddScoped<IProductRepository, ProductRepository>();
             Services.AddScoped<ICategoryRepository, CategoryRepository>();
             Services.AddScoped<IImageRepository, ImageRepository>();
@@ -119,7 +120,6 @@ namespace OnlineStore.ComponentRegistar
 
             Services.AddStackExchangeRedisExtensions<NewtonsoftSerializer>(redisConfiguration);
 
-            Services.AddScoped<IProductAttributeService, ProductAttributeService>();
 
             Services.AddScoped<IProductsService, ProductsService>();
             Services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -132,22 +132,18 @@ namespace OnlineStore.ComponentRegistar
             Services.AddSingleton<ICacheService, RedisCacheService>();
             Services.AddSingleton<IJwtGenerator, JwtGenerator>();
             Services.AddSingleton<IDataTimeProvider, DataTimeProvider>();
-
+   
 
             Services.AddScoped<IEventDispatcher, EventDispatcher>();
             Services.AddScoped<IEventAccumulator, EventAccumulator>();
             Services.AddScoped<INotificationService, EmailNotificationService>();
 
-            Services.Configure<DecoratorSettings>(Configuration.GetSection("DecoratorSettings"));
-            var decorationSettings = Configuration.GetSection("DecoratorSettings").Get<DecoratorSettings>();
-            if (decorationSettings?.EnableDecorator == true)
-            {
-                Services.Decorate<IProductAttributeService, CachedProductAttributeService>();
-            }
+
+
 
             Services.Scan(Scan =>
             {
-                Scan.FromAssemblyOf<AddProductEventHandler>()
+                Scan.FromAssemblyOf<OrderProductsEventHandler>()
                 .AddClasses(Classes => Classes.AssignableTo(typeof(IDomainEventHandler<>)))
                 .AsImplementedInterfaces()
                 .WithScopedLifetime();
@@ -160,7 +156,6 @@ namespace OnlineStore.ComponentRegistar
         {
             var mapperConfig = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new ProductAttributeMappingProfile());
                 mc.AddProfile(new ProductMappingProfile());
                 mc.AddProfile(new CategoryMappingProfile());
                 mc.AddProfile(new CartMappingProfile());
@@ -189,7 +184,6 @@ namespace OnlineStore.ComponentRegistar
                 client.BaseAddress = new Uri("https://localhost:7223/api/");
 
             });
-
         }
     }
 }

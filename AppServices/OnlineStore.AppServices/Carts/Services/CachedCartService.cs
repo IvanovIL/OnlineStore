@@ -7,6 +7,9 @@ using OnlineStore.Domain.Entities;
 
 namespace OnlineStore.AppServices.Carts.Services
 {
+        /// <summary>
+        /// Кэширующий сервис по работе с корзиной
+        /// </summary>
     public sealed class CachedCartService : ICartService
     {
         private readonly ICartService _cartService;
@@ -67,6 +70,17 @@ namespace OnlineStore.AppServices.Carts.Services
 
         }
 
+        public Task<CartItemDto> GetCartItemId(int id, CancellationToken cancellation)
+        {
+            return _cartService.GetCartItemId(id, cancellation);
+        }
+
+        public Task<CartDto> GetProductCart(int id, int userId, CancellationToken cancellation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc/>
         public async Task RemoveAllItemAsync(CancellationToken cancellation)
         {
             await _cartService.RemoveAllItemAsync(cancellation);
@@ -80,6 +94,7 @@ namespace OnlineStore.AppServices.Carts.Services
             await _cacheService.RemoveAsync(CartRedisKeyHelper.GetCartItemsCountKey(user.Id), cancellation);
         }
 
+        /// <inheritdoc/>
         public async Task RemoveItemAsync(int productId, CancellationToken cancellation)
         {
             await _cartService.RemoveItemAsync(productId, cancellation);

@@ -1,32 +1,40 @@
 ﻿using AutoMapper;
-using AutoMapper.Internal;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineStore.AppServices.Carts.Services;
 using OnlineStore.AppServices.Orders.Services;
 using OnlineStore.AppServices.Products.Services;
 using OnlineStore.Contracts.Order;
-
+using OnlineStore.Domain.Entities;
 
 namespace OnlineStore.MVC.Controllers
 {
+    /// <summary>
+    /// Контролер управлением корзиной пользователя
+    /// </summary>
     public class CartController : Controller
     {
         private readonly ICartService _cartService;
         private readonly IProductsService _productsService;
         private readonly IMapper _mapper;
         private readonly IOrderServices _orderServices;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public CartController(ICartService cartService,
              IProductsService productsService,
              IMapper mapper,
-             IOrderServices orderServices)
+             IOrderServices orderServices,
+              UserManager<ApplicationUser> userManager,
+              IHttpContextAccessor httpContextAccessor)
         {
             _cartService = cartService;
             _productsService = productsService;
             _mapper = mapper;
             _orderServices = orderServices;
+            _userManager = userManager;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost]
@@ -70,57 +78,65 @@ namespace OnlineStore.MVC.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AllCheckout(OrderDto orderDto, CancellationToken cancellation)
+        public async Task<IActionResult> CheckoutAllOrder(OrderDto orderDto, int productId, CancellationToken cancellation)
         {
-            var cart = await _cartService.GetCartAsync(cancellation);
+            if (productId == 0)
+            {
+                var cart = await _cartService.GetCartAsync(cancellation);
 
-            orderDto.TotalAmount = cart.TotalAmount;
+                orderDto.TotalAmount = cart.TotalAmount;
 
-            await _orderServices.AddOrderAsync(cart, orderDto, cancellation);
+                await _orderServices.AddOrderAllItemsAsync(cart, orderDto, cancellation);
 
-            await _productsService.CheckoutAsync(cart, cancellation);
+                await _productsService.CheckoutAsync(cart, cancellation);
 
-            await _cartService.RemoveAllItemAsync(cancellation);
+                await _cartService.RemoveAllItemAsync(cancellation);
 
-            return RedirectToAction("getProduct", "Home");
+                return RedirectToAction("getProduct", "Home");
+            }
+            else
+            {
+                var cartItem = await _cartService.GetCartItemId(productId ,cancellation);
+
+                await _orderServices.AddOrderAsync(cartItem, orderDto, cancellation);
+
+                await _productsService.CheckoutItemAsync(cartItem, cancellation);
+
+                await _cartService.RemoveItemAsync(productId, cancellation);
+
+                return RedirectToAction("getProduct", "Home");
+            }
         }
 
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Checkout(int ProductId, CancellationToken cancellation)
+        public async Task<IActionResult> Checkout(int productId, CancellationToken cancellation)
         {
-            var carts = await _cartService.GetCartAsync(cancellation);
-
-            foreach (var cart in carts.Items)
+            if (productId == 0)
             {
-                if (cart.ProductId == ProductId)
+                var cartItem = await _cartService.GetCartAsync(cancellation);
+
+                decimal Total = 0m;
+
+                foreach (var item in cartItem.Items)
                 {
-                    await _productsService.CheckoutItemAsync(cart, cancellation);
-                    break;
+                    Total += item.Price * item.Quantity;
                 }
+                ViewBag.TotalAmount = Total;
+
+                return View("~/Views/Order/CheckoutOrderView.cshtml");
             }
-            await _cartService.RemoveItemAsync(ProductId, cancellation);
-            return RedirectToAction("getProduct", "Home");
-        }
-
-
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> finalCheckout(CancellationToken cancellation)
-        {
-            var cartItemCount = await _cartService.GetCartAsync(cancellation);
-
-            decimal Total = 0m;
-
-            foreach (var item in cartItemCount.Items)
+            else
             {
-                Total += item.Price * item.Quantity;
+
+                var cartItem = await _cartService.GetCartItemId(productId, cancellation);
+
+                ViewBag.TotalAmount = cartItem.Quantity * cartItem.Price;
+                ViewBag.productId = productId;
+
+                return View("~/Views/Order/CheckoutOrderView.cshtml");
             }
-
-
-            ViewBag.TotalAmount = Total;
-            return View("~/Views/Order/CheckoutOrderView.cshtml");
         }
 
         [HttpPost]
@@ -131,8 +147,5 @@ namespace OnlineStore.MVC.Controllers
 
             return RedirectToAction("getProduct", "Home");
         }
-
-
-
     }
 }

@@ -4,10 +4,10 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UserSecretsId>5ffd010b-a8bf-45e3-bafa-447fdc02428a</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Attributes\Models\" />
     <Folder Include="Orders\Models\" />
     <Folder Include="Orders\userCases\" />
     <Folder Include="Users\" />
@@ -17,6 +17,9 @@
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="MailKit" Version="4.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
     <PackageReference Include="StackExchange.Redis" Version="2.8.16" />
     <PackageReference Include="StackExchange.Redis.Extensions.Core" Version="10.2.0" />
   </ItemGroup>
@@ -24,6 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Contracts\OnlineStore.Contracts\OnlineStore.Contracts.csproj" />
     <ProjectReference Include="..\..\Domain\OnlineStore.Domain\OnlineStore.Domain.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\OnlineStore.Infrastructure\OnlineStore.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

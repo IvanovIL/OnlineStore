@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineStore.AppServices.Products.Services;
-using OnlineStore.Contracts.Categories;
 using OnlineStore.Contracts.Common;
 using OnlineStore.Contracts.Product;
-using OnlineStore.Domain.Entities;
 using OnlineStore.MVC.Attributes;
 
 
 namespace OnlineStore.MVC.WebApi
 {
+   /// <summary>
+   /// Контроллер по управлению продуктами
+   /// </summary>
 
     [Route("api/[controller]")]
     [ApiController]
@@ -29,8 +30,6 @@ namespace OnlineStore.MVC.WebApi
 
             return NoContent();
         }
-
-
 
         [Route("")]
         [HttpGet]
@@ -68,7 +67,7 @@ namespace OnlineStore.MVC.WebApi
         [HttpPost]
         public async Task<IActionResult> FindProductAsync([FromBody] ShortProductDto productDto, CancellationToken cancellation)
         {
-            var result = await _productsService.FindProductAsync(productDto.Name, new PagedRequest
+            var result = await _productsService.FindProductAsync(productDto, new PagedRequest
             {
                 PageNumber = 1,
                 PageSize = 10
@@ -76,8 +75,5 @@ namespace OnlineStore.MVC.WebApi
 
             return Ok(result);
         }
-
-
-
     }
 }
